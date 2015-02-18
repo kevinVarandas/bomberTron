@@ -37,6 +37,10 @@ var level = 1;
 //VAR tableau de cases
 var cases = [];
 
+/** REFAIRE DES VARS POUR LE PB DES NIVEAUX; IL FAUT CREER TOUS LES NIVEAUX AUPARAVANT
+ * ET JUSTE AFFICHER DANS LE ANIME
+ */
+
 var Sonic = {
     x : 500,
     y : 250,
