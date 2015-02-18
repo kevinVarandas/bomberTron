@@ -1,0 +1,16 @@
+canvas
+{
+    border      : 1px solid black;
+    position    : absolute;
+}
+
+canvas#myCanvas
+{
+    background: transparent;
+    z-index: 2;
+}
+
+canvas#backgroundCanvas
+{
+    z-index: 1;
+}
