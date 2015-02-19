@@ -115,6 +115,7 @@ window.onload = function(){
     //Les cases fixes
     addCaseFixe();
 
+    drawLevel(level);
     //On anime
     requestAnimationFrame(anime);
 };
@@ -413,7 +414,9 @@ function drawLevel(level)
        default:
            break;
    }
+}
 
+function drawGame(){
     ctx.save();
     //dessine les cases fixes
     var i;
@@ -425,7 +428,6 @@ function drawLevel(level)
     }
     ctx.restore();
 }
-
 function drawNiv1(){
     var i, j;
     //Ajout des cases fixes
@@ -441,7 +443,7 @@ function drawNiv1(){
 function anime(time){
     // 1 On efface la zone (le canvas)
     ctx.clearRect(0, 0, 1050, 550);
-    drawLevel(level);
+    drawGame();
     if(Sonic.prst){
         drawSonic();
     }else if(Mario.prst){
