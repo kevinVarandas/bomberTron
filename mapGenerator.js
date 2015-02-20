@@ -42,8 +42,8 @@ var cases = [];
  */
 
 var Sonic = {
-    x : 500,
-    y : 250,
+    x : 40,
+    y : 40,
     vx : 4,
     vy : 4,
     w : 21,
@@ -212,7 +212,7 @@ function Case(x, y, type, tailleCase) {
 
     this.isFixe = function(){return this.type;};
     this.getX = function(){return this.x;};
-    this.getY = function(){return this.y};
+    this.getY = function(){return this.y;};
     this.getTailleCase = function(){return this.tailleCase};
 }
 
@@ -414,18 +414,15 @@ function drawLink(){
 }
 
 /*****************************************/
-function drawCaseBois(x, y){
-   // ctx.save();
-  //  ctx.translate(x,y);
-   // ctx.drawImage(caisse, 0,0, 50, 50);
-   // ctx.restore();
+function addCaseCassable(x, y){
+    cases.push(new Case(x,y,false,tailleCaseFixe))
 }
 
 function drawLevel(level)
 {
    switch (level){
        case 1:
-           drawNiv1();
+           createLevel1();
            break;
        default:
            break;
@@ -434,25 +431,45 @@ function drawLevel(level)
 
 function drawGame(){
     ctx.save();
-    //dessine les cases fixes
+    //dessine les cases du niveau
     var i;
     for(i = 0; i<cases.length; i++) {
-        if (cases[i].isFixe)
+        if (cases[i].isFixe())
         {
             ctx.drawImage(brique, cases[i].x, cases[i].y, cases[i].tailleCase, cases[i].tailleCase);
+        }
+        else
+        {
+            ctx.drawImage(caisse, cases[i].x, cases[i].y, cases[i].tailleCase, cases[i].tailleCase);
         }
     }
     ctx.restore();
 }
-function drawNiv1(){
+function createLevel1(){
     var i, j;
     //Ajout des cases fixes
     for(i = 0; i < w; i += tailleCaseFixe){
         for(j = 0; j < h ; j += tailleCaseFixe){
-            if((i % 80) !== 0 && (j % 80) !== 0 && i !== 0 && (i+tailleCaseFixe)!==w && j!==0 && (j+tailleCaseFixe)!==h){
+            if((i % 80) === 0 && (j % 80) === 0 && i !== 0 && (i+tailleCaseFixe)!==w && j!==0 && (j+tailleCaseFixe)!==h){
                 cases.push(new Case(i,j,true,tailleCaseFixe));
             }
         }
+    }
+
+    //ajout des cases cassables
+    for(i = 120; i < w - 120; i += 40){
+        addCaseCassable(i, 40);
+        addCaseCassable(i, h - 80);
+    }
+
+    for(i = 40; i<w-40; i+=40){
+        addCaseCassable(i,120);
+        addCaseCassable(i,h-160);
+    }
+
+    for(i = 40; i<w-40; i+=40){
+        addCaseCassable(i,200);
+        addCaseCassable(i,h-240);
     }
 }
 
@@ -487,7 +504,7 @@ function collisonGauche(x, y, v){
     var pos = x - v - 5;
     for(i = 0; i < cases.length; i++){
         if(pos > cases[i].getX() && pos < cases[i].getX() + cases[i].getTailleCase() &&
-            ((y > cases[i].getY() && y < cases[i].getY() + cases[i].getTailleCase()))){
+            ((y >= cases[i].getY() && y < cases[i].getY() + cases[i].getTailleCase()))){
             return true;
         }
     }
@@ -499,7 +516,7 @@ function collisonDroite(x, y, v){
     var pos = x + v + 15;
     for(i = 0; i < cases.length; i++){
         if(pos > cases[i].getX() && pos < cases[i].getX() + cases[i].getTailleCase() &&
-            ((y > cases[i].getY() && y < cases[i].getY() + cases[i].getTailleCase()))){
+            ((y >= cases[i].getY() && y < cases[i].getY() + cases[i].getTailleCase()))){
             return true;
         }
     }
