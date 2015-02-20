@@ -148,6 +148,7 @@ function traiteToucheAppuyee(evt){
     else if(evt.keyCode == 32){
         toucheEnfoncee = true;
         espace = true;
+        addBomb(Link);
     }
 }
 // Fonction traitant les touches relachees
@@ -200,7 +201,6 @@ function traiteToucheRelachee(evt){
     else if(evt.keyCode == 32){
         toucheEnfoncee = false;
         espace = false;
-        addBomb(Link);
     }
 
     Sonic.cpt = 0;
@@ -230,7 +230,12 @@ function addCaseFixe(){
 }
 //fonction qui ajoute des bombes qd on appuis sur espace
 function addBomb(Player){
-    bombs.push(new Bomb(Player.x, Player.y, "sonic", 1, 1));
+    var xBomb = Player.x;
+    var yBomb = (Player.y + Player.h);
+    var subX = Player.x % tailleCaseFixe;
+    var subY = (Player.y + Player.h) % tailleCaseFixe;
+
+    bombs.push(new Bomb(xBomb - subX, yBomb - subY, "sonic", 1, 1));
 }
 
 function drawBombs(){
