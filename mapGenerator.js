@@ -230,9 +230,9 @@ function addCaseFixe(){
 }
 //fonction qui ajoute des bombes qd on appuis sur espace
 function addBomb(Player){
-    var xBomb = Player.x;
+    var xBomb = (Player.x + (Player.w/2));
     var yBomb = (Player.y + Player.h);
-    var subX = Player.x % tailleCaseFixe;
+    var subX =  (Player.x + (Player.w/2)) % tailleCaseFixe;
     var subY = (Player.y + Player.h) % tailleCaseFixe;
 
     bombs.push(new Bomb(xBomb - subX, yBomb - subY, "sonic", 1, 1));
