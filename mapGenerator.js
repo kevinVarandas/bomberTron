@@ -123,6 +123,7 @@ window.onload = function(){
     //Les cases fixes
     addCaseFixe();
 
+    //On prepare le niveau
     drawLevel(level);
     //On anime
     requestAnimationFrame(anime);
