@@ -37,10 +37,9 @@
       <file leaf-file-name="mapGenerator.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mapGenerator.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.26497278" vertical-offset="4206" max-vertical-offset="4913">
-              <caret line="429" column="1" selection-start-line="429" selection-start-column="1" selection-end-line="429" selection-end-column="1" />
+            <state vertical-scroll-proportion="0.55947953" vertical-offset="5530" max-vertical-offset="6766">
+              <caret line="473" column="24" selection-start-line="473" selection-start-column="24" selection-end-line="473" selection-end-column="24" />
               <folding>
-                <element signature="n#!!block;n#drawSonic#0" expanded="false" />
                 <element signature="n#!!block;n#drawMario#0" expanded="false" />
                 <element signature="n#!!block;n#drawPika#0" expanded="false" />
                 <element signature="n#!!block;n#drawLink#0" expanded="false" />
@@ -96,9 +95,9 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="10" />
-    <option name="y" value="20" />
-    <option name="width" value="1346" />
+    <option name="x" value="24" />
+    <option name="y" value="52" />
+    <option name="width" value="1343" />
     <option name="height" value="688" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -199,7 +198,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="10" y="20" width="1346" height="688" extended-state="0" />
+    <frame x="24" y="52" width="1343" height="688" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -207,7 +206,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23834586" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2388847" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -248,7 +247,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3604">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#drawSonic#0" expanded="false" />
             <element signature="n#!!block;n#drawMario#0" expanded="false" />
             <element signature="n#!!block;n#drawPika#0" expanded="false" />
             <element signature="n#!!block;n#drawLink#0" expanded="false" />
@@ -293,7 +291,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3604">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#drawSonic#0" expanded="false" />
             <element signature="n#!!block;n#drawMario#0" expanded="false" />
             <element signature="n#!!block;n#drawPika#0" expanded="false" />
             <element signature="n#!!block;n#drawLink#0" expanded="false" />
@@ -338,7 +335,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3604">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#drawSonic#0" expanded="false" />
             <element signature="n#!!block;n#drawMario#0" expanded="false" />
             <element signature="n#!!block;n#drawPika#0" expanded="false" />
             <element signature="n#!!block;n#drawLink#0" expanded="false" />
@@ -383,7 +379,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4165">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#drawSonic#0" expanded="false" />
             <element signature="n#!!block;n#drawMario#0" expanded="false" />
             <element signature="n#!!block;n#drawPika#0" expanded="false" />
             <element signature="n#!!block;n#drawLink#0" expanded="false" />
@@ -428,7 +423,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4148">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#drawSonic#0" expanded="false" />
             <element signature="n#!!block;n#drawMario#0" expanded="false" />
             <element signature="n#!!block;n#drawPika#0" expanded="false" />
             <element signature="n#!!block;n#drawLink#0" expanded="false" />
@@ -473,7 +467,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4641">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#drawSonic#0" expanded="false" />
             <element signature="n#!!block;n#drawMario#0" expanded="false" />
             <element signature="n#!!block;n#drawPika#0" expanded="false" />
             <element signature="n#!!block;n#drawLink#0" expanded="false" />
@@ -518,7 +511,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2533">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#drawSonic#0" expanded="false" />
             <element signature="n#!!block;n#drawMario#0" expanded="false" />
             <element signature="n#!!block;n#drawPika#0" expanded="false" />
             <element signature="n#!!block;n#drawLink#0" expanded="false" />
@@ -680,10 +672,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mapGenerator.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.26497278" vertical-offset="4206" max-vertical-offset="4913">
-          <caret line="429" column="1" selection-start-line="429" selection-start-column="1" selection-end-line="429" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.55947953" vertical-offset="5530" max-vertical-offset="6766">
+          <caret line="473" column="24" selection-start-line="473" selection-start-column="24" selection-end-line="473" selection-end-column="24" />
           <folding>
-            <element signature="n#!!block;n#drawSonic#0" expanded="false" />
             <element signature="n#!!block;n#drawMario#0" expanded="false" />
             <element signature="n#!!block;n#drawPika#0" expanded="false" />
             <element signature="n#!!block;n#drawLink#0" expanded="false" />

@@ -21,7 +21,7 @@ var tailleCaseFixe = 40;
 
 // IMAGES DES DIFFERENTS PERSONNAGES
 var sonic = new Image();
-sonic.src = 'http://img4.hostingpics.net/pics/170214SonicTron.png';
+sonic.src = 'http://img11.hostingpics.net/pics/903543SonicTron1.png';
 
 var mario = new Image();
 mario.src = 'http://img4.hostingpics.net/pics/284463marioTron.png';
@@ -46,10 +46,10 @@ var Sonic = {
     y : 250,
     vx : 4,
     vy : 4,
-    w : 24,
-    h : 30.75,
-    picx : 24,
-    picy : 61.5,
+    w : 21,
+    h : 28,
+    picx : 21,
+    picy : 56,
     cpt : 0,
     prst : true
 };
@@ -211,7 +211,11 @@ function Case(x, y, type, tailleCase) {
     this.tailleCase = tailleCase;
 
     this.isFixe = function(){return this.type;};
+    this.getX = function(){return this.x;};
+    this.getY = function(){return this.y};
+    this.getTailleCase = function(){return this.tailleCase};
 }
+
 
 /*****************************************/
 
@@ -226,7 +230,11 @@ function drawSonic(){
             Sonic.picx = 2 * Sonic.w;
             Sonic.picy = 2 * Sonic.h;
         }
-        Sonic.y += Sonic.vy;
+        if(collisonBas(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vy)){
+
+        }else {
+            Sonic.y += Sonic.vy;
+        }
     }else if(haut){
         Sonic.cpt += 1;
         if(Sonic.cpt % 20 < 10){
@@ -236,7 +244,11 @@ function drawSonic(){
             Sonic.picx = 2 * Sonic.w;
             Sonic.picy = 0;
         }
-        Sonic.y -= Sonic.vy;
+        if(collisonHaut(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vy)){
+
+        }else {
+            Sonic.y -= Sonic.vy;
+        }
     }else if(gauche){
         Sonic.cpt += 1;
         if(Sonic.cpt % 20 < 10){
@@ -246,7 +258,9 @@ function drawSonic(){
             Sonic.picx = 2 * Sonic.w;
             Sonic.picy = 3 * Sonic.h;
         }
-        Sonic.x -= Sonic.vx;
+        if(!collisonGauche(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vx)) {
+            Sonic.x -= Sonic.vx;
+        }
     }else if(droite){
         Sonic.cpt += 1;
         if(Sonic.cpt % 20 < 10){
@@ -256,9 +270,11 @@ function drawSonic(){
             Sonic.picx = 2 * Sonic.w;
             Sonic.picy = Sonic.h;
         }
-        Sonic.x += Sonic.vx;
+        if(!collisonDroite(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vx)) {
+            Sonic.x += Sonic.vx;
+        }
     }
-    ctx.drawImage(sonic, Sonic.picx, Sonic.picy, Sonic.w, Sonic.h, Sonic.x, Sonic.y, 53, 60);
+    ctx.drawImage(sonic, Sonic.picx, Sonic.picy, Sonic.w, Sonic.h, Sonic.x, Sonic.y, 30, 40);
 }
 
 function drawMario(){
@@ -438,6 +454,56 @@ function drawNiv1(){
             }
         }
     }
+}
+
+function collisonHaut(x, y, v){
+    var i;
+    var pos = y - v;
+    for(i = 0; i < cases.length; i++){
+            if(pos > cases[i].getY() && pos < cases[i].getY() + cases[i].getTailleCase() &&
+                ((x-5 > cases[i].getX() && x-5 < cases[i].getX() + cases[i].getTailleCase()) ||
+                (x+5 > cases[i].getX() && x+5 < cases[i].getX() + cases[i].getTailleCase()))){
+                return true;
+            }
+    }
+    return false;
+}
+
+function collisonBas(x, y, v){
+    var i;
+    var pos = y + v + 10;
+    for(i = 0; i < cases.length; i++){
+        if(pos > cases[i].getY() && pos < cases[i].getY() + cases[i].getTailleCase() &&
+            ((x-5 > cases[i].getX() && x-5 < cases[i].getX() + cases[i].getTailleCase()) ||
+            (x+5 > cases[i].getX() && x+5 < cases[i].getX() + cases[i].getTailleCase()))){
+            return true;
+        }
+    }
+    return false;
+}
+
+function collisonGauche(x, y, v){
+    var i;
+    var pos = x - v - 5;
+    for(i = 0; i < cases.length; i++){
+        if(pos > cases[i].getX() && pos < cases[i].getX() + cases[i].getTailleCase() &&
+            ((y > cases[i].getY() && y < cases[i].getY() + cases[i].getTailleCase()))){
+            return true;
+        }
+    }
+    return false;
+}
+
+function collisonDroite(x, y, v){
+    var i;
+    var pos = x + v + 15;
+    for(i = 0; i < cases.length; i++){
+        if(pos > cases[i].getX() && pos < cases[i].getX() + cases[i].getTailleCase() &&
+            ((y > cases[i].getY() && y < cases[i].getY() + cases[i].getTailleCase()))){
+            return true;
+        }
+    }
+    return false;
 }
 
 function anime(time){
