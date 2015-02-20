@@ -25,13 +25,13 @@ var sonic = new Image();
 sonic.src = 'http://img11.hostingpics.net/pics/903543SonicTron1.png';
 
 var mario = new Image();
-mario.src = 'http://img4.hostingpics.net/pics/284463marioTron.png';
+mario.src = 'http://img11.hostingpics.net/pics/150862marioTron.png';
 
 var pika = new Image();
-pika.src = 'http://img4.hostingpics.net/pics/229570pika.png';
+pika.src = 'http://img11.hostingpics.net/pics/998998pika.png';
 
 var link = new Image();
-link.src = 'http://img4.hostingpics.net/pics/616014link.png';
+link.src = 'http://img11.hostingpics.net/pics/579093link1.png';
 
 //IMAGE BOMBE
 var bombe = new Image();
@@ -59,29 +59,29 @@ var Sonic = {
     picx : 21,
     picy : 56,
     cpt : 0,
-    prst : true
+    prst : false
 };
 
 var Mario = {
-    x : 500,
-    y : 250,
+    x : 40,
+    y : 40,
     vx : 4,
     vy : 4,
-    w : 50,
-    h : 50,
+    w : 18.5,
+    h : 31.5,
     picx : 0,
-    picy : 50,
+    picy : 0,
     cpt : 0,
     prst : false
 }
 
 var Pika = {
-    x : 500 - 25,
-    y : 250 - 25,
+    x : 40,
+    y : 40,
     vx : 4,
     vy : 4,
-    w : 50,
-    h : 50,
+    w : 24,
+    h : 27.1,
     picx : 0,
     picy : 0,
     cpt : 0,
@@ -89,16 +89,16 @@ var Pika = {
 };
 
 var Link = {
-    x : 500 - 15,
-    y : 250 - 15,
+    x : 40,
+    y : 40,
     vx : 4,
     vy : 4,
-    w : 50,
-    h : 50,
+    w : 19,
+    h : 34,
     picx : 0,
     picy : 0,
     cpt : 0,
-    prst : false
+    prst : true
 };
 
 // FOnction démarrée après chargement de la page
@@ -160,6 +160,8 @@ function traiteToucheRelachee(evt){
         Pika.picy = 2 * Pika.h;
         Link.picx = 0;
         Link.picy = 3 * Link.h;
+        Mario.picx = 0;
+        Mario.picy = 2 * Mario.h;
     }else if(evt.keyCode === 39){
         toucheEnfoncee = false;
         droite = false;
@@ -169,6 +171,8 @@ function traiteToucheRelachee(evt){
         Pika.picy = 3 * Pika.h;
         Link.picx = 0;
         Link.picy = 2 * Link.h;
+        Mario.picx = 0;
+        Mario.picy = 3 * Mario.h;
     }else if(evt.keyCode === 40){
         toucheEnfoncee = false;
         bas = false;
@@ -178,6 +182,8 @@ function traiteToucheRelachee(evt){
         Pika.picy = 0;
         Link.picx = 0;
         Link.picy = 0;
+        Mario.picx = 0;
+        Mario.picy = 0;
     }else if(evt.keyCode === 38){
         toucheEnfoncee = false;
         haut = false;
@@ -187,6 +193,8 @@ function traiteToucheRelachee(evt){
         Pika.picy = Pika.h;
         Link.picx = 0;
         Link.picy = Link.h;
+        Mario.picx = 0;
+        Mario.picy = Mario.h;
     }
     else if(evt.keyCode == 32){
         toucheEnfoncee = false;
@@ -253,6 +261,7 @@ function Bomb(x, y, type, puissance, duree){
     this.x = x;
     this.y = y;
     this.type = type;
+    this.puissance = puissance;
     this.duree = duree;
 }
 
@@ -320,45 +329,53 @@ function drawMario(){
     if(bas){
         Mario.cpt += 1;
         if(Mario.cpt % 20 < 10){
-            Mario.picx = 0;
-            Mario.picy = 2 * Sonic.h;
-        }else if(Mario.cpt % 20 > 10){
-            Mario.picx = 2 * Sonic.w;
-            Mario.picy = 2 * Sonic.h;
-        }
-        Mario.y += Mario.vy;
-    }else if(haut){
-        Mario.cpt += 1;
-        if(Sonic.cpt % 20 < 10){
-            Mario.picx = 0;
+            Mario.picx = Mario.w;
             Mario.picy = 0;
-        }else if(Mario.cpt % 20 > 10){
-            Mario.picx = 2 * Sonic.w;
-            Mario.picy = 0;
-        }
-        Mario.y -= Mario.vy;
-    }else if(gauche){
-        Mario.cpt += 1;
-        if(Mario.cpt % 20 < 10){
-            Mario.picx = 0;
-            Mario.picy = 3 * Mario.h;
         }else if(Mario.cpt % 20 > 10){
             Mario.picx = 2 * Mario.w;
-            Mario.picy = 3 * Mario.h;
+            Mario.picy = 0;
         }
-        Mario.x -= Mario.vx;
-    }else if(droite){
+        if(!collisonBas(Mario.x + (Mario.w / 2), Mario.y + Mario.h - 5, Mario.vy)){
+            Mario.y += Mario.vy;
+        }
+    }else if(haut){
         Mario.cpt += 1;
         if(Mario.cpt % 20 < 10){
-            Mario.picx = 0;
-            Mario.picy = Sonic.h;
+            Mario.picx = Mario.w;
+            Mario.picy = Mario.h
         }else if(Mario.cpt % 20 > 10){
             Mario.picx = 2 * Mario.w;
             Mario.picy = Mario.h;
         }
-        Mario.x += Mario.vx;
+        if(!collisonHaut(Mario.x + (Mario.w / 2), Mario.y + Mario.h, Mario.vy)) {
+            Mario.y -= Mario.vy;
+        }
+    }else if(gauche){
+        Mario.cpt += 1;
+        if(Mario.cpt % 20 < 10){
+            Mario.picx = Mario.w;
+            Mario.picy = 2 * Mario.h;
+        }else if(Mario.cpt % 20 > 10){
+            Mario.picx = 2 * Mario.w;
+            Mario.picy = 2 * Mario.h;
+        }
+        if(!collisonGauche(Mario.x + (Mario.w / 2), Mario.y + Mario.h, Mario.vx)) {
+            Mario.x -= Mario.vx;
+        }
+    }else if(droite){
+        Mario.cpt += 1;
+        if(Mario.cpt % 20 < 10){
+            Mario.picx = Mario.w;
+            Mario.picy = 3 * Mario.h;
+        }else if(Mario.cpt % 20 > 10){
+            Mario.picx = 2 * Mario.w;
+            Mario.picy = 3 * Mario.h;
+        }
+        if(!collisonDroite(Mario.x + (Mario.w / 2), Mario.y + Mario.h, Mario.vx)) {
+            Mario.x += Mario.vx;
+        }
     }
-    ctx.drawImage(mario, Mario.picx, Mario.picy, Mario.w, Mario.h, Mario.x, Mario.y, 60, 60);
+    ctx.drawImage(mario, Mario.picx, Mario.picy, Mario.w, Mario.h, Mario.x, Mario.y, 30, 40);
 }
 
 function drawPika(){
@@ -371,7 +388,9 @@ function drawPika(){
             Pika.picx = 2 * Pika.w;
             Pika.picy = 0;
         }
-        Pika.y += Pika.vy;
+        if(!collisonBas(Pika.x + (Pika.w / 2), Pika.y + Pika.h + 5, Pika.vy)) {
+            Pika.y += Pika.vy;
+        }
     }else if(haut){
         Pika.cpt += 1;
         if(Pika.cpt % 20 < 10){
@@ -381,7 +400,9 @@ function drawPika(){
             Pika.picx = 2 * Pika.w;
             Pika.picy = Pika.h;
         }
-        Pika.y -= Pika.vy;
+        if(!collisonHaut(Pika.x + (Pika.w / 2), Pika.y + Pika.h, Pika.vy)) {
+            Pika.y -= Pika.vy;
+        }
     }else if(gauche){
         Pika.cpt += 1;
         if(Pika.cpt % 20 < 10){
@@ -391,7 +412,9 @@ function drawPika(){
             Pika.picx = 2 * Pika.w;
             Pika.picy = 2 * Pika.h;
         }
-        Pika.x -= Pika.vx;
+        if(!collisonGauche(Pika.x + (Pika.w / 2), Pika.y + Pika.h, Pika.vx)) {
+            Pika.x -= Pika.vx;
+        }
     }else if(droite){
         Pika.cpt += 1;
         if(Pika.cpt % 20 < 10){
@@ -401,10 +424,12 @@ function drawPika(){
             Pika.picx = 2 * Pika.w;
             Pika.picy = 3 * Pika.h;
         }
-        Pika.x += Pika.vx;
+        if(!collisonDroite(Pika.x + (Pika.w / 2) + 20, Pika.y + Pika.h, Pika.vx)) {
+            Pika.x += Pika.vx;
+        }
     }
 
-    ctx.drawImage(pika, Pika.picx, Pika.picy, Pika.w, Pika.h, Pika.x, Pika.y, 100, 100);
+    ctx.drawImage(pika, Pika.picx, Pika.picy, Pika.w, Pika.h, Pika.x, Pika.y, 40, 45);
 }
 
 function drawLink(){
@@ -417,7 +442,9 @@ function drawLink(){
             Link.picx = 2 * Link.w;
             Link.picy = 0;
         }
-        Link.y += Link.vy;
+        if(!collisonBas(Link.x + (Link.w / 2) + 5, Link.y + Link.h, Link.vy)) {
+            Link.y += Link.vy;
+        }
     }else if(haut){
         Link.cpt += 1;
         if(Link.cpt % 20 < 10){
@@ -427,7 +454,9 @@ function drawLink(){
             Link.picx = 2 * Link.w;
             Link.picy = Link.h;
         }
-        Link.y -= Link.vy;
+        if(!collisonHaut(Link.x + (Link.w / 2), Link.y + Link.h, Link.vy)) {
+            Link.y -= Link.vy;
+        }
     }else if(gauche){
         Link.cpt += 1;
         if(Link.cpt % 20 < 10){
@@ -437,7 +466,9 @@ function drawLink(){
             Link.picx = 2 * Link.w;
             Link.picy = 3 * Link.h;
         }
-        Link.x -= Link.vx;
+        if(!collisonGauche(Link.x + (Link.w / 2), Link.y + Link.h, Link.vx)) {
+            Link.x -= Link.vx;
+        }
     }else if(droite){
         Link.cpt += 1;
         if(Link.cpt % 20 < 10){
@@ -447,9 +478,11 @@ function drawLink(){
             Link.picx = 2 * Link.w;
             Link.picy = 2 * Link.h;
         }
-        Link.x += Link.vx;
+        if(!collisonDroite(Link.x + (Link.w / 2), Link.y + Link.h, Link.vx)) {
+            Link.x += Link.vx;
+        }
     }
-    ctx.drawImage(link, Link.picx, Link.picy, Link.w, Link.h, Link.x, Link.y, 80, 80);
+    ctx.drawImage(link, Link.picx, Link.picy, Link.w, Link.h, Link.x, Link.y, 27, 45);
 }
 
 /*****************************************/
@@ -530,8 +563,8 @@ function collisonBas(x, y, v){
     var pos = y + v + 10;
     for(i = 0; i < cases.length; i++){
         if(pos > cases[i].getY() && pos < cases[i].getY() + cases[i].getTailleCase() &&
-            ((x-5 > cases[i].getX() && x-5 < cases[i].getX() + cases[i].getTailleCase()) ||
-            (x+5 > cases[i].getX() && x+5 < cases[i].getX() + cases[i].getTailleCase()))){
+            ((x-10 > cases[i].getX() && x-10 < cases[i].getX() + cases[i].getTailleCase()) ||
+            (x+10 > cases[i].getX() && x+10 < cases[i].getX() + cases[i].getTailleCase()))){
             return true;
         }
     }
