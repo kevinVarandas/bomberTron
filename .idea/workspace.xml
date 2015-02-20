@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3425ec8e-2385-4bf6-8354-6e98d6c79ab2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mapGenerator.js" afterPath="$PROJECT_DIR$/mapGenerator.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="BomberTron.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,8 +39,8 @@
       <file leaf-file-name="mapGenerator.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mapGenerator.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.6293244" vertical-offset="7281" max-vertical-offset="7888">
-              <caret line="263" column="31" selection-start-line="263" selection-start-column="31" selection-end-line="263" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.4398682" vertical-offset="3150" max-vertical-offset="7888">
+              <caret line="201" column="20" selection-start-line="201" selection-start-column="20" selection-end-line="201" selection-end-column="20" />
               <folding>
                 <element signature="n#!!block;n#drawMario#0" expanded="false" />
                 <element signature="n#!!block;n#drawPika#0" expanded="false" />
@@ -679,8 +678,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mapGenerator.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.6293244" vertical-offset="7281" max-vertical-offset="7888">
-          <caret line="263" column="31" selection-start-line="263" selection-start-column="31" selection-end-line="263" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.4398682" vertical-offset="3150" max-vertical-offset="7888">
+          <caret line="201" column="20" selection-start-line="201" selection-start-column="20" selection-end-line="201" selection-end-column="20" />
           <folding>
             <element signature="n#!!block;n#drawMario#0" expanded="false" />
             <element signature="n#!!block;n#drawPika#0" expanded="false" />

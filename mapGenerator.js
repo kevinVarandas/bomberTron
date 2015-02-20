@@ -199,7 +199,7 @@ function traiteToucheRelachee(evt){
     else if(evt.keyCode == 32){
         toucheEnfoncee = false;
         espace = false;
-        addBomb(Sonic);
+        addBomb(Link);
     }
 
     Sonic.cpt = 0;
