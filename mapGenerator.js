@@ -7,6 +7,7 @@ var gauche = false;
 var droite = false;
 var bas = false;
 var haut = false;
+var espace = false;
 var toucheEnfoncee = false;
 
 //VAR IMAGES DE FOND + CASES
@@ -31,6 +32,13 @@ pika.src = 'http://img4.hostingpics.net/pics/229570pika.png';
 
 var link = new Image();
 link.src = 'http://img4.hostingpics.net/pics/616014link.png';
+
+//IMAGE BOMBE
+var bombe = new Image();
+bombe.src = 'http://img11.hostingpics.net/thumbs/mini_366764bombe.png'
+
+//Tableau de bombes
+var bombs = [];
 
 // VAR pour le niveau
 var level = 1;
@@ -135,6 +143,11 @@ function traiteToucheAppuyee(evt){
         toucheEnfoncee = true;
         haut = true;
     }
+    //Espace
+    else if(evt.keyCode == 32){
+        toucheEnfoncee = true;
+        espace = true;
+    }
 }
 // Fonction traitant les touches relachees
 function traiteToucheRelachee(evt){
@@ -175,11 +188,18 @@ function traiteToucheRelachee(evt){
         Link.picx = 0;
         Link.picy = Link.h;
     }
+    else if(evt.keyCode == 32){
+        toucheEnfoncee = false;
+        espace = false;
+        addBomb(Sonic);
+    }
+
     Sonic.cpt = 0;
     Mario.cpt = 0;
     Pika.cpt = 0;
     Link.cpt = 0;
 }
+
 // Fonction dessinant le background
 function drawBackground(){
     ctxBckg.save();
@@ -199,6 +219,18 @@ function addCaseFixe(){
         }
     }
 }
+//fonction qui ajoute des bombes qd on appuis sur espace
+function addBomb(Player){
+    bombs.push(new Bomb(Player.x, Player.y, "sonic", 1, 1));
+}
+
+function drawBombs(){
+    var i;
+    for(i = 0; i<bombs.length; i++){
+        ctx.drawImage(bombe, bombs[i].x, bombs[i].y, 40, 40);
+    }
+}
+
 // Objet case
 /**
  *  x, y : les coordonnées
@@ -216,6 +248,13 @@ function Case(x, y, type, tailleCase) {
     this.getTailleCase = function(){return this.tailleCase};
 }
 
+// Objet bomberman
+function Bomb(x, y, type, puissance, duree){
+    this.x = x;
+    this.y = y;
+    this.type = type;
+    this.duree = duree;
+}
 
 /*****************************************/
 
@@ -527,6 +566,7 @@ function anime(time){
     // 1 On efface la zone (le canvas)
     ctx.clearRect(0, 0, 1050, 550);
     drawGame();
+    drawBombs();
     if(Sonic.prst){
         drawSonic();
     }else if(Mario.prst){
