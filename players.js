@@ -1,6 +1,7 @@
 /**
  * Created by kevin on 24/02/2015.
  */
+var socket = io.connect();
 
 var Sonic = {
     x : 40,

@@ -2,6 +2,8 @@
  * Created by kevin on 23/02/2015.
  */
 
+var socket = io.connect();
+
 // VAR TOUCHES
 var gauche = false;
 var droite = false;
@@ -39,45 +41,61 @@ function traiteToucheRelachee(evt){
         gauche = false;
         Sonic.picx = Sonic.w;
         Sonic.picy = 3 * Sonic.h;
+        socket.emit('SonicSheet', Sonic.w, 3 * Sonic.h);
         Pika.picx = 0;
         Pika.picy = 2 * Pika.h;
+        socket.emit('PikaSheet', 0, 2 * Pika.h);
         Link.picx = 0;
         Link.picy = 3 * Link.h;
+        socket.emit('LinkSheet', 0, 3 * Link.h);
         Mario.picx = 0;
         Mario.picy = 2 * Mario.h;
+        socket.emit('MarioSheet', 0, 2 * Mario.h);
     }else if(evt.keyCode === 39){
         toucheEnfoncee = false;
         droite = false;
         Sonic.picx = Sonic.w;
         Sonic.picy = Sonic.h;
+        socket.emit('SonicSheet', Sonic.w, Sonic.h);
         Pika.picx = 0;
         Pika.picy = 3 * Pika.h;
+        socket.emit('PikaSheet', 0, 3 * Pika.h);
         Link.picx = 0;
         Link.picy = 2 * Link.h;
+        socket.emit('LinkSheet', 0, 2 * Link.h);
         Mario.picx = 0;
         Mario.picy = 3 * Mario.h;
+        socket.emit('MarioSheet', 0, 3 * Mario.h);
     }else if(evt.keyCode === 40){
         toucheEnfoncee = false;
         bas = false;
         Sonic.picx = Sonic.w;
         Sonic.picy = 2 * Sonic.h;
+        socket.emit('SonicSheet', Sonic.w, 2 * Sonic.h);
         Pika.picx = 0;
         Pika.picy = 0;
+        socket.emit('PikaSheet', 0, 0);
         Link.picx = 0;
         Link.picy = 0;
+        socket.emit('LinkSheet', 0, 0);
         Mario.picx = 0;
         Mario.picy = 0;
+        socket.emit('MarioSheet', 0, 0);
     }else if(evt.keyCode === 38){
         toucheEnfoncee = false;
         haut = false;
         Sonic.picx = Sonic.w;
         Sonic.picy = 0;
+        socket.emit('SonicSheet', Sonic.w, 0);
         Pika.picx = 0;
         Pika.picy = Pika.h;
+        socket.emit('PikaSheet', 0, Pika.h);
         Link.picx = 0;
         Link.picy = Link.h;
+        socket.emit('LinkSheet', 0, Link.h);
         Mario.picx = 0;
         Mario.picy = Mario.h;
+        socket.emit('MarioSheet', 0, Mario.h);
     }
     else if(evt.keyCode == 32){
         toucheEnfoncee = false;
