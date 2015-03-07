@@ -31,7 +31,7 @@ function traiteToucheAppuyee(evt){
     else if(evt.keyCode == 32){
         toucheEnfoncee = true;
         espace = true;
-        addBomb(Link);
+        addBomb(player.forme);
     }
 }
 // Fonction traitant les touches relachees
@@ -39,63 +39,95 @@ function traiteToucheRelachee(evt){
     if(evt.keyCode === 37){
         toucheEnfoncee = false;
         gauche = false;
-        Sonic.picx = Sonic.w;
-        Sonic.picy = 3 * Sonic.h;
-        socket.emit('SonicSheet', Sonic.w, 3 * Sonic.h);
-        Pika.picx = 0;
-        Pika.picy = 2 * Pika.h;
-        socket.emit('PikaSheet', 0, 2 * Pika.h);
-        Link.picx = 0;
-        Link.picy = 3 * Link.h;
-        socket.emit('LinkSheet', 0, 3 * Link.h);
-        Mario.picx = 0;
-        Mario.picy = 2 * Mario.h;
-        socket.emit('MarioSheet', 0, 2 * Mario.h);
+        if(player.idJoueur === 1) {
+            Sonic.picx = Sonic.w;
+            Sonic.picy = 3 * Sonic.h;
+            socket.emit('SonicSheet', Sonic.w, 3 * Sonic.h);
+        }
+        if(player.idJoueur === 4) {
+            Pika.picx = 0;
+            Pika.picy = 2 * Pika.h;
+            socket.emit('PikaSheet', 0, 2 * Pika.h);
+        }
+        if(player.idJoueur === 3) {
+            Link.picx = 0;
+            Link.picy = 3 * Link.h;
+            socket.emit('LinkSheet', 0, 3 * Link.h);
+        }
+        if(player.idJoueur === 2) {
+            Mario.picx = 0;
+            Mario.picy = 2 * Mario.h;
+            socket.emit('MarioSheet', 0, 2 * Mario.h);
+        }
     }else if(evt.keyCode === 39){
         toucheEnfoncee = false;
         droite = false;
-        Sonic.picx = Sonic.w;
-        Sonic.picy = Sonic.h;
-        socket.emit('SonicSheet', Sonic.w, Sonic.h);
-        Pika.picx = 0;
-        Pika.picy = 3 * Pika.h;
-        socket.emit('PikaSheet', 0, 3 * Pika.h);
-        Link.picx = 0;
-        Link.picy = 2 * Link.h;
-        socket.emit('LinkSheet', 0, 2 * Link.h);
-        Mario.picx = 0;
-        Mario.picy = 3 * Mario.h;
-        socket.emit('MarioSheet', 0, 3 * Mario.h);
+        if(player.idJoueur === 1) {
+            Sonic.picx = Sonic.w;
+            Sonic.picy = Sonic.h;
+            socket.emit('SonicSheet', Sonic.w, Sonic.h);
+        }
+        if(player.idJoueur === 4) {
+            Pika.picx = 0;
+            Pika.picy = 3 * Pika.h;
+            socket.emit('PikaSheet', 0, 3 * Pika.h);
+        }
+        if(player.idJoueur === 3) {
+            Link.picx = 0;
+            Link.picy = 2 * Link.h;
+            socket.emit('LinkSheet', 0, 2 * Link.h);
+        }
+        if(player.idJoueur === 2) {
+            Mario.picx = 0;
+            Mario.picy = 3 * Mario.h;
+            socket.emit('MarioSheet', 0, 3 * Mario.h);
+        }
     }else if(evt.keyCode === 40){
         toucheEnfoncee = false;
         bas = false;
-        Sonic.picx = Sonic.w;
-        Sonic.picy = 2 * Sonic.h;
-        socket.emit('SonicSheet', Sonic.w, 2 * Sonic.h);
-        Pika.picx = 0;
-        Pika.picy = 0;
-        socket.emit('PikaSheet', 0, 0);
-        Link.picx = 0;
-        Link.picy = 0;
-        socket.emit('LinkSheet', 0, 0);
-        Mario.picx = 0;
-        Mario.picy = 0;
-        socket.emit('MarioSheet', 0, 0);
+        if(player.idJoueur === 1) {
+            Sonic.picx = Sonic.w;
+            Sonic.picy = 2 * Sonic.h;
+            socket.emit('SonicSheet', Sonic.w, 2 * Sonic.h);
+        }
+        if(player.idJoueur === 4) {
+            Pika.picx = 0;
+            Pika.picy = 0;
+            socket.emit('PikaSheet', 0, 0);
+        }
+        if(player.idJoueur === 3) {
+            Link.picx = 0;
+            Link.picy = 0;
+            socket.emit('LinkSheet', 0, 0);
+        }
+        if(player.idJoueur === 2) {
+            Mario.picx = 0;
+            Mario.picy = 0;
+            socket.emit('MarioSheet', 0, 0);
+        }
     }else if(evt.keyCode === 38){
         toucheEnfoncee = false;
         haut = false;
-        Sonic.picx = Sonic.w;
-        Sonic.picy = 0;
-        socket.emit('SonicSheet', Sonic.w, 0);
-        Pika.picx = 0;
-        Pika.picy = Pika.h;
-        socket.emit('PikaSheet', 0, Pika.h);
-        Link.picx = 0;
-        Link.picy = Link.h;
-        socket.emit('LinkSheet', 0, Link.h);
-        Mario.picx = 0;
-        Mario.picy = Mario.h;
-        socket.emit('MarioSheet', 0, Mario.h);
+        if(player.idJoueur === 1) {
+            Sonic.picx = Sonic.w;
+            Sonic.picy = 0;
+            socket.emit('SonicSheet', Sonic.w, 0);
+        }
+        if(player.idJoueur === 4) {
+            Pika.picx = 0;
+            Pika.picy = Pika.h;
+            socket.emit('PikaSheet', 0, Pika.h);
+        }
+        if(player.idJoueur === 3) {
+            Link.picx = 0;
+            Link.picy = Link.h;
+            socket.emit('LinkSheet', 0, Link.h);
+        }
+        if(player.idJoueur === 2) {
+            Mario.picx = 0;
+            Mario.picy = Mario.h;
+            socket.emit('MarioSheet', 0, Mario.h);
+        }
     }
     else if(evt.keyCode == 32){
         toucheEnfoncee = false;
@@ -115,11 +147,14 @@ function anime(time){
     drawBombs();
     if(Sonic.prst){
         drawSonic();
-    }else if(Mario.prst){
+    }
+    if(Mario.prst){
         drawMario();
-    }else if(Pika.prst){
+    }
+    if(Pika.prst){
         drawPika();
-    }else if(Link.prst){
+    }
+    if(Link.prst){
         drawLink();
     }
     requestAnimationFrame(anime);

@@ -24,6 +24,9 @@ var usernames = {};
 // rooms which are currently available in chat
 var rooms = ['Acceuil'];
 
+var nbActuelJoueur = 0;
+var spectateur = 0;
+
 io.sockets.on('connection', function (socket) {
 	
 	// when the client emits 'adduser', this listens and executes
@@ -101,4 +104,19 @@ io.sockets.on('connection', function (socket) {
     socket.on('PikaMove', function(m, move){
         socket.broadcast.to(socket.room).emit('PikaMoveUpdate', m, move);
     });
+
+    socket.on('playerStyle', function(){
+        if(nbActuelJoueur < 4){
+            nbActuelJoueur += 1;
+            socket.emit('createJoueur', nbActuelJoueur);
+        }else{
+            spectateur += 1;
+        }
+
+    });
+
+    socket.on('updateNbrJoueur', function(){
+        socket.broadcast.to(socket.room).emit('updateNbJoueur', nbActuelJoueur);
+    });
+
 });

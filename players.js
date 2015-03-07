@@ -2,6 +2,61 @@
  * Created by kevin on 24/02/2015.
  */
 var socket = io.connect();
+var player;
+
+var nbJoueur = 0;
+socket.on('connect', function(){
+    socket.emit('playerStyle');
+});
+
+socket.on('createJoueur', function(n){
+    nbJoueur = n;
+    switch (n)
+    {
+        case 1 :
+            player =  new Player(1, Sonic);
+            Sonic.prst = true;
+            break;
+        case 2 :
+            player =  new Player(2, Mario);
+            Sonic.prst = true;
+            Mario.prst = true;
+            break;
+        case 3 :
+            player =  new Player(3, Link);
+            Sonic.prst = true;
+            Mario.prst = true;
+            Link.prst = true;
+            break;
+        case 4 :
+            player =  new Player(4, Pika);
+            Sonic.prst = true;
+            Mario.prst = true;
+            Link.prst = true;
+            Pika.prst = true;
+            break;
+    }
+    socket.emit('updateNbrJoueur');
+});
+
+socket.on('updateNbJoueur', function(n){
+    nbJoueur = n;
+    //window.alert(n);
+    switch (n)
+    {
+        case 2 :
+            Mario.prst = true;
+            break;
+        case 3 :
+            Link.prst = true;
+            break;
+        case 4 :
+            Pika.prst = true;
+            break;
+    }
+});
+
+
 
 var Sonic = {
     x : 40,
@@ -17,7 +72,7 @@ var Sonic = {
 };
 
 var Mario = {
-    x : 40,
+    x : 680,
     y : 40,
     vx : 4,
     vy : 4,
@@ -27,11 +82,11 @@ var Mario = {
     picy : 0,
     cpt : 0,
     prst : false
-}
+};
 
 var Pika = {
-    x : 40,
-    y : 40,
+    x : 680,
+    y : 440,
     vx : 4,
     vy : 4,
     w : 24,
@@ -44,7 +99,7 @@ var Pika = {
 
 var Link = {
     x : 40,
-    y : 40,
+    y : 440,
     vx : 4,
     vy : 4,
     w : 19,
@@ -52,7 +107,7 @@ var Link = {
     picx : 0,
     picy : 0,
     cpt : 0,
-    prst : true
+    prst : false
 };
 
 /*****************************************/
@@ -103,7 +158,7 @@ socket.on('PikaMoveUpdate',function(m, move){
 });
 
 function drawSonic(){
-    if(bas){
+    if(bas && player.idJoueur === 1){
         Sonic.cpt += 1;
         if(Sonic.cpt % 20 < 10){
             Sonic.picx = 0;
@@ -120,7 +175,7 @@ function drawSonic(){
             Sonic.y += Sonic.vy;
             socket.emit('SonicMove', 0, Sonic.vy);
         }
-    }else if(haut){
+    }else if(haut && player.idJoueur === 1){
         Sonic.cpt += 1;
         if(Sonic.cpt % 20 < 10){
             Sonic.picx = 0;
@@ -137,7 +192,7 @@ function drawSonic(){
             Sonic.y -= Sonic.vy;
             socket.emit('SonicMove', 0, -Sonic.vy);
         }
-    }else if(gauche){
+    }else if(gauche && player.idJoueur === 1){
         Sonic.cpt += 1;
         if(Sonic.cpt % 20 < 10){
             Sonic.picx = 0;
@@ -152,7 +207,7 @@ function drawSonic(){
             Sonic.x -= Sonic.vx;
             socket.emit('SonicMove', 1, -Sonic.vx);
         }
-    }else if(droite){
+    }else if(droite && player.idJoueur === 1){
         Sonic.cpt += 1;
         if(Sonic.cpt % 20 < 10){
             Sonic.picx = 0;
@@ -171,7 +226,7 @@ function drawSonic(){
     ctx.drawImage(sonic, Sonic.picx, Sonic.picy, Sonic.w, Sonic.h, Sonic.x, Sonic.y, 30, 40);
 }
 function drawMario(){
-    if(bas){
+    if(bas && player.idJoueur === 2){
         Mario.cpt += 1;
         if(Mario.cpt % 20 < 10){
             Mario.picx = Mario.w;
@@ -180,13 +235,13 @@ function drawMario(){
         }else if(Mario.cpt % 20 > 10){
             Mario.picx = 2 * Mario.w;
             Mario.picy = 0;
-            socket.emit('MarioSheet', 2 * ario.w, 0);
+            socket.emit('MarioSheet', 2 * Mario.w, 0);
         }
         if(!collisonBas(Mario.x + (Mario.w / 2) + 5, Mario.y + Mario.h - 5, Mario.vy)){
             Mario.y += Mario.vy;
             socket.emit('MarioMove', 0, Mario.vy);
         }
-    }else if(haut){
+    }else if(haut && player.idJoueur === 2){
         Mario.cpt += 1;
         if(Mario.cpt % 20 < 10){
             Mario.picx = Mario.w;
@@ -201,7 +256,7 @@ function drawMario(){
             Mario.y -= Mario.vy;
             socket.emit('MarioMove', 0, -Mario.vy);
         }
-    }else if(gauche){
+    }else if(gauche && player.idJoueur === 2){
         Mario.cpt += 1;
         if(Mario.cpt % 20 < 10){
             Mario.picx = Mario.w;
@@ -216,7 +271,7 @@ function drawMario(){
             Mario.x -= Mario.vx;
             socket.emit('MarioMove', 1, Mario.vx);
         }
-    }else if(droite){
+    }else if(droite && player.idJoueur === 2){
         Mario.cpt += 1;
         if(Mario.cpt % 20 < 10){
             Mario.picx = Mario.w;
@@ -235,7 +290,7 @@ function drawMario(){
     ctx.drawImage(mario, Mario.picx, Mario.picy, Mario.w, Mario.h, Mario.x, Mario.y, 30, 40);
 }
 function drawPika(){
-    if(bas){
+    if(bas && player.idJoueur === 4){
         Pika.cpt += 1;
         if(Pika.cpt % 20 < 10){
             Pika.picx = Pika.w;
@@ -250,7 +305,7 @@ function drawPika(){
             Pika.y += Pika.vy;
             socket.emit('PikaMove', 0, Pika.vy);
         }
-    }else if(haut){
+    }else if(haut && player.idJoueur === 4){
         Pika.cpt += 1;
         if(Pika.cpt % 20 < 10){
             Pika.picx = Pika.w;
@@ -265,7 +320,7 @@ function drawPika(){
             Pika.y -= Pika.vy;
             socket.emit('PikaMove', 0, -Pika.vy);
         }
-    }else if(gauche){
+    }else if(gauche && player.idJoueur === 4){
         Pika.cpt += 1;
         if(Pika.cpt % 20 < 10){
             Pika.picx = Pika.w;
@@ -280,7 +335,7 @@ function drawPika(){
             Pika.x -= Pika.vx;
             socket.emit('PikaMove', 1, -Pika.vx);
         }
-    }else if(droite){
+    }else if(droite && player.idJoueur === 4){
         Pika.cpt += 1;
         if(Pika.cpt % 20 < 10){
             Pika.picx = Pika.w;
@@ -300,7 +355,7 @@ function drawPika(){
     ctx.drawImage(pika, Pika.picx, Pika.picy, Pika.w, Pika.h, Pika.x, Pika.y, 40, 45);
 }
 function drawLink(){
-    if(bas){
+    if(bas && player.idJoueur === 3){
         Link.cpt += 1;
         if(Link.cpt % 20 < 10){
             Link.picx = Link.w;
@@ -315,7 +370,7 @@ function drawLink(){
             Link.y += Link.vy;
             socket.emit('LinkMove', 0, Link.vy);
         }
-    }else if(haut){
+    }else if(haut && player.idJoueur === 3){
         Link.cpt += 1;
         if(Link.cpt % 20 < 10){
             Link.picx = Link.w;
@@ -330,7 +385,7 @@ function drawLink(){
             Link.y -= Link.vy;
             socket.emit('LinkMove', 0, -Link.vy);
         }
-    }else if(gauche){
+    }else if(gauche && player.idJoueur === 3){
         Link.cpt += 1;
         if(Link.cpt % 20 < 10){
             Link.picx = Link.w;
@@ -345,7 +400,7 @@ function drawLink(){
             Link.x -= Link.vx;
             socket.emit('LinkMove', 1, -Link.vx);
         }
-    }else if(droite){
+    }else if(droite && player.idJoueur === 3){
         Link.cpt += 1;
         if(Link.cpt % 20 < 10){
             Link.picx = Link.w;
@@ -365,7 +420,8 @@ function drawLink(){
 }
 
 
-function Player(x, y, nbBomb, bom){
-
+function Player(idJoueur, forme){
+    this.idJoueur = idJoueur;
+    this.forme = forme;
 }
 /*****************************************/
