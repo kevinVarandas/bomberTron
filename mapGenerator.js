@@ -30,13 +30,11 @@ function addBomb(Player){
 
 socket.on('updateBombsTab', function(bombes){
     //bombs = bombes;
-    window.alert(bombs.length);
     bombs = [];
     var i;
     for(i = 0; i < bombes.length; i++){
         bombs.push(bombes[i]);
     }
-    window.alert(bombs.length);
 });
 
 // fonction qui dessine les bombes
@@ -44,10 +42,8 @@ function drawBombs(){
     var i;
     for(i = 0; i<bombs.length; i++){
         if(bombs[i].type == Sonic) {
-            window.alert("Sonic");
             ctx.drawImage(bombeSonic, bombs[i].x, bombs[i].y, 40, 40);
         }else if(bombs[i].type == Mario){
-            window.alert("Mario");
             ctx.drawImage(bombeMario, bombs[i].x, bombs[i].y, 40, 40);
         }else if(bombs[i].type == Pika){
             ctx.drawImage(bombePika, bombs[i].x, bombs[i].y, 40, 40);

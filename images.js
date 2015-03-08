@@ -47,3 +47,7 @@ corpsExplosion.src = 'http://img11.hostingpics.net/pics/773296corpsExplo.png';
 
 var teteExplosion = new Image();
 teteExplosion.src = 'http://img11.hostingpics.net/pics/202245teteExplo.png';
+
+// MENU IMAGE
+var menuImage = new Image();
+menuImage.src = 'http://img2.wikia.nocookie.net/__cb20120410140220/tron/images/9/9b/Bombertron.jpg';

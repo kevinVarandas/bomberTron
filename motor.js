@@ -12,6 +12,22 @@ var haut = false;
 var espace = false;
 var toucheEnfoncee = false;
 
+//Fonction traitant les clics
+function traiteClick(){
+    if(menu)
+    {
+        menu = false;
+
+        drawBackground();
+        addCaseFixe();
+        //On prepare le niveau
+        generateLevel(level);
+
+        drawGame();
+        requestAnimationFrame(anime);
+    }
+}
+
 // Fonction traitant les touches pressees
 function traiteToucheAppuyee(evt){
     if(evt.keyCode === 37){
@@ -28,10 +44,22 @@ function traiteToucheAppuyee(evt){
         haut = true;
     }
     //Espace
-    else if(evt.keyCode == 32){
+    else if(evt.keyCode === 32){
         toucheEnfoncee = true;
         espace = true;
-        addBomb(player.forme);
+        if(menu){
+            menu = false;
+            drawBackground();
+            addCaseFixe();
+            //On prepare le niveau
+            generateLevel(level);
+
+            drawGame();
+            requestAnimationFrame(anime);
+        }
+        else {
+            addBomb(player.forme);
+        }
     }
 }
 // Fonction traitant les touches relachees
@@ -129,7 +157,7 @@ function traiteToucheRelachee(evt){
             socket.emit('MarioSheet', 0, Mario.h);
         }
     }
-    else if(evt.keyCode == 32){
+    else if(evt.keyCode === 32){
         toucheEnfoncee = false;
         espace = false;
     }
