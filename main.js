@@ -2,7 +2,6 @@
  * Created by kevin on 22/02/2015.
  */
 var menu = true;
-var playerSelected = false;
 var backgroundCanvas, ctxBckg, wBckg, hBckg;
 var canvas, ctx, w, h;
 // VAR pour le niveau
@@ -24,16 +23,11 @@ window.onload = function(){
     w = canvas.width;
     h = canvas.height;
 
-    if(menu){
-        showMenu();
-    }
-    else{
-        drawBackground();
-        addCaseFixe();
-        //On prepare le niveau
-        generateLevel(level);
+    drawBackground();
+    addCaseFixe();
+    //On prepare le niveau
+    //TODO LE METTRE DANS LE ANIME ENSUITE
+    generateLevel(level);
 
-        drawGame();
-        requestAnimationFrame(anime);
-    }
+    requestAnimationFrame(anime);
 };

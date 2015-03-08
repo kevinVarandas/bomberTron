@@ -50,4 +50,31 @@ teteExplosion.src = 'http://img11.hostingpics.net/pics/202245teteExplo.png';
 
 // MENU IMAGE
 var menuImage = new Image();
-menuImage.src = 'http://img2.wikia.nocookie.net/__cb20120410140220/tron/images/9/9b/Bombertron.jpg';
+menuImage.src = 'http://img15.hostingpics.net/thumbs/mini_550801menu.png';
+
+var twoPlayers = new Image();
+twoPlayers.src = 'http://img15.hostingpics.net/thumbs/mini_243052twoPlayers.png';
+
+var twoPlayersSelect = new Image();
+twoPlayersSelect.src = 'http://img15.hostingpics.net/thumbs/mini_953181twoPlayersSelect.png';
+
+var threePlayers = new Image();
+threePlayers.src = 'http://img15.hostingpics.net/thumbs/mini_595880ThreePlayers.png';
+
+var threePlayersSelect = new Image();
+threePlayersSelect.src = 'http://img15.hostingpics.net/thumbs/mini_681746ThreePlayersSelect.png';
+
+var fourPlayers = new Image();
+fourPlayers.src = 'http://img15.hostingpics.net/thumbs/mini_260744FourPlayers.png';
+
+var fourPlayersSelect = new Image();
+fourPlayersSelect.src = 'http://img15.hostingpics.net/thumbs/mini_501233FourPlayersSelect.png';
+
+var rejoindre = new Image();
+rejoindre.src = 'http://img15.hostingpics.net/thumbs/mini_798519Rejoindre.png';
+
+var rejoindreSelect = new Image();
+rejoindreSelect.src = 'http://img15.hostingpics.net/thumbs/mini_454045RejoindreSelect.png';
+
+var optionWidth = 100;
+var optionHeight = 50;

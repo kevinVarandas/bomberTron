@@ -3,6 +3,7 @@
  */
 
 var socket = io.connect();
+var idSelected = -1;
 
 // VAR TOUCHES
 var gauche = false;
@@ -12,19 +13,67 @@ var haut = false;
 var espace = false;
 var toucheEnfoncee = false;
 
+function deselectOther(id){
+    switch (id){
+        case 2:
+            twoPlayerOption.img = twoPlayers;
+            break;
+        case 3:
+            threePlayerOPtion.img = threePlayers;
+            break;
+        case 4:
+            fourPlayerOption.img = fourPlayers;
+            break;
+        case 5:
+            rejoindreOption.img = rejoindre;
+            break;
+        default :
+            break;
+    }
+}
+
 //Fonction traitant les clics
-function traiteClick(){
+function traiteClick(evt){
+    var xPos, yPos;
+    xPos = evt.clientX;
+    yPos = evt.clientY;
+
     if(menu)
     {
-        menu = false;
 
-        drawBackground();
+        if(xPos > twoPlayerOption.x && xPos < (twoPlayerOption.x + optionWidth) &&
+                yPos > twoPlayerOption.y && yPos < (twoPlayerOption.y + optionHeight)){
+            twoPlayerOption.img = twoPlayersSelect;
+            deselectOther(idSelected);
+            idSelected = 2
+        }
+        else if(xPos > threePlayerOPtion.x && xPos < (threePlayerOPtion.x + optionWidth) &&
+            yPos > threePlayerOPtion.y && yPos < (threePlayerOPtion.y + optionHeight)){
+            threePlayerOPtion.img = threePlayersSelect;
+            deselectOther(idSelected);
+            idSelected = 3;
+        }
+        else if(xPos > fourPlayerOption.x && xPos < (fourPlayerOption.x + optionWidth) &&
+            yPos > fourPlayerOption.y && yPos < (fourPlayerOption.y + optionHeight)){
+            fourPlayerOption.img = fourPlayersSelect;
+            deselectOther(idSelected);
+            idSelected = 4;
+        }
+        else if(xPos > rejoindreOption.x && xPos < (rejoindreOption.x + optionWidth) &&
+            yPos > rejoindreOption.y && yPos < (rejoindreOption.y + optionHeight)){
+            rejoindreOption.img = rejoindreSelect;
+            deselectOther(idSelected);
+            idSelected = 5;
+        }
+
+        /*drawBackground();
         addCaseFixe();
         //On prepare le niveau
         generateLevel(level);
 
         drawGame();
-        requestAnimationFrame(anime);
+        requestAnimationFrame(anime);*/
+
     }
 }
 
@@ -49,13 +98,6 @@ function traiteToucheAppuyee(evt){
         espace = true;
         if(menu){
             menu = false;
-            drawBackground();
-            addCaseFixe();
-            //On prepare le niveau
-            generateLevel(level);
-
-            drawGame();
-            requestAnimationFrame(anime);
         }
         else {
             addBomb(player.forme);
@@ -170,20 +212,27 @@ function traiteToucheRelachee(evt){
 
 function anime(time){
     // 1 On efface la zone (le canvas)
-    ctx.clearRect(0, 0, 1050, 550);
-    drawGame();
-    drawBombs();
-    if(Sonic.prst){
-        drawSonic();
+    ctx.clearRect(0, 0, w, h);
+    if(menu)
+    {
+        showMenu();
     }
-    if(Mario.prst){
-        drawMario();
-    }
-    if(Pika.prst){
-        drawPika();
-    }
-    if(Link.prst){
-        drawLink();
+    else
+    {
+        drawGame();
+        drawBombs();
+        if(Sonic.prst){
+            drawSonic();
+        }
+        if(Mario.prst){
+            drawMario();
+        }
+        if(Pika.prst){
+            drawPika();
+        }
+        if(Link.prst){
+            drawLink();
+        }
     }
     requestAnimationFrame(anime);
 }
