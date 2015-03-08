@@ -119,4 +119,8 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.to(socket.room).emit('updateNbJoueur', nbActuelJoueur);
     });
 
+    socket.on('updateTabBomb', function(bombes){
+        socket.broadcast.to(socket.room).emit('updateBombsTab', bombes);
+    });
+
 });

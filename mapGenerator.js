@@ -24,19 +24,34 @@ function addBomb(Player){
     var subX =  (Player.x + (Player.w/2)) % tailleCaseFixe;
     var subY = (Player.y + Player.h) % tailleCaseFixe;
 
-    bombs.push(new Bomb(xBomb - subX, yBomb - subY, "sonic", 1, 1, tailleCaseFixe));
+    bombs.push(new Bomb(xBomb - subX, yBomb - subY, Player, 1, 1, tailleCaseFixe));
+    socket.emit('updateTabBomb', bombs);
 }
+
+socket.on('updateBombsTab', function(bombes){
+    //bombs = bombes;
+    window.alert(bombs.length);
+    bombs = [];
+    var i;
+    for(i = 0; i < bombes.length; i++){
+        bombs.push(bombes[i]);
+    }
+    window.alert(bombs.length);
+});
+
 // fonction qui dessine les bombes
 function drawBombs(){
     var i;
     for(i = 0; i<bombs.length; i++){
-        if(Sonic.prst) {
+        if(bombs[i].type == Sonic) {
+            window.alert("Sonic");
             ctx.drawImage(bombeSonic, bombs[i].x, bombs[i].y, 40, 40);
-        }else if(Mario.prst){
+        }else if(bombs[i].type == Mario){
+            window.alert("Mario");
             ctx.drawImage(bombeMario, bombs[i].x, bombs[i].y, 40, 40);
-        }else if(Pika.prst){
+        }else if(bombs[i].type == Pika){
             ctx.drawImage(bombePika, bombs[i].x, bombs[i].y, 40, 40);
-        }else if(Link.prst){
+        }else if(bombs[i].type == Link){
             ctx.drawImage(bombeLink, bombs[i].x, bombs[i].y, 40, 40);
         }
     }
