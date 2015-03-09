@@ -267,7 +267,7 @@ function drawMario(){
         }
         if(!collisonGauche(Mario.x + (Mario.w / 2), Mario.y + Mario.h, Mario.vx)) {
             Mario.x -= Mario.vx;
-            socket.emit('MarioMove', 1, Mario.vx);
+            socket.emit('MarioMove', 1, -Mario.vx);
         }
     }else if(droite && player.idJoueur === 2){
         Mario.cpt += 1;
