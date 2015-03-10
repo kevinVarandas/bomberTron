@@ -45,7 +45,8 @@ function traiteClick(evt){
                 yPos > twoPlayerOption.y && yPos < (twoPlayerOption.y + optionHeight)){
             twoPlayerOption.img = twoPlayersSelect;
             deselectOther(idSelected);
-            idSelected = 2
+            idSelected = 2;
+            socket.emit('createRoom');
         }
         else if(xPos > threePlayerOPtion.x && xPos < (threePlayerOPtion.x + optionWidth) &&
             yPos > threePlayerOPtion.y && yPos < (threePlayerOPtion.y + optionHeight)){
@@ -76,6 +77,11 @@ function traiteClick(evt){
 
     }
 }
+
+socket.on('changeRoom', function(room){
+    socket.emit('switchRoom', room);
+});
+
 
 // Fonction traitant les touches pressees
 function traiteToucheAppuyee(evt){

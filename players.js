@@ -14,22 +14,22 @@ socket.on('createJoueur', function(n){
     switch (n)
     {
         case 1 :
-            player =  new Player(1, Sonic);
+            player =  new Player(1, Sonic, socket.username);
             Sonic.prst = true;
             break;
         case 2 :
-            player =  new Player(2, Mario);
+            player =  new Player(2, Mario, socket.username);
             Sonic.prst = true;
             Mario.prst = true;
             break;
         case 3 :
-            player =  new Player(3, Link);
+            player =  new Player(3, Link, socket.username);
             Sonic.prst = true;
             Mario.prst = true;
             Link.prst = true;
             break;
         case 4 :
-            player =  new Player(4, Pika);
+            player =  new Player(4, Pika, socket.username);
             Sonic.prst = true;
             Mario.prst = true;
             Link.prst = true;
@@ -418,8 +418,9 @@ function drawLink(){
 }
 
 
-function Player(idJoueur, forme){
+function Player(idJoueur, forme, username){
     this.idJoueur = idJoueur;
     this.forme = forme;
+    this.username = username;
 }
 /*****************************************/
