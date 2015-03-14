@@ -45,9 +45,9 @@ function drawBombs(){
             ctx.drawImage(bombeSonic, bombs[i].x, bombs[i].y, 40, 40);
         }else if(bombs[i].type == 2){
             ctx.drawImage(bombeMario, bombs[i].x, bombs[i].y, 40, 40);
-        }else if(bombs[i].type == 3){
-            ctx.drawImage(bombePika, bombs[i].x, bombs[i].y, 40, 40);
         }else if(bombs[i].type == 4){
+            ctx.drawImage(bombePika, bombs[i].x, bombs[i].y, 40, 40);
+        }else if(bombs[i].type == 3){
             ctx.drawImage(bombeLink, bombs[i].x, bombs[i].y, 40, 40);
         }
     }
