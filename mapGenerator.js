@@ -18,13 +18,13 @@ function addCaseFixe(){
     }
 }
 //fonction qui ajoute des bombes qd on appuis sur espace
-function addBomb(Player){
+function addBomb(Player,id){
     var xBomb = (Player.x + (Player.w/2));
     var yBomb = (Player.y + Player.h);
     var subX =  (Player.x + (Player.w/2)) % tailleCaseFixe;
     var subY = (Player.y + Player.h) % tailleCaseFixe;
 
-    bombs.push(new Bomb(xBomb - subX, yBomb - subY, Player, 1, 1, tailleCaseFixe));
+    bombs.push(new Bomb(xBomb - subX, yBomb - subY, id, 1, 1, tailleCaseFixe));
     socket.emit('updateTabBomb', bombs);
 }
 
@@ -33,7 +33,7 @@ socket.on('updateBombsTab', function(bombes){
     bombs = [];
     var i;
     for(i = 0; i < bombes.length; i++){
-        bombs.push(bombes[i]);
+        bombs.push(new Bomb(bombes[i].x, bombes[i].y, bombes[i].type, bombes[i].puissance, bombes[i].duree, bombes.taille));
     }
 });
 
@@ -41,13 +41,13 @@ socket.on('updateBombsTab', function(bombes){
 function drawBombs(){
     var i;
     for(i = 0; i<bombs.length; i++){
-        if(bombs[i].type == Sonic) {
+        if(bombs[i].type == 1) {
             ctx.drawImage(bombeSonic, bombs[i].x, bombs[i].y, 40, 40);
-        }else if(bombs[i].type == Mario){
+        }else if(bombs[i].type == 2){
             ctx.drawImage(bombeMario, bombs[i].x, bombs[i].y, 40, 40);
-        }else if(bombs[i].type == Pika){
+        }else if(bombs[i].type == 3){
             ctx.drawImage(bombePika, bombs[i].x, bombs[i].y, 40, 40);
-        }else if(bombs[i].type == Link){
+        }else if(bombs[i].type == 4){
             ctx.drawImage(bombeLink, bombs[i].x, bombs[i].y, 40, 40);
         }
     }

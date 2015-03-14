@@ -66,15 +66,6 @@ function traiteClick(evt){
             deselectOther(idSelected);
             idSelected = 5;
         }
-
-        /*drawBackground();
-        addCaseFixe();
-        //On prepare le niveau
-        generateLevel(level);
-
-        drawGame();
-        requestAnimationFrame(anime);*/
-
     }
 }
 
@@ -106,7 +97,7 @@ function traiteToucheAppuyee(evt){
             menu = false;
         }
         else {
-            addBomb(player.forme);
+            addBomb(player.forme,player.idJoueur);
         }
     }
 }
