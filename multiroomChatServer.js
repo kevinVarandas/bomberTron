@@ -23,9 +23,10 @@ var usernames = {};
 
 // rooms which are currently available in chat
 var rooms = ['Acceuil'];
+var party = [];
 
-var nbActuelJoueur = 0;
-var spectateur = 0;
+var nbActuelJoueur = [];
+var spectateur = [];
 
 io.sockets.on('connection', function (socket) {
 	
@@ -110,7 +111,7 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.to(socket.room).emit('PikaMoveUpdate', m, move);
     });
 
-    socket.on('playerStyle', function(){
+    /*socket.on('playerStyle', function(){
         if(nbActuelJoueur < 4){
             nbActuelJoueur += 1;
             socket.emit('createJoueur', nbActuelJoueur);
@@ -118,10 +119,10 @@ io.sockets.on('connection', function (socket) {
             spectateur += 1;
         }
 
-    });
+    });*/
 
-    socket.on('updateNbrJoueur', function(){
-        socket.broadcast.to(socket.room).emit('updateNbJoueur', nbActuelJoueur);
+    socket.on('updateNbrJoueur', function(n){
+        socket.broadcast.to(socket.room).emit('updateNbJoueur', n);
     });
 
     socket.on('updateTabBomb', function(bombes){
@@ -129,10 +130,50 @@ io.sockets.on('connection', function (socket) {
     });
 
 
-    socket.on('createRoom', function(){
+    socket.on('createRoom', function(nbPlayer){
         var nb = rooms.length;
         rooms.push('Room ' + nb);
         socket.broadcast.emit('newRoom', rooms);
         socket.emit('changeRoom', 'Room ' + nb);
-    })
+        party.push(['Room ' + nb, nbPlayer, 1]);
+        nbActuelJoueur.push(1);
+        spectateur.push(0);
+        io.sockets.emit('listGame', party);
+        socket.emit('createJoueur', 1);
+
+    });
+
+    socket.on('switchJoin', function(partyRoom){
+        var i;
+        socket.leave(socket.room);
+        socket.join(partyRoom[0]);
+        socket.emit('updatechat', 'SERVER', 'you have connected to '+ partyRoom[0]);
+        // sent message to OLD room
+        socket.broadcast.to(socket.room).emit('updatechat', 'SERVER', socket.username+' has joined the ' + partyRoom[0]);
+        // update socket session room title
+        socket.room = partyRoom[0];
+        socket.broadcast.to(partyRoom[0]).emit('updatechat', 'SERVER', socket.username+' has joined this room');
+        socket.emit('updaterooms', rooms, partyRoom[0]);
+        delete usernames[socket.completename];
+        socket.completename = socket.username + ' [' + socket.room + ']';
+        usernames[socket.completename] = socket.completename;
+        io.sockets.emit('updateListPlayer', usernames);
+        for(i = 0; i < party.length; i++){
+            if(party[i][0] === partyRoom[0]){
+                if(nbActuelJoueur[i] < partyRoom[1]){
+                    nbActuelJoueur[i] += 1;
+                    party[i][2]+=1;
+                    socket.emit('createJoueur', nbActuelJoueur[i]);
+                }
+                else{
+                    spectateur[i] += 1;
+                }
+            }
+        }
+    });
+
+    socket.on('recupParty', function(){
+        socket.emit('listGame', party);
+    });
+
 });

@@ -2,6 +2,7 @@
  * Created by kevin on 22/02/2015.
  */
 var menu = true;
+var boolJoin = false;
 var backgroundCanvas, ctxBckg, wBckg, hBckg;
 var canvas, ctx, w, h;
 // VAR pour le niveau

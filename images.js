@@ -1,6 +1,4 @@
-/**
- * Created by kevin on 24/02/2015.
- */
+
 //VAR IMAGES DE FOND + CASES
 var caisse = new Image();
 caisse.src = 'http://img11.hostingpics.net/thumbs/mini_330653caseDestruTrans6.png';

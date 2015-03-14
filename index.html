@@ -12,6 +12,7 @@
     <script src="canvasBackground.js"></script>
     <script src="mapGenerator.js"></script>
     <script src="motor.js"></script>
+    <script src="rejoindrePartie.js"></script>
 
     <script>
         var socket = io.connect();
@@ -33,24 +34,24 @@
             $('#rooms').empty();
             actualRoom = current_room;
             $.each(rooms, function(key, value) {
-                if(value == current_room){
+                //if(value == current_room){
                     $('#rooms').append('<div>' + value + '</div>');
-                }
+                /*}
                 else {
                     $('#rooms').append('<div><a href="#" onclick="switchRoom(\''+value+'\')">' + value + '</a></div>');
-                }
+                }*/
             });
         });
 
         socket.on('newRoom', function(rooms){
             $('#rooms').empty();
             $.each(rooms, function(key, value) {
-                if(value == actualRoom){
+                //if(value == actualRoom){
                     $('#rooms').append('<div>' + value + '</div>');
-                }
+                /*}
                 else {
                     $('#rooms').append('<div><a href="#" onclick="switchRoom(\''+value+'\')">' + value + '</a></div>');
-                }
+                }*/
             });
         });
 
@@ -92,6 +93,10 @@
     <div id ="divCanvas">
         <canvas id="backgroundCanvas" width=760 height=520></canvas>
         <canvas id="myCanvas" width=760 height=520></canvas>
+        <div style="z-index:3;top:20%;left:25%;position:absolute;width:100px;border-right:1px solid black;height:100px;padding:10px;overflow:scroll-y;color:white;" id="listJoining">
+            <b>PARTY</b>
+            <div id="joinrooms"></div>
+        </div>
     </div>
     <div id="fps"></div>
 

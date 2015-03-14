@@ -1,6 +1,4 @@
-/**
- * Created by kevin on 23/02/2015.
- */
+
 
 var socket = io.connect();
 var idSelected = -1;
@@ -46,25 +44,33 @@ function traiteClick(evt){
             twoPlayerOption.img = twoPlayersSelect;
             deselectOther(idSelected);
             idSelected = 2;
-            socket.emit('createRoom');
+            socket.emit('createRoom', 2);
+            menu = false;
         }
         else if(xPos > threePlayerOPtion.x && xPos < (threePlayerOPtion.x + optionWidth) &&
             yPos > threePlayerOPtion.y && yPos < (threePlayerOPtion.y + optionHeight)){
             threePlayerOPtion.img = threePlayersSelect;
             deselectOther(idSelected);
             idSelected = 3;
+            socket.emit('createRoom', 3);
+            menu = false;
         }
         else if(xPos > fourPlayerOption.x && xPos < (fourPlayerOption.x + optionWidth) &&
             yPos > fourPlayerOption.y && yPos < (fourPlayerOption.y + optionHeight)){
             fourPlayerOption.img = fourPlayersSelect;
             deselectOther(idSelected);
             idSelected = 4;
+            socket.emit('createRoom', 4);
+            menu = false;
         }
         else if(xPos > rejoindreOption.x && xPos < (rejoindreOption.x + optionWidth) &&
             yPos > rejoindreOption.y && yPos < (rejoindreOption.y + optionHeight)){
             rejoindreOption.img = rejoindreSelect;
             deselectOther(idSelected);
             idSelected = 5;
+            socket.emit('recupParty');
+            boolJoin = true;
+            menu = false;
         }
 
         /*drawBackground();
@@ -219,12 +225,19 @@ function traiteToucheRelachee(evt){
 function anime(time){
     // 1 On efface la zone (le canvas)
     ctx.clearRect(0, 0, w, h);
+    if(boolJoin){
+        document.getElementById("listJoining").style.visibility = "visible";
+    }else{
+        document.getElementById("listJoining").style.visibility = "hidden";
+    }
     if(menu)
     {
         showMenu();
     }
-    else
-    {
+    else if(boolJoin){
+        showJoin()
+    }
+    else {
         drawGame();
         drawBombs();
         if(Sonic.prst){

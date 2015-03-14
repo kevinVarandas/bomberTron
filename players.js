@@ -1,13 +1,11 @@
-/**
- * Created by kevin on 24/02/2015.
- */
+
 var socket = io.connect();
 var player;
 
 var nbJoueur = 0;
-socket.on('connect', function(){
+/*socket.on('connect', function(){
     socket.emit('playerStyle');
-});
+});*/
 
 socket.on('createJoueur', function(n){
     nbJoueur = n;
@@ -36,7 +34,8 @@ socket.on('createJoueur', function(n){
             Pika.prst = true;
             break;
     }
-    socket.emit('updateNbrJoueur');
+    boolJoin = false;
+    socket.emit('updateNbrJoueur', n);
 });
 
 socket.on('updateNbJoueur', function(n){
