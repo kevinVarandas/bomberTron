@@ -72,15 +72,6 @@ function traiteClick(evt){
             boolJoin = true;
             menu = false;
         }
-
-        /*drawBackground();
-        addCaseFixe();
-        //On prepare le niveau
-        generateLevel(level);
-
-        drawGame();
-        requestAnimationFrame(anime);*/
-
     }
 }
 
@@ -112,7 +103,7 @@ function traiteToucheAppuyee(evt){
             menu = false;
         }
         else {
-            addBomb(player.forme);
+            addBomb(player.forme,player.idJoueur);
         }
     }
 }
