@@ -166,9 +166,7 @@ function drawSonic(){
             Sonic.picy = 2 * Sonic.h;
             socket.emit('SonicSheet', 2 * Sonic.w, 2 * Sonic.h);
         }
-        if(collisonBas(Sonic.x + (Sonic.w / 2) + 5, Sonic.y + Sonic.h, Sonic.vy)){
-
-        }else {
+        if(!collisonBas(Sonic.x + (Sonic.w / 2) + 5, Sonic.y + Sonic.h, Sonic.vy)){
             Sonic.y += Sonic.vy;
             socket.emit('SonicMove', 0, Sonic.vy);
         }
@@ -183,9 +181,7 @@ function drawSonic(){
             Sonic.picy = 0;
             socket.emit('SonicSheet', 2 * Sonic.w, 0);
         }
-        if(collisonHaut(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vy)){
-
-        }else {
+        if(!collisonHaut(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vy)){
             Sonic.y -= Sonic.vy;
             socket.emit('SonicMove', 0, -Sonic.vy);
         }

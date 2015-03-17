@@ -24,6 +24,10 @@ function addBomb(Player,id){
     var subX =  (Player.x + (Player.w/2)) % tailleCaseFixe;
     var subY = (Player.y + Player.h) % tailleCaseFixe;
 
+    Player.onBomb = true;
+    console.log(Player);
+    console.log(Sonic);
+
     bombs.push(new Bomb(xBomb - subX, yBomb - subY, id, 1, 1, tailleCaseFixe));
     socket.emit('updateTabBomb', bombs);
 }
