@@ -74,5 +74,8 @@ rejoindre.src = 'http://img15.hostingpics.net/thumbs/mini_798519Rejoindre.png';
 var rejoindreSelect = new Image();
 rejoindreSelect.src = 'http://img15.hostingpics.net/thumbs/mini_454045RejoindreSelect.png';
 
+var loadingPlayerBar = new Image();
+loadingPlayerBar.src = 'http://img11.hostingpics.net/pics/394874loading.gif';
+
 var optionWidth = 100;
 var optionHeight = 50;

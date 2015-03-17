@@ -46,6 +46,7 @@ function traiteClick(evt){
             idSelected = 2;
             socket.emit('createRoom', 2);
             menu = false;
+            waitPlayer = true;
         }
         else if(xPos > threePlayerOPtion.x && xPos < (threePlayerOPtion.x + optionWidth) &&
             yPos > threePlayerOPtion.y && yPos < (threePlayerOPtion.y + optionHeight)){
@@ -54,6 +55,7 @@ function traiteClick(evt){
             idSelected = 3;
             socket.emit('createRoom', 3);
             menu = false;
+            waitPlayer = true;
         }
         else if(xPos > fourPlayerOption.x && xPos < (fourPlayerOption.x + optionWidth) &&
             yPos > fourPlayerOption.y && yPos < (fourPlayerOption.y + optionHeight)){
@@ -62,6 +64,7 @@ function traiteClick(evt){
             idSelected = 4;
             socket.emit('createRoom', 4);
             menu = false;
+            waitPlayer = true;
         }
         else if(xPos > rejoindreOption.x && xPos < (rejoindreOption.x + optionWidth) &&
             yPos > rejoindreOption.y && yPos < (rejoindreOption.y + optionHeight)){
@@ -216,17 +219,23 @@ function traiteToucheRelachee(evt){
 function anime(time){
     // 1 On efface la zone (le canvas)
     ctx.clearRect(0, 0, w, h);
-    if(boolJoin){
-        document.getElementById("listJoining").style.visibility = "visible";
-    }else{
+    if(!boolJoin){
         document.getElementById("listJoining").style.visibility = "hidden";
+    }
+    if(!waitPlayer){
+        document.getElementById("waintingPlayerDiv").style.visibility = "hidden";
     }
     if(menu)
     {
         showMenu();
     }
     else if(boolJoin){
-        showJoin()
+        document.getElementById("listJoining").style.visibility = "visible";
+        showJoin();
+    }
+    else if(waitPlayer){
+        document.getElementById("waintingPlayerDiv").style.visibility = "visible";
+        drawWait();
     }
     else {
         drawGame();

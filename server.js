@@ -122,6 +122,7 @@ io.sockets.on('connection', function (socket) {
     });*/
 
     socket.on('updateNbrJoueur', function(n){
+        var i;
         socket.broadcast.to(socket.room).emit('updateNbJoueur', n);
     });
 
@@ -129,6 +130,9 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.to(socket.room).emit('updateBombsTab', bombes);
     });
 
+    /*socket.on('updateWaitingGame', function(){
+        io.sockets.in(socket.room).emit('updateWaitingGamePlayer');
+    });*/
 
     socket.on('createRoom', function(nbPlayer){
         var nb = rooms.length;
@@ -143,7 +147,7 @@ io.sockets.on('connection', function (socket) {
 
     });
 
-    socket.on('switchJoin', function(partyRoom){
+    socket.on('switchJoin', function(partyRoom, boolwait){
         var i;
         socket.leave(socket.room);
         socket.join(partyRoom[0]);
@@ -158,6 +162,9 @@ io.sockets.on('connection', function (socket) {
         socket.completename = socket.username + ' [' + socket.room + ']';
         usernames[socket.completename] = socket.completename;
         io.sockets.emit('updateListPlayer', usernames);
+        if(boolwait){
+            io.sockets.in(socket.room).emit('updateWaitingGamePlayer');
+        }
         for(i = 0; i < party.length; i++){
             if(party[i][0] === partyRoom[0]){
                 if(nbActuelJoueur[i] < partyRoom[1]){
