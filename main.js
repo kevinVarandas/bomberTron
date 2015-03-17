@@ -3,6 +3,7 @@
  */
 var menu = true;
 var boolJoin = false;
+var waitPlayer = false;
 var backgroundCanvas, ctxBckg, wBckg, hBckg;
 var canvas, ctx, w, h;
 // VAR pour le niveau
