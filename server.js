@@ -164,6 +164,8 @@ io.sockets.on('connection', function (socket) {
         io.sockets.emit('updateListPlayer', usernames);
         if(boolwait){
             io.sockets.in(socket.room).emit('updateWaitingGamePlayer');
+        }else{
+            socket.broadcast.to(partyRoom[0]).emit('updatePresentPlayer', partyRoom[2], partyRoom[1]);
         }
         for(i = 0; i < party.length; i++){
             if(party[i][0] === partyRoom[0]){

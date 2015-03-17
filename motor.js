@@ -46,6 +46,7 @@ function traiteClick(evt){
             idSelected = 2;
             socket.emit('createRoom', 2);
             menu = false;
+            $('#nbPresentPlayer').text('(1/2)');
             waitPlayer = true;
         }
         else if(xPos > threePlayerOPtion.x && xPos < (threePlayerOPtion.x + optionWidth) &&
@@ -55,6 +56,7 @@ function traiteClick(evt){
             idSelected = 3;
             socket.emit('createRoom', 3);
             menu = false;
+            $('#nbPresentPlayer').text('(1/3)');
             waitPlayer = true;
         }
         else if(xPos > fourPlayerOption.x && xPos < (fourPlayerOption.x + optionWidth) &&
@@ -64,6 +66,7 @@ function traiteClick(evt){
             idSelected = 4;
             socket.emit('createRoom', 4);
             menu = false;
+            $('#nbPresentPlayer').text('(1/4)');
             waitPlayer = true;
         }
         else if(xPos > rejoindreOption.x && xPos < (rejoindreOption.x + optionWidth) &&

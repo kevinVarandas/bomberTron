@@ -30,6 +30,7 @@ function switchParty(party){
         if(party === allParty[i][0]){
             if((allParty[i][2] + 1) !== allParty[i][1]) {
                 socket.emit('switchJoin', allParty[i], false);
+                $('#nbPresentPlayer').text('(' + (allParty[i][2]+1) + '/' + allParty[i][1] + ')');
                 waitPlayer = true;
             }
             else{
@@ -47,4 +48,8 @@ function drawWait(){
 
 socket.on('updateWaitingGamePlayer', function(){
     waitPlayer = false;
+});
+
+socket.on('updatePresentPlayer', function(present, total){
+    $('#nbPresentPlayer').text('(' + (present+1) + '/' + total + ')');
 });
