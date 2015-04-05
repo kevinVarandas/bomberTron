@@ -124,14 +124,19 @@ function traiteToucheAppuyee(evt){
             menu = false;
         }
         else {
-            addBomb(player.forme,player.idJoueur);
+            if(player.nbBomb !== 0)
+            {
+                addBomb(player.forme,player.idJoueur);
+                player.nbBomb--;
+            }
         }
     }
 }
 // Fonction traitant les touches relachees
 function traiteToucheRelachee(evt){
+    toucheEnfoncee = false;
+
     if(evt.keyCode === 37){
-        toucheEnfoncee = false;
         gauche = false;
         if(player.idJoueur === 1) {
             Sonic.picx = Sonic.w;
@@ -154,7 +159,6 @@ function traiteToucheRelachee(evt){
             socket.emit('MarioSheet', 0, 2 * Mario.h);
         }
     }else if(evt.keyCode === 39){
-        toucheEnfoncee = false;
         droite = false;
         if(player.idJoueur === 1) {
             Sonic.picx = Sonic.w;
@@ -177,7 +181,6 @@ function traiteToucheRelachee(evt){
             socket.emit('MarioSheet', 0, 3 * Mario.h);
         }
     }else if(evt.keyCode === 40){
-        toucheEnfoncee = false;
         bas = false;
         if(player.idJoueur === 1) {
             Sonic.picx = Sonic.w;
@@ -200,7 +203,6 @@ function traiteToucheRelachee(evt){
             socket.emit('MarioSheet', 0, 0);
         }
     }else if(evt.keyCode === 38){
-        toucheEnfoncee = false;
         haut = false;
         if(player.idJoueur === 1) {
             Sonic.picx = Sonic.w;
@@ -224,10 +226,8 @@ function traiteToucheRelachee(evt){
         }
     }
     else if(evt.keyCode === 32){
-        toucheEnfoncee = false;
         espace = false;
     }
-
     Sonic.cpt = 0;
     Mario.cpt = 0;
     Pika.cpt = 0;

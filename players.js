@@ -67,7 +67,8 @@ var Sonic = {
     picx : 21,
     picy : 56,
     cpt : 0,
-    prst : false
+    prst : false,
+    droppedBomb : false
 };
 
 var Mario = {
@@ -80,7 +81,8 @@ var Mario = {
     picx : 0,
     picy : 0,
     cpt : 0,
-    prst : false
+    prst : false,
+    droppedBomb : false
 };
 
 var Pika = {
@@ -93,7 +95,8 @@ var Pika = {
     picx : 0,
     picy : 0,
     cpt : 0,
-    prst : false
+    prst : false,
+    droppedBomb : false
 };
 
 var Link = {
@@ -106,7 +109,8 @@ var Link = {
     picx : 0,
     picy : 0,
     cpt : 0,
-    prst : false
+    prst : false,
+    droppedBomb : false
 };
 
 /*****************************************/
@@ -168,9 +172,10 @@ function drawSonic(){
             Sonic.picy = 2 * Sonic.h;
             socket.emit('SonicSheet', 2 * Sonic.w, 2 * Sonic.h);
         }
-        if(collisonBas(Sonic.x + (Sonic.w / 2) + 5, Sonic.y + Sonic.h, Sonic.vy)){
-
-        }else {
+        if(!collisonBas(Sonic.x + (Sonic.w / 2) + 5, Sonic.y + Sonic.h, Sonic.vy) &&
+            (!collisionBombBas(Sonic.x + (Sonic.w / 2) + 5, Sonic.y + Sonic.h, Sonic.vy)
+           ||  isOnBomb(Sonic)))
+        {
             Sonic.y += Sonic.vy;
             socket.emit('SonicMove', 0, Sonic.vy);
         }
@@ -185,9 +190,10 @@ function drawSonic(){
             Sonic.picy = 0;
             socket.emit('SonicSheet', 2 * Sonic.w, 0);
         }
-        if(collisonHaut(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vy)){
-
-        }else {
+        if(!collisonHaut(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vy) &&
+            (!collisionBombHaut(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vy)
+          || isOnBomb(Sonic)))
+        {
             Sonic.y -= Sonic.vy;
             socket.emit('SonicMove', 0, -Sonic.vy);
         }
@@ -202,7 +208,10 @@ function drawSonic(){
             Sonic.picy = 3 * Sonic.h;
             socket.emit('SonicSheet', 2 * Sonic.w, 3 * Sonic.h);
         }
-        if(!collisonGauche(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vx)) {
+        if(!collisonGauche(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vx) &&
+            (!collisionBombGauche(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vy)
+            || isOnBomb(Sonic)))
+        {
             Sonic.x -= Sonic.vx;
             socket.emit('SonicMove', 1, -Sonic.vx);
         }
@@ -217,7 +226,10 @@ function drawSonic(){
             Sonic.picy = Sonic.h;
             socket.emit('SonicSheet', 2 * Sonic.w, Sonic.h);
         }
-        if(!collisonDroite(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vx)) {
+        if(!collisonDroite(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vx)&&
+            (!collisionBombDroite(Sonic.x + (Sonic.w / 2), Sonic.y + Sonic.h, Sonic.vy)
+            || isOnBomb(Sonic)))
+        {
             Sonic.x += Sonic.vx;
             socket.emit('SonicMove', 1, Sonic.vx);
         }
@@ -236,7 +248,9 @@ function drawMario(){
             Mario.picy = 0;
             socket.emit('MarioSheet', 2 * Mario.w, 0);
         }
-        if(!collisonBas(Mario.x + (Mario.w / 2) + 5, Mario.y + Mario.h - 5, Mario.vy)){
+        if(!collisonBas(Mario.x + (Mario.w / 2) + 5, Mario.y + Mario.h - 5, Mario.vy) &&
+            (!collisionBombBas(Mario.x + (Mario.w / 2) + 5, Mario.y + Mario.h - 5, Mario.vy)
+            ||  isOnBomb(Mario))){
             Mario.y += Mario.vy;
             socket.emit('MarioMove', 0, Mario.vy);
         }
@@ -251,7 +265,9 @@ function drawMario(){
             Mario.picy = Mario.h;
             socket.emit('MarioSheet', 2 * Mario.w, Mario.h);
         }
-        if(!collisonHaut(Mario.x + (Mario.w / 2), Mario.y + Mario.h, Mario.vy)) {
+        if(!collisonHaut(Mario.x + (Mario.w / 2), Mario.y + Mario.h, Mario.vy) &&
+            (!collisionBombHaut(Mario.x + (Mario.w / 2), Mario.y + Mario.h, Mario.vy)
+            || isOnBomb(Mario))) {
             Mario.y -= Mario.vy;
             socket.emit('MarioMove', 0, -Mario.vy);
         }
@@ -266,7 +282,9 @@ function drawMario(){
             Mario.picy = 2 * Mario.h;
             socket.emit('MarioSheet', 2 * Mario.w, 2 * Mario.h);
         }
-        if(!collisonGauche(Mario.x + (Mario.w / 2), Mario.y + Mario.h, Mario.vx)) {
+        if(!collisonGauche(Mario.x + (Mario.w / 2), Mario.y + Mario.h, Mario.vx) &&
+            (!collisionBombGauche(Mario.x + (Mario.w / 2), Mario.y + Mario.h, Mario.vx)
+            || isOnBomb(Mario))) {
             Mario.x -= Mario.vx;
             socket.emit('MarioMove', 1, -Mario.vx);
         }
@@ -281,7 +299,9 @@ function drawMario(){
             Mario.picy = 3 * Mario.h;
             socket.emit('MarioSheet', 2 * Mario.w, 3 * Mario.h);
         }
-        if(!collisonDroite(Mario.x + (Mario.w / 2), Mario.y + Mario.h, Mario.vx)) {
+        if(!collisonDroite(Mario.x + (Mario.w / 2), Mario.y + Mario.h, Mario.vx)&&
+            (!collisionBombDroite(Mario.x + (Mario.w / 2), Mario.y + Mario.h, Mario.vx)
+            || isOnBomb(Mario))) {
             Mario.x += Mario.vx;
             socket.emit('MarioMove', 1, Mario.vx);
         }
@@ -300,7 +320,9 @@ function drawPika(){
             Pika.picy = 0;
             socket.emit('PikaSheet', 2 * Pika.w, 0);
         }
-        if(!collisonBas(Pika.x + (Pika.w / 2) + 5, Pika.y + Pika.h + 5, Pika.vy)) {
+        if(!collisonBas(Pika.x + (Pika.w / 2) + 5, Pika.y + Pika.h + 5, Pika.vy) &&
+            (!collisionBombBas(Pika.x + (Pika.w / 2) + 5, Pika.y + Pika.h + 5, Pika.vy)
+            ||  isOnBomb(Pika))) {
             Pika.y += Pika.vy;
             socket.emit('PikaMove', 0, Pika.vy);
         }
@@ -315,7 +337,9 @@ function drawPika(){
             Pika.picy = Pika.h;
             socket.emit('PikaSheet', 2 * Pika.w, Pika.h);
         }
-        if(!collisonHaut(Pika.x + (Pika.w / 2), Pika.y + Pika.h, Pika.vy)) {
+        if(!collisonHaut(Pika.x + (Pika.w / 2), Pika.y + Pika.h, Pika.vy) &&
+            (!collisionBombHaut(Pika.x + (Pika.w / 2), Pika.y + Pika.h, Pika.vy)
+            || isOnBomb(Pika))) {
             Pika.y -= Pika.vy;
             socket.emit('PikaMove', 0, -Pika.vy);
         }
@@ -330,7 +354,9 @@ function drawPika(){
             Pika.picy = 2 * Pika.h;
             socket.emit('PikaSheet', 2 * Pika.w, 2 * Pika.h);
         }
-        if(!collisonGauche(Pika.x + (Pika.w / 2), Pika.y + Pika.h, Pika.vx)) {
+        if(!collisonGauche(Pika.x + (Pika.w / 2), Pika.y + Pika.h, Pika.vx) &&
+            (!collisionBombGauche(Pika.x + (Pika.w / 2), Pika.y + Pika.h, Pika.vx)
+            || isOnBomb(Pika))) {
             Pika.x -= Pika.vx;
             socket.emit('PikaMove', 1, -Pika.vx);
         }
@@ -345,7 +371,9 @@ function drawPika(){
             Pika.picy = 3 * Pika.h;
             socket.emit('PikaSheet', 2 * Pika.w, 3 * Pika.h);
         }
-        if(!collisonDroite(Pika.x + Pika.w , Pika.y + Pika.h + 15, Pika.vx)) {
+        if(!collisonDroite(Pika.x + Pika.w , Pika.y + Pika.h + 15, Pika.vx)&&
+            (!collisionBombDroite(Pika.x + Pika.w , Pika.y + Pika.h + 15, Pika.vx)
+            || isOnBomb(Pika))) {
             Pika.x += Pika.vx;
             socket.emit('PikaMove', 1, Pika.vx);
         }
@@ -365,7 +393,9 @@ function drawLink(){
             Link.picy = 0;
             socket.emit('LinkSheet', 2 * Link.w, 0);
         }
-        if(!collisonBas(Link.x + (Link.w / 2) + 5, Link.y + Link.h, Link.vy)) {
+        if(!collisonBas(Link.x + (Link.w / 2) + 5, Link.y + Link.h, Link.vy) &&
+            (!collisionBombBas(Link.x + (Link.w / 2) + 5, Link.y + Link.h, Link.vy)
+            ||  isOnBomb(Link))) {
             Link.y += Link.vy;
             socket.emit('LinkMove', 0, Link.vy);
         }
@@ -380,7 +410,9 @@ function drawLink(){
             Link.picy = Link.h;
             socket.emit('LinkSheet', 2 * Link.w, Link.h);
         }
-        if(!collisonHaut(Link.x + (Link.w / 2), Link.y + Link.h, Link.vy)) {
+        if(!collisonHaut(Link.x + (Link.w / 2), Link.y + Link.h, Link.vy) &&
+            (!collisionBombHaut(Link.x + (Link.w / 2), Link.y + Link.h, Link.vy)
+            || isOnBomb(Link))) {
             Link.y -= Link.vy;
             socket.emit('LinkMove', 0, -Link.vy);
         }
@@ -395,7 +427,9 @@ function drawLink(){
             Link.picy = 3 * Link.h;
             socket.emit('LinkSheet', 2 * Link.w, 3 * Link.h);
         }
-        if(!collisonGauche(Link.x + (Link.w / 2), Link.y + Link.h, Link.vx)) {
+        if(!collisonGauche(Link.x + (Link.w / 2), Link.y + Link.h, Link.vx) &&
+            (!collisionBombGauche(Link.x + (Link.w / 2), Link.y + Link.h, Link.vx)
+            || isOnBomb(Link))) {
             Link.x -= Link.vx;
             socket.emit('LinkMove', 1, -Link.vx);
         }
@@ -410,7 +444,9 @@ function drawLink(){
             Link.picy = 2 * Link.h;
             socket.emit('LinkSheet', 2 * Link.w, 2 * Link.h);
         }
-        if(!collisonDroite(Link.x + (Link.w / 2), Link.y + Link.h, Link.vx)) {
+        if(!collisonDroite(Link.x + (Link.w / 2), Link.y + Link.h, Link.vx)&&
+            (!collisionBombDroite(Link.x + (Link.w / 2), Link.y + Link.h, Link.vx)
+            || isOnBomb(Link))) {
             Link.x += Link.vx;
             socket.emit('LinkMove', 1, Link.vx);
         }
@@ -423,5 +459,6 @@ function Player(idJoueur, forme, username){
     this.idJoueur = idJoueur;
     this.forme = forme;
     this.username = username;
+    this.nbBomb = 1;
 }
 /*****************************************/
