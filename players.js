@@ -55,6 +55,8 @@ socket.on('updateNbJoueur', function(n){
     }
 });
 
+
+
 var Sonic = {
     x : 40,
     y : 40,

@@ -24,6 +24,7 @@ var usernames = {};
 // rooms which are currently available in chat
 var rooms = ['Acceuil'];
 var party = [];
+var nbRoom = 0;
 
 var nbActuelJoueur = [];
 var spectateur = [];
@@ -32,6 +33,7 @@ io.sockets.on('connection', function (socket) {
 	
 	// when the client emits 'adduser', this listens and executes
 	socket.on('adduser', function(username){
+        socket.etatJoueur = 'Acceuil';
 		// store the username in the socket session for this client
 		socket.username = username;
 		// store the room name in the socket session for this client
@@ -75,6 +77,22 @@ io.sockets.on('connection', function (socket) {
 
 	// when the user disconnects.. perform this
 	socket.on('disconnect', function(){
+        if(socket.etatJoueur === 'Waiting' && party[socket.idActuelRoom][2] === 1){
+            var id = socket.idActuelRoom;
+            party.splice(socket.idActuelRoom,1);
+            nbActuelJoueur.splice(socket.idActuelRoom, 1);
+            spectateur.splice(socket.idActuelRoom, 1);
+            delete rooms[socket.room];
+            socket.broadcast.emit('updateIdRoom', id);
+            io.sockets.emit('listGame', party);
+        }
+        if(socket.etatJoueur === 'Waiting' && party[socket.idActuelRoom][2] > 1){
+            party[socket.idActuelRoom][2] -= 1;
+            io.sockets.emit('listGame', party);
+            socket.broadcast.to(party[socket.idActuelRoom][0]).emit('updateDecoPlayer', party[socket.idActuelRoom][2], party[socket.idActuelRoom][1]);
+            socket.broadcast.to(party[socket.idActuelRoom][0]).emit('updateDecoIdPlayer', socket.idInRoom);
+            nbActuelJoueur[socket.idActuelRoom] -= 1;
+        }
 		// remove the username from global usernames list
 		delete usernames[socket.completename];
 		// update list of users in chat, client-side
@@ -84,6 +102,19 @@ io.sockets.on('connection', function (socket) {
 		socket.leave(socket.room);
         io.sockets.emit('updateListPlayer', usernames);
 	});
+
+
+    socket.on('updateIdRoomPlayer', function(id){
+        if(socket.idActuelRoom > id){
+            socket.idActuelRoom -= 1;
+        }
+    });
+
+    socket.on('updateIdInRoom', function(id){
+        if(socket.idInRoom > id){
+            socket.idInRoom -= 1;
+        }
+    });
 
     // Character move update
     socket.on('LinkSheet', function(w, h){
@@ -111,40 +142,42 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.to(socket.room).emit('PikaMoveUpdate', m, move);
     });
 
-    /*socket.on('playerStyle', function(){
-        if(nbActuelJoueur < 4){
-            nbActuelJoueur += 1;
-            socket.emit('createJoueur', nbActuelJoueur);
-        }else{
-            spectateur += 1;
-        }
 
-    });*/
 
     socket.on('updateNbrJoueur', function(n){
         var i;
         socket.broadcast.to(socket.room).emit('updateNbJoueur', n);
+        //socket.etatJoueur = 'Ingame';
     });
 
     socket.on('updateTabBomb', function(bombes){
         socket.broadcast.to(socket.room).emit('updateBombsTab', bombes);
     });
 
-    /*socket.on('updateWaitingGame', function(){
-        io.sockets.in(socket.room).emit('updateWaitingGamePlayer');
-    });*/
+    socket.on('updateNbRoom', function(nb){
+       nbRoom = nb;
+    });
+
 
     socket.on('createRoom', function(nbPlayer){
-        var nb = rooms.length;
-        rooms.push('Room ' + nb);
+        nbRoom += 1;
+        rooms.push('Room ' + nbRoom);
         socket.broadcast.emit('newRoom', rooms);
-        socket.emit('changeRoom', 'Room ' + nb);
-        party.push(['Room ' + nb, nbPlayer, 1]);
+        socket.emit('changeRoom', 'Room ' + nbRoom);
+        party.push(['Room ' + nbRoom, nbPlayer, 1]);
+        socket.idActuelRoom = party.length - 1;
         nbActuelJoueur.push(1);
         spectateur.push(0);
         io.sockets.emit('listGame', party);
-        socket.emit('createJoueur', 1);
+        socket.etatJoueur = 'Waiting';
+        socket.idInRoom = 1;
+        //socket.emit('createJoueur', 1);
 
+    });
+
+    socket.on('createPlayer', function(){
+        socket.emit('createJoueur', socket.idInRoom);
+        socket.etatJoueur = 'Ingame';
     });
 
     socket.on('switchJoin', function(partyRoom, boolwait){
@@ -162,6 +195,7 @@ io.sockets.on('connection', function (socket) {
         socket.completename = socket.username + ' [' + socket.room + ']';
         usernames[socket.completename] = socket.completename;
         io.sockets.emit('updateListPlayer', usernames);
+        socket.etatJoueur = 'Waiting';
         if(boolwait){
             io.sockets.in(socket.room).emit('updateWaitingGamePlayer');
         }else{
@@ -172,7 +206,9 @@ io.sockets.on('connection', function (socket) {
                 if(nbActuelJoueur[i] < partyRoom[1]){
                     nbActuelJoueur[i] += 1;
                     party[i][2]+=1;
-                    socket.emit('createJoueur', nbActuelJoueur[i]);
+                    socket.idInRoom = party[i][2];
+                    socket.idActuelRoom = i;
+                    //socket.emit('createJoueur', nbActuelJoueur[i]);
                 }
                 else{
                     spectateur[i] += 1;
@@ -183,6 +219,14 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('recupParty', function(){
         socket.emit('listGame', party);
+    });
+
+    socket.on('recupIndexRoom', function(){
+        socket.broadcast.to(socket.room).emit('whatIsActuelIndex');
+    });
+
+    socket.on('sendIndex', function(){
+       socket.broadcast.to(socket.room).emit('thisIsTheActualIndex', nbRoom);
     });
 
 });

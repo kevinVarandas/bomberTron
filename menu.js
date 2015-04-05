@@ -24,8 +24,18 @@ var rejoindreOption = {
     img : rejoindre
 };
 
+var backOption = {
+    x : 630,
+    y : 450,
+    w : 90,
+    h : 40,
+    img : backButton
+};
+
 function showMenu(){
     ctx.save();
+    document.getElementById("waintingPlayerDiv").style.visibility = "hidden";
+    document.getElementById("listJoining").style.visibility = "hidden";
     ctx.drawImage(menuImage, 0, 0, w, h);
     ctx.drawImage(twoPlayerOption.img, twoPlayerOption.x,twoPlayerOption.y,optionWidth,optionHeight);
     ctx.drawImage(threePlayerOPtion.img, threePlayerOPtion.x,threePlayerOPtion.y,optionWidth,optionHeight);

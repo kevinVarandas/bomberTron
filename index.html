@@ -10,6 +10,7 @@
     <script src="images.js"></script>
     <script src="menu.js"></script>
     <script src="canvasBackground.js"></script>
+    <script src="updateData.js"></script>
     <script src="mapGenerator.js"></script>
     <script src="motor.js"></script>
     <script src="rejoindrePartie.js"></script>
@@ -21,7 +22,9 @@
         // on connection to server, ask for user's name with an anonymous callback
         socket.on('connect', function(){
             // call the server-side function 'adduser' and send one parameter (value of prompt)
-            socket.emit('adduser', prompt("What's your name?"));
+            checkSizeName();
+
+            //socket.emit('recupIndexRoom');
         });
 
         // listener, whenever the server emits 'updatechat', this updates the chat body
@@ -64,6 +67,26 @@
 
         function switchRoom(room){
             socket.emit('switchRoom', room);
+        }
+
+        function checkSizeName(){
+            var sizeName = true;
+            while(sizeName){
+                var playerName = prompt("Choisissez un pseudo : \n(3 lettres minimum et les espaces ne sont pas autorisés)", "Pseudo");
+                if(playerName.length >= 3){
+                    var i;
+                    var spaceName = 0;
+                    for(i = 0; i < playerName.length; i++) {
+                        if (playerName[i] != " ") {
+                            spaceName += 1;
+                            if (spaceName === playerName.length) {
+                                socket.emit('adduser', playerName);
+                                sizeName = false;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         // on load of page

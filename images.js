@@ -77,5 +77,11 @@ rejoindreSelect.src = 'http://img15.hostingpics.net/thumbs/mini_454045RejoindreS
 var loadingPlayerBar = new Image();
 loadingPlayerBar.src = 'http://img11.hostingpics.net/pics/394874loading.gif';
 
+var backButton = new Image();
+backButton.src = 'http://img11.hostingpics.net/pics/209486backButton.png';
+
+var backButtonPushed = new Image();
+backButtonPushed.src = 'http://img11.hostingpics.net/pics/788836backButtonPush.png';
+
 var optionWidth = 100;
 var optionHeight = 50;
