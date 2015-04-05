@@ -457,5 +457,6 @@ function Player(idJoueur, forme, username){
     this.idJoueur = idJoueur;
     this.forme = forme;
     this.username = username;
+    this.nbBomb = 1;
 }
 /*****************************************/

@@ -109,7 +109,11 @@ function traiteToucheAppuyee(evt){
             menu = false;
         }
         else {
-            addBomb(player.forme,player.idJoueur);
+            if(player.nbBomb !== 0)
+            {
+                addBomb(player.forme,player.idJoueur);
+                player.nbBomb--;
+            }
         }
     }
 }
