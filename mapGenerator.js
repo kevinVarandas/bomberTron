@@ -76,6 +76,7 @@ function Bomb(x, y, type, puissance, duree, taille){
     this.puissance = puissance;
     this.duree = duree;
     this.taille = taille;
+    this.isUnlock = true;
 
     this.getX = function(){return this.x;};
     this.getY = function(){return this.y;};
