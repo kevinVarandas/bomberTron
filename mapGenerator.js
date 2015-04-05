@@ -23,11 +23,7 @@ function addBomb(Player,id){
     var yBomb = (Player.y + Player.h);
     var subX =  (Player.x + (Player.w/2)) % tailleCaseFixe;
     var subY = (Player.y + Player.h) % tailleCaseFixe;
-
-    Player.onBomb = true;
-    console.log(Player);
-    console.log(Sonic);
-
+    Player.droppedBomb = true;
     bombs.push(new Bomb(xBomb - subX, yBomb - subY, id, 1, 1, tailleCaseFixe));
     socket.emit('updateTabBomb', bombs);
 }
@@ -91,13 +87,13 @@ function addCaseCassable(x, y){
 }
 // fonction qui génère un niveau
 function generateLevel(level) {
-   switch (level){
-       case 1:
-           createLevel1();
-           break;
-       default:
-           break;
-   }
+    switch (level){
+        case 1:
+            createLevel1();
+            break;
+        default:
+            break;
+    }
 }
 //Fonction qui dessine un niveau entier
 function drawGame(){
@@ -190,6 +186,87 @@ function collisonDroite(x, y, v){
             ((y >= cases[i].getY() && y < cases[i].getY() + cases[i].getTailleCase()))){
             return true;
         }
+    }
+    return false;
+}
+
+function collisionBombHaut(x, y, v){
+    var i;
+    var pos = y - v;
+    if(bombs.length !==0) {
+        for(i = 0; i < bombs.length; i++){
+            if (pos > bombs[i].y && pos < bombs[i].y + bombs[i].taille &&
+                ((x - 5 > bombs[i].x && x - 5 < bombs[i].x + bombs[i].taille) ||
+                (x + 5 > bombs[i].x && x + 5 < bombs[i].x + bombs[i].taille))&& bombs[i].isLock){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+function collisionBombGauche(x, y, v){
+    var i;
+    var pos = x - v - 5;
+    if(bombs.length !==0) {
+        for(i = 0; i < bombs.length; i++){
+            if(pos > bombs[i].x && pos < bombs[i].x + bombs[i].taille &&
+                ((y >= bombs[i].y && y < bombs[i].y + bombs[i].taille))){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+function collisionBombDroite(x, y, v){
+    var i;
+    var pos = x + v + 15;
+    if(bombs.length !==0) {
+        for(i = 0; i < bombs.length; i++){
+            if(pos > bombs[i].x && pos < bombs[i].x + bombs[i].taille &&
+                ((y >= bombs[i].y && y < bombs[i].y + bombs[i].taille))){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+function collisionBombBas(x, y, v){
+    var i;
+    var pos = y + v + 10;
+    if(bombs.length !==0) {
+        for(i = 0; i < bombs.length; i++){
+            if(pos > bombs[i].getY() && pos < bombs[i].getY() + bombs[i].getTailleBomb() &&
+                ((x-10 > bombs[i].getX() && x-10 < bombs[i].getX() + bombs[i].getTailleBomb()) ||
+                (x+10 > bombs[i].getX() && x+10 < bombs[i].getX() + bombs[i].getTailleBomb()))){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+function isOnBomb(player){
+    var i;
+    var posX = player.x + (player.w / 2);
+    var posY = player.y + player.h;
+    if(player.droppedBomb) {
+        for (i = 0; i < bombs.length; i++) {
+            if( posY <= (bombs[i].y + bombs[i].taille) &&
+                posY >= (bombs[i].y)
+                && posX <= (bombs[i].x + bombs[i].taille)
+                && posX >= bombs[i].x && bombs[i].isUnlock
+            ) {
+
+                return true;
+            }
+            else{
+                bombs[i].isUnlock = false;
+            }
+        }
+        player.droppedBomb = false;
     }
     return false;
 }
