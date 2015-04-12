@@ -29,3 +29,18 @@ socket.on('updateIdRoom', function(id){
 socket.on('updateDecoIdPlayer', function(id){
     socket.emit('updateIdInRoom', id);
 });
+
+socket.on('updateBombsTab', function(bombes){
+    //bombs = bombes;
+    bombs = [];
+    var i;
+    for(i = 0; i < bombes.length; i++){
+        bombs.push(new Bomb(bombes[i].x, bombes[i].y, bombes[i].type, bombes[i].puissance, bombes[i].duree, bombes.taille));
+    }
+});
+
+socket.on('updateNbrJoueur', function(n){
+    var i;
+    socket.broadcast.to(socket.room).emit('updateNbJoueur', n);
+    //socket.etatJoueur = 'Ingame';
+});

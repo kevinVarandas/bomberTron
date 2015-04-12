@@ -124,7 +124,7 @@ function traiteToucheAppuyee(evt){
             menu = false;
         }
         else {
-            if(player.nbBomb !== 0)
+            if(player.nbBomb > 0)
             {
                 addBomb(player.forme,player.idJoueur);
                 player.nbBomb--;

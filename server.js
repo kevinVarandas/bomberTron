@@ -144,11 +144,7 @@ io.sockets.on('connection', function (socket) {
 
 
 
-    socket.on('updateNbrJoueur', function(n){
-        var i;
-        socket.broadcast.to(socket.room).emit('updateNbJoueur', n);
-        //socket.etatJoueur = 'Ingame';
-    });
+
 
     socket.on('updateTabBomb', function(bombes){
         socket.broadcast.to(socket.room).emit('updateBombsTab', bombes);
