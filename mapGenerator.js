@@ -59,6 +59,14 @@ function drawBombs(){
             bombs[i].duree -= 1;
         }else if(bombs[i].type === 1 && bombs[i].duree > 0){
             ctx.drawImage(centreExplosion, 0, 0, 40, 40, bombs[i].x, bombs[i].y, 40, 40);
+            ctx.drawImage(corpsExplosion, 0, 0, 40, 40, bombs[i].x - 40, bombs[i].y, 40, 40);
+            ctx.drawImage(corpsExplosion, 0, 0, 40, 40, bombs[i].x + 40, bombs[i].y, 40, 40);
+            ctx.drawImage(corpsExplosion, 0, 120, 40, 40, bombs[i].x, bombs[i].y - 40, 40, 40);
+            ctx.drawImage(corpsExplosion, 0, 120, 40, 40, bombs[i].x, bombs[i].y + 40, 40, 40);
+            ctx.drawImage(teteExplosion, 0, 0, 40, 40, bombs[i].x - 80, bombs[i].y, 40, 40);
+            ctx.drawImage(teteExplosion, 0, 160, 40, 40, bombs[i].x, bombs[i].y - 80, 40, 40);
+            ctx.drawImage(teteExplosion, 0, 320, 40, 40, bombs[i].x, bombs[i].y + 80, 40, 40);
+            ctx.drawImage(teteExplosion, 0, 480, 40, 40, bombs[i].x + 80, bombs[i].y, 40, 40);
             bombs[i].duree -= 1;
         }else if(bombs[i].type === 2 && bombs[i].duree > 0){
             ctx.drawImage(centreExplosion, 80, 0, 40, 40, bombs[i].x, bombs[i].y, 40, 40);
