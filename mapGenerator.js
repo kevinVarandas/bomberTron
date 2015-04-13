@@ -26,7 +26,7 @@ function addBomb(Player,id){
     var subX =  (Player.x + (Player.w/2)) % tailleCaseFixe;
     var subY = (Player.y + Player.h) % tailleCaseFixe;
     Player.droppedBomb = true;
-    bombs.push(new Bomb(xBomb - subX, yBomb - subY, id, 1, 130, tailleCaseFixe));
+    bombs.push(new Bomb(xBomb - subX, yBomb - subY, id, 1, 150, tailleCaseFixe));
     socket.emit('updateTabBomb', bombs);
 }
 
@@ -45,37 +45,20 @@ socket.on('updateBombsTab', function(bombes){
 function drawBombs(){
     var i;
     for(i = 0; i<bombs.length; i++){
-        if(bombs[i].type === 1 && bombs[i].duree > 30) {
+        if(bombs[i].type === 1 && bombs[i].duree > 50) {
             ctx.drawImage(bombeSonic, bombs[i].x, bombs[i].y, 40, 40);
             bombs[i].duree -= 1;
-        }else if(bombs[i].type === 2 && bombs[i].duree > 30){
+        }else if(bombs[i].type === 2 && bombs[i].duree > 50){
             ctx.drawImage(bombeMario, bombs[i].x, bombs[i].y, 40, 40);
             bombs[i].duree -= 1;
-        }else if(bombs[i].type === 4 && bombs[i].duree > 30){
+        }else if(bombs[i].type === 4 && bombs[i].duree > 50){
             ctx.drawImage(bombePika, bombs[i].x, bombs[i].y, 40, 40);
             bombs[i].duree -= 1;
-        }else if(bombs[i].type === 3 && bombs[i].duree > 30){
+        }else if(bombs[i].type === 3 && bombs[i].duree > 50){
             ctx.drawImage(bombeLink, bombs[i].x, bombs[i].y, 40, 40);
             bombs[i].duree -= 1;
-        }else if(bombs[i].type === 1 && bombs[i].duree > 0){
-            ctx.drawImage(centreExplosion, 0, 0, 40, 40, bombs[i].x, bombs[i].y, 40, 40);
-            ctx.drawImage(corpsExplosion, 0, 0, 40, 40, bombs[i].x - 40, bombs[i].y, 40, 40);
-            ctx.drawImage(corpsExplosion, 0, 0, 40, 40, bombs[i].x + 40, bombs[i].y, 40, 40);
-            ctx.drawImage(corpsExplosion, 0, 120, 40, 40, bombs[i].x, bombs[i].y - 40, 40, 40);
-            ctx.drawImage(corpsExplosion, 0, 120, 40, 40, bombs[i].x, bombs[i].y + 40, 40, 40);
-            ctx.drawImage(teteExplosion, 0, 0, 40, 40, bombs[i].x - 80, bombs[i].y, 40, 40);
-            ctx.drawImage(teteExplosion, 0, 160, 40, 40, bombs[i].x, bombs[i].y - 80, 40, 40);
-            ctx.drawImage(teteExplosion, 0, 320, 40, 40, bombs[i].x, bombs[i].y + 80, 40, 40);
-            ctx.drawImage(teteExplosion, 0, 480, 40, 40, bombs[i].x + 80, bombs[i].y, 40, 40);
-            bombs[i].duree -= 1;
-        }else if(bombs[i].type === 2 && bombs[i].duree > 0){
-            ctx.drawImage(centreExplosion, 80, 0, 40, 40, bombs[i].x, bombs[i].y, 40, 40);
-            bombs[i].duree -= 1;
-        }else if(bombs[i].type === 3 && bombs[i].duree > 0){
-            ctx.drawImage(centreExplosion, 120, 40, 40, 40, bombs[i].x, bombs[i].y, 40, 40);
-            bombs[i].duree -= 1;
-        }else if(bombs[i].type === 4 && bombs[i].duree > 0){
-            ctx.drawImage(centreExplosion, 40, 40, 40, 40, bombs[i].x, bombs[i].y, 40, 40);
+        }else if(bombs[i].duree > 0){
+            drawExplosion(bombs[i]);
             bombs[i].duree -= 1;
         }
         else if(bombs[i].duree === 0){
@@ -83,6 +66,68 @@ function drawBombs(){
             player.nbBomb++;
             socket.emit('updateTabBomb', bombs);
         }
+    }
+}
+
+function drawExplosion(bombe){
+    var j;
+    switch(bombe.type){
+        case 1:
+            ctx.drawImage(centreExplosion, 0, 0, 40, 40, bombe.x, bombe.y, 40, 40);
+
+            for(j=1;j<=bombe.puissance;j++) {
+                ctx.drawImage(corpsExplosion, 0, 0, 40, 40, bombe.x - (j*40), bombe.y, 40, 40);
+                ctx.drawImage(corpsExplosion, 0, 0, 40, 40, bombe.x + (j*40), bombe.y, 40, 40);
+                ctx.drawImage(corpsExplosion, 0, 120, 40, 40, bombe.x, bombe.y - (j*40), 40, 40);
+                ctx.drawImage(corpsExplosion, 0, 120, 40, 40, bombe.x, bombe.y + (j*40), 40, 40);
+            }
+            ctx.drawImage(teteExplosion, 0, 0, 40, 40, bombe.x - (j*40), bombe.y, 40, 40);
+            ctx.drawImage(teteExplosion, 0, 160, 40, 40, bombe.x, bombe.y - (j*40), 40, 40);
+            ctx.drawImage(teteExplosion, 0, 320, 40, 40, bombe.x, bombe.y + (j*40), 40, 40);
+            ctx.drawImage(teteExplosion, 0, 480, 40, 40, bombe.x + (j*40), bombe.y, 40, 40);
+            break;
+        case 2:
+            ctx.drawImage(centreExplosion, 80, 0, 40, 40, bombe.x, bombe.y, 40, 40);
+
+            for(j=1;j<=bombe.puissance;j++) {
+                ctx.drawImage(corpsExplosion, 80, 0, 40, 40, bombe.x - (j*40), bombe.y, 40, 40);
+                ctx.drawImage(corpsExplosion, 80, 0, 40, 40, bombe.x + (j*40), bombe.y, 40, 40);
+                ctx.drawImage(corpsExplosion, 80, 120, 40, 40, bombe.x, bombe.y - (j*40), 40, 40);
+                ctx.drawImage(corpsExplosion, 80, 120, 40, 40, bombe.x, bombe.y + (j*40), 40, 40);
+            }
+            ctx.drawImage(teteExplosion, 80, 0, 40, 40, bombe.x - (j*40), bombe.y, 40, 40);
+            ctx.drawImage(teteExplosion, 80, 160, 40, 40, bombe.x, bombe.y - (j*40), 40, 40);
+            ctx.drawImage(teteExplosion, 80, 320, 40, 40, bombe.x, bombe.y + (j*40), 40, 40);
+            ctx.drawImage(teteExplosion, 80, 480, 40, 40, bombe.x + (j*40), bombe.y, 40, 40);
+            break;
+        case 3:
+            ctx.drawImage(centreExplosion, 120, 40, 40, 40, bombe.x, bombe.y, 40, 40);
+
+            for(j=1;j<=bombe.puissance;j++) {
+                ctx.drawImage(corpsExplosion, 40, 40, 40, 40, bombe.x - (j*40), bombe.y, 40, 40);
+                ctx.drawImage(corpsExplosion, 40, 40, 40, 40, bombe.x + (j*40), bombe.y, 40, 40);
+                ctx.drawImage(corpsExplosion, 40, 160, 40, 40, bombe.x, bombe.y - (j*40), 40, 40);
+                ctx.drawImage(corpsExplosion, 40, 160, 40, 40, bombe.x, bombe.y + (j*40), 40, 40);
+            }
+            ctx.drawImage(teteExplosion, 40, 80, 40, 40, bombe.x - (j*40), bombe.y, 40, 40);
+            ctx.drawImage(teteExplosion, 40, 240, 40, 40, bombe.x, bombe.y - (j*40), 40, 40);
+            ctx.drawImage(teteExplosion, 40, 400, 40, 40, bombe.x, bombe.y + (j*40), 40, 40);
+            ctx.drawImage(teteExplosion, 40, 560, 40, 40, bombe.x + (j*40), bombe.y, 40, 40);
+            break;
+        case 4:
+            ctx.drawImage(centreExplosion, 40, 40, 40, 40, bombe.x, bombe.y, 40, 40);
+
+            for(j=1;j<=bombe.puissance;j++) {
+                ctx.drawImage(corpsExplosion, 120, 40, 40, 40, bombe.x - (j*40), bombe.y, 40, 40);
+                ctx.drawImage(corpsExplosion, 120, 40, 40, 40, bombe.x + (j*40), bombe.y, 40, 40);
+                ctx.drawImage(corpsExplosion, 120, 160, 40, 40, bombe.x, bombe.y - (j*40), 40, 40);
+                ctx.drawImage(corpsExplosion, 120, 160, 40, 40, bombe.x, bombe.y + (j*40), 40, 40);
+            }
+            ctx.drawImage(teteExplosion, 120, 80, 40, 40, bombe.x - (j*40), bombe.y, 40, 40);
+            ctx.drawImage(teteExplosion, 120, 240, 40, 40, bombe.x, bombe.y - (j*40), 40, 40);
+            ctx.drawImage(teteExplosion, 120, 400, 40, 40, bombe.x, bombe.y + (j*40), 40, 40);
+            ctx.drawImage(teteExplosion, 120, 560, 40, 40, bombe.x + (j*40), bombe.y, 40, 40);
+            break;
     }
 }
 // Objet case

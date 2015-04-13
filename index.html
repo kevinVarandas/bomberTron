@@ -47,7 +47,6 @@
         });
 
         socket.on('newRoom', function(rooms){
-            console.log(rooms);
             $('#rooms').empty();
             $.each(rooms, function(key, value) {
                 $('#rooms').append('<div>' + value + '</div>');

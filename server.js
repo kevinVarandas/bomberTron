@@ -94,9 +94,9 @@ io.sockets.on('connection', function (socket) {
             socket.broadcast.to(party[socket.idActuelRoom][0]).emit('updateDecoIdPlayer', socket.idInRoom);
             nbActuelJoueur[socket.idActuelRoom] -= 1;
         }
-        if(socket.etatJoueur === 'Ingame' && party[socket.idActuelRoom][2] > 1){
+        /*if(socket.etatJoueur === 'Ingame' && party[socket.idActuelRoom][2] > 1){
             party[socket.idActuelRoom][2] -= 1;
-        }
+        }*/
 		// remove the username from global usernames list
 		delete usernames[socket.completename];
 		// update list of users in chat, client-side
