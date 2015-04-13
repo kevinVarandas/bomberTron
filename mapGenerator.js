@@ -1,3 +1,5 @@
+var socket = io.connect();
+
 var tailleCaseFixe = 40;
 
 //Tableau de bombes
@@ -24,9 +26,18 @@ function addBomb(Player,id){
     var subX =  (Player.x + (Player.w/2)) % tailleCaseFixe;
     var subY = (Player.y + Player.h) % tailleCaseFixe;
     Player.droppedBomb = true;
-    bombs.push(new Bomb(xBomb - subX, yBomb - subY, id, 1, 100, tailleCaseFixe));
+    bombs.push(new Bomb(xBomb - subX, yBomb - subY, id, 1, 130, tailleCaseFixe));
     socket.emit('updateTabBomb', bombs);
 }
+
+socket.on('updateBombsTab', function(bombes){
+    //bombs = bombes;
+    bombs = [];
+    var i;
+    for(i = 0; i < bombes.length; i++){
+        bombs.push(new Bomb(bombes[i].x, bombes[i].y, bombes[i].type, bombes[i].puissance, bombes[i].duree, bombes.taille));
+    }
+});
 
 
 
@@ -34,17 +45,29 @@ function addBomb(Player,id){
 function drawBombs(){
     var i;
     for(i = 0; i<bombs.length; i++){
-        if(bombs[i].type === 1 && bombs[i].duree > 0) {
+        if(bombs[i].type === 1 && bombs[i].duree > 30) {
             ctx.drawImage(bombeSonic, bombs[i].x, bombs[i].y, 40, 40);
             bombs[i].duree -= 1;
-        }else if(bombs[i].type === 2 && bombs[i].duree > 0){
+        }else if(bombs[i].type === 2 && bombs[i].duree > 30){
             ctx.drawImage(bombeMario, bombs[i].x, bombs[i].y, 40, 40);
             bombs[i].duree -= 1;
-        }else if(bombs[i].type === 4 && bombs[i].duree > 0){
+        }else if(bombs[i].type === 4 && bombs[i].duree > 30){
             ctx.drawImage(bombePika, bombs[i].x, bombs[i].y, 40, 40);
             bombs[i].duree -= 1;
-        }else if(bombs[i].type === 3 && bombs[i].duree > 0){
+        }else if(bombs[i].type === 3 && bombs[i].duree > 30){
             ctx.drawImage(bombeLink, bombs[i].x, bombs[i].y, 40, 40);
+            bombs[i].duree -= 1;
+        }else if(bombs[i].type === 1 && bombs[i].duree > 0){
+            ctx.drawImage(centreExplosion, 0, 0, 40, 40, bombs[i].x, bombs[i].y, 40, 40);
+            bombs[i].duree -= 1;
+        }else if(bombs[i].type === 2 && bombs[i].duree > 0){
+            ctx.drawImage(centreExplosion, 80, 0, 40, 40, bombs[i].x, bombs[i].y, 40, 40);
+            bombs[i].duree -= 1;
+        }else if(bombs[i].type === 3 && bombs[i].duree > 0){
+            ctx.drawImage(centreExplosion, 120, 40, 40, 40, bombs[i].x, bombs[i].y, 40, 40);
+            bombs[i].duree -= 1;
+        }else if(bombs[i].type === 4 && bombs[i].duree > 0){
+            ctx.drawImage(centreExplosion, 40, 40, 40, 40, bombs[i].x, bombs[i].y, 40, 40);
             bombs[i].duree -= 1;
         }
         else if(bombs[i].duree === 0){

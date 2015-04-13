@@ -47,14 +47,10 @@
         });
 
         socket.on('newRoom', function(rooms){
+            console.log(rooms);
             $('#rooms').empty();
             $.each(rooms, function(key, value) {
-                //if(value == actualRoom){
-                    $('#rooms').append('<div>' + value + '</div>');
-                /*}
-                else {
-                    $('#rooms').append('<div><a href="#" onclick="switchRoom(\''+value+'\')">' + value + '</a></div>');
-                }*/
+                $('#rooms').append('<div>' + value + '</div>');
             });
         });
 

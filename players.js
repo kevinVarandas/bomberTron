@@ -40,7 +40,7 @@ socket.on('createJoueur', function(n){
 
 socket.on('updateNbJoueur', function(n){
     nbJoueur = n;
-    //window.alert(n);
+    console.log(n);
     switch (n)
     {
         case 2 :
