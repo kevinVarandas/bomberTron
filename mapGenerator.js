@@ -39,6 +39,14 @@ socket.on('updateBombsTab', function(bombes){
     }
 });
 
+socket.on('updateCasesTab', function(c){
+    cases = [];
+    var i;
+    for(i=0;i<c.length;i++){
+        cases.push(new Case(c[i].x, c[i].y, c[i].type, c[i].tailleCase));
+    }
+})
+
 
 
 // fonction qui dessine les bombes
@@ -525,6 +533,13 @@ function collisionExplosionHaut(bombe,i){
                 return true;
             }
         }
+        else{
+            if((bombe.y-yExplo) >= cases[i].y && (bombe.y-yExplo)< (cases[i].y + cases[i].tailleCase) &&
+                bombe.x >= cases[i].x && bombe.x < (cases[i].x+cases[i].tailleCase)){
+                cases.splice(i, 1);
+                socket.emit("updateCases", cases);
+            }
+        }
     }
     return false;
 }
@@ -536,6 +551,13 @@ function collisionExplosionBas(bombe,i){
             if((bombe.y+yExplo) >= cases[i].y && (bombe.y+yExplo)< (cases[i].y + cases[i].tailleCase) &&
                 bombe.x >= cases[i].x && bombe.x < (cases[i].x+cases[i].tailleCase)){
                 return true;
+            }
+        }
+        else{
+            if((bombe.y+yExplo) >= cases[i].y && (bombe.y+yExplo)< (cases[i].y + cases[i].tailleCase) &&
+                bombe.x >= cases[i].x && bombe.x < (cases[i].x+cases[i].tailleCase)){
+                cases.splice(i, 1);
+                socket.emit("updateCases", cases);
             }
         }
     }
@@ -551,6 +573,13 @@ function collisionExplosionGauche(bombe,i){
                 return true;
             }
         }
+        else{
+            if((bombe.x-xExplo) >= cases[i].x && (bombe.x-xExplo)< (cases[i].x + cases[i].tailleCase) &&
+                bombe.y >= cases[i].y && bombe.y < (cases[i].y+cases[i].tailleCase)){
+                cases.splice(i, 1);
+                socket.emit("updateCases", cases);
+            }
+        }
     }
     return false;
 }
@@ -562,6 +591,13 @@ function collisionExplosionDroite(bombe,n){
             if((bombe.x+xExplo) >= cases[i].x && (bombe.x+xExplo)< (cases[i].x + cases[i].tailleCase) &&
                 bombe.y >= cases[i].y && bombe.y < (cases[i].y+cases[i].tailleCase)){
                 return true;
+            }
+        }
+        else{
+            if((bombe.x+xExplo) >= cases[i].x && (bombe.x+xExplo)< (cases[i].x + cases[i].tailleCase) &&
+                bombe.y >= cases[i].y && bombe.y < (cases[i].y+cases[i].tailleCase)){
+                cases.splice(i, 1);
+                socket.emit("updateCases", cases);
             }
         }
     }

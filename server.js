@@ -233,4 +233,8 @@ io.sockets.on('connection', function (socket) {
     socket.on('updateNbrJoueur', function(n){
         socket.broadcast.to(socket.room).emit('updateNbJoueur', n);
     });
+
+    socket.on('updateCases', function(cases){
+        io.sockets.in(socket.room).emit('updateCasesTab', cases);
+    })
 });
