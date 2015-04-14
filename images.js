@@ -48,7 +48,7 @@ teteExplosion.src = 'http://img11.hostingpics.net/pics/202245teteExplo.png';
 
 // MENU IMAGE
 var menuImage = new Image();
-menuImage.src = 'http://img15.hostingpics.net/thumbs/mini_550801menu.png';
+menuImage.src = 'http://img15.hostingpics.net/pics/550801menu.png';
 
 var twoPlayers = new Image();
 twoPlayers.src = 'http://img15.hostingpics.net/thumbs/mini_243052twoPlayers.png';

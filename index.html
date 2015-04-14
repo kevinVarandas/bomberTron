@@ -14,6 +14,7 @@
     <script src="mapGenerator.js"></script>
     <script src="motor.js"></script>
     <script src="rejoindrePartie.js"></script>
+    <script src="endGame.js"></script>
 
     <script>
         var socket = io.connect();
@@ -119,6 +120,10 @@
             <b>En attente des autres joueurs </b>
             <span id="nbPresentPlayer"></span>
             <div style="position:absolute;left:40px;" id="waitingPlayer"></div>
+        </div>
+        <div style="z-index:3;top:200px;left:250px;position:absolute;width:300px;border-right:1px solid black;height:100px;padding:10px;overflow:scroll-y;color:white;visibility:hidden;" id="winnerDiv">
+            <span id="winnerName"></span>
+            <b>Appuyez sur espace pour retourner au menu.</b>
         </div>
     </div>
     <div id="fps"></div>

@@ -30,7 +30,7 @@ var nbActuelJoueur = [];
 var spectateur = [];
 
 io.sockets.on('connection', function (socket) {
-	
+
 	// when the client emits 'adduser', this listens and executes
 	socket.on('adduser', function(username){
         socket.etatJoueur = 'Acceuil';
@@ -49,6 +49,7 @@ io.sockets.on('connection', function (socket) {
 		socket.broadcast.to('Acceuil').emit('updatechat', 'SERVER', username + ' has connected to this room');
 		socket.emit('updaterooms', rooms, 'Acceuil');
         io.sockets.in(socket.room).emit('updateListPlayer', usernames);
+        socket.tabPlayer=[];
 	});
 	
 	// when the client emits 'sendchat', this listens and executes
@@ -167,12 +168,11 @@ io.sockets.on('connection', function (socket) {
         socket.emit('changeRoom', 'Room ' + nbRoom);
         party.push(['Room ' + nbRoom, nbPlayer, 1]);
         socket.idActuelRoom = party.length - 1;
-        nbActuelJoueur.push(1);
+        nbActuelJoueur.push(0);
         spectateur.push(0);
         io.sockets.emit('listGame', party);
         socket.etatJoueur = 'Waiting';
         socket.idInRoom = 1;
-        //socket.emit('createJoueur', 1);
 
     });
 
@@ -185,6 +185,7 @@ io.sockets.on('connection', function (socket) {
         var i;
         socket.leave(socket.room);
         socket.join(partyRoom[0]);
+        socket.nbBomb = 2;
         socket.emit('updatechat', 'SERVER', 'you have connected to '+ partyRoom[0]);
         // sent message to OLD room
         socket.broadcast.to(socket.room).emit('updatechat', 'SERVER', socket.username+' has joined the ' + partyRoom[0]);
@@ -199,12 +200,11 @@ io.sockets.on('connection', function (socket) {
         socket.etatJoueur = 'Waiting';
         for(i = 0; i < party.length; i++){
             if(party[i][0] === partyRoom[0]){
-                if(nbActuelJoueur[i] < partyRoom[1]){
+                if(nbActuelJoueur[i] < party[i][1]){
                     nbActuelJoueur[i] += 1;
                     party[i][2]+=1;
                     socket.idInRoom = party[i][2];
                     socket.idActuelRoom = i;
-                    //socket.emit('createJoueur', nbActuelJoueur[i]);
                 }
                 else{
                     spectateur[i] += 1;
@@ -212,8 +212,11 @@ io.sockets.on('connection', function (socket) {
             }
         }
         if(boolwait){
+            socket.tabPlayer.push(party[socket.idActuelRoom][2]);
             io.sockets.in(socket.room).emit('updateWaitingGamePlayer');
+
         }else{
+            socket.tabPlayer.push(party[socket.idActuelRoom][2]);
             socket.broadcast.to(partyRoom[0]).emit('updatePresentPlayer', partyRoom[2], partyRoom[1]);
         }
     });
@@ -236,5 +239,36 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('updateCases', function(cases){
         io.sockets.in(socket.room).emit('updateCasesTab', cases);
-    })
+    });
+
+    socket.on('updatePlayerPrst', function(forme){
+        socket.tabPlayer.splice(forme-1, 1);
+        io.sockets.in(socket.room).emit('updatePlayersPrst', forme, socket.tabPlayer);
+        nbActuelJoueur[socket.idActuelRoom] -= 1;
+        io.sockets.in(socket.room).emit('testEndGame', nbActuelJoueur[socket.idActuelRoom]);
+        //party[socket.idActuelRoom][2] -= 1;
+
+        
+
+    });
+
+    socket.on('updateTabPlayer', function(tab){
+        socket.tabPlayer = tab;
+    });
+
+    socket.on('finishGame', function(){
+        if(nbActuelJoueur[socket.idActuelRoom] === 1) {
+            //io.sockets.in(socket.room).emit('endGame', socket.tabPlayer[0]);
+            io.sockets.in(socket.room).emit('endGame');
+            var id = socket.idActuelRoom;
+            party.splice(socket.idActuelRoom, 1);
+            nbActuelJoueur.splice(socket.idActuelRoom, 1);
+            spectateur.splice(socket.idActuelRoom, 1);
+            rooms.splice(socket.idActuelRoom + 1, 1);
+            io.sockets.emit('updateIdRoom', id);
+            io.sockets.emit('listGame', party);
+            io.sockets.emit('newRoom', rooms);
+            socket.etatJoueur = 'Acceuil';
+        }
+    });
 });

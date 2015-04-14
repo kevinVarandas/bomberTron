@@ -40,7 +40,7 @@ function traiteClick(evt){
     {
 
         if(xPos > twoPlayerOption.x && xPos < (twoPlayerOption.x + optionWidth) &&
-                yPos > twoPlayerOption.y && yPos < (twoPlayerOption.y + optionHeight)){
+            yPos > twoPlayerOption.y && yPos < (twoPlayerOption.y + optionHeight)){
             twoPlayerOption.img = twoPlayersSelect;
             deselectOther(idSelected);
             idSelected = 2;
@@ -103,32 +103,48 @@ socket.on('changeRoom', function(room){
 
 // Fonction traitant les touches pressees
 function traiteToucheAppuyee(evt){
-    if(evt.keyCode === 37){
-        toucheEnfoncee = true;
-        gauche = true;
-    }else if(evt.keyCode === 39){
-        toucheEnfoncee = true;
-        droite = true;
-    }else if(evt.keyCode === 40){
-        toucheEnfoncee = true;
-        bas = true;
-    }else if(evt.keyCode === 38){
-        toucheEnfoncee = true;
-        haut = true;
+    if (evt.keyCode === 37) {
+        if(!menu && !boolJoin && !waitPlayer) {
+            if(player.alive){
+                toucheEnfoncee = true;
+                gauche = true;
+            }
+        }
+    } else if (evt.keyCode === 39) {
+        if(!menu && !boolJoin && !waitPlayer) {
+            if (player.alive) {
+                toucheEnfoncee = true;
+                droite = true;
+            }
+        }
+    } else if (evt.keyCode === 40) {
+        if(!menu && !boolJoin && !waitPlayer) {
+            if (player.alive) {
+                toucheEnfoncee = true;
+                bas = true;
+            }
+        }
+    } else if (evt.keyCode === 38) {
+        if(!menu && !boolJoin && !waitPlayer) {
+            if (player.alive) {
+                toucheEnfoncee = true;
+                haut = true;
+            }
+        }
     }
     //Espace
     else if(evt.keyCode === 32){
         toucheEnfoncee = true;
         espace = true;
-        if(menu){
-            menu = false;
-        }
-        else {
-            if(player.nbBomb > 0)
+        if(!menu){
+            if(player.nbBomb > 0 && player.alive)
             {
                 addBomb(player.forme,player.idJoueur);
                 player.nbBomb--;
             }
+        }
+        if(theEnd){
+            theEnd = false;
         }
     }
 }
@@ -136,7 +152,7 @@ function traiteToucheAppuyee(evt){
 function traiteToucheRelachee(evt){
     toucheEnfoncee = false;
 
-    if(evt.keyCode === 37){
+    if(evt.keyCode === 37 && !menu && !boolJoin && !waitPlayer){
         gauche = false;
         if(player.idJoueur === 1) {
             Sonic.picx = Sonic.w;
@@ -158,7 +174,7 @@ function traiteToucheRelachee(evt){
             Mario.picy = 2 * Mario.h;
             socket.emit('MarioSheet', 0, 2 * Mario.h);
         }
-    }else if(evt.keyCode === 39){
+    }else if(evt.keyCode === 39 && !menu && !boolJoin && !waitPlayer){
         droite = false;
         if(player.idJoueur === 1) {
             Sonic.picx = Sonic.w;
@@ -180,7 +196,7 @@ function traiteToucheRelachee(evt){
             Mario.picy = 3 * Mario.h;
             socket.emit('MarioSheet', 0, 3 * Mario.h);
         }
-    }else if(evt.keyCode === 40){
+    }else if(evt.keyCode === 40 && !menu && !boolJoin && !waitPlayer){
         bas = false;
         if(player.idJoueur === 1) {
             Sonic.picx = Sonic.w;
@@ -202,7 +218,7 @@ function traiteToucheRelachee(evt){
             Mario.picy = 0;
             socket.emit('MarioSheet', 0, 0);
         }
-    }else if(evt.keyCode === 38){
+    }else if(evt.keyCode === 38 && !menu && !boolJoin && !waitPlayer){
         haut = false;
         if(player.idJoueur === 1) {
             Sonic.picx = Sonic.w;
@@ -246,6 +262,9 @@ function anime(time){
     }
     else if(waitPlayer){
         //drawWait();
+    }
+    else if(theEnd){
+        drawEnd();
     }
     else {
         drawGame();

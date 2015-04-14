@@ -40,7 +40,6 @@ socket.on('createJoueur', function(n){
 
 socket.on('updateNbJoueur', function(n){
     nbJoueur = n;
-    console.log(n);
     switch (n)
     {
         case 2 :
@@ -460,5 +459,8 @@ function Player(idJoueur, forme, username){
     this.forme = forme;
     this.username = username;
     this.nbBomb = 2;
+    this.alive = true;
+
+    this.setBomb = function(){this.nbBomb++;};
 }
 /*****************************************/
