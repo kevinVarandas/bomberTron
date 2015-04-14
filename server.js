@@ -78,7 +78,7 @@ io.sockets.on('connection', function (socket) {
 
 	// when the user disconnects.. perform this
 	socket.on('disconnect', function(){
-        if((socket.etatJoueur === 'Waiting' || socket.etatJoueur === 'Ingame') && party[socket.idActuelRoom][2] === 1){
+        if((socket.etatJoueur === 'Waiting') && party[socket.idActuelRoom][2] === 1){
             var id = socket.idActuelRoom;
             party.splice(socket.idActuelRoom,1);
             nbActuelJoueur.splice(socket.idActuelRoom, 1);
@@ -168,16 +168,17 @@ io.sockets.on('connection', function (socket) {
         socket.emit('changeRoom', 'Room ' + nbRoom);
         party.push(['Room ' + nbRoom, nbPlayer, 1]);
         socket.idActuelRoom = party.length - 1;
-        nbActuelJoueur.push(0);
+        nbActuelJoueur.push(1);
         spectateur.push(0);
-        io.sockets.emit('listGame', party);
         socket.etatJoueur = 'Waiting';
         socket.idInRoom = 1;
+        io.sockets.emit('listGame', party);
+        //io.sockets.emit('test', party);
 
     });
 
     socket.on('createPlayer', function(){
-        socket.emit('createJoueur', socket.idInRoom);
+        socket.emit('createJoueur', socket.idInRoom, socket.username);
         socket.etatJoueur = 'Ingame';
     });
 
@@ -201,7 +202,7 @@ io.sockets.on('connection', function (socket) {
         for(i = 0; i < party.length; i++){
             if(party[i][0] === partyRoom[0]){
                 if(nbActuelJoueur[i] < party[i][1]){
-                    nbActuelJoueur[i] += 1;
+                    nbActuelJoueur[i] = nbActuelJoueur[i]+1;
                     party[i][2]+=1;
                     socket.idInRoom = party[i][2];
                     socket.idActuelRoom = i;
@@ -212,11 +213,11 @@ io.sockets.on('connection', function (socket) {
             }
         }
         if(boolwait){
-            socket.tabPlayer.push(party[socket.idActuelRoom][2]);
+            socket.tabPlayer.push(nbActuelJoueur[socket.idActuelRoom]);
             io.sockets.in(socket.room).emit('updateWaitingGamePlayer');
 
         }else{
-            socket.tabPlayer.push(party[socket.idActuelRoom][2]);
+            socket.tabPlayer.push(nbActuelJoueur[socket.idActuelRoom]);
             socket.broadcast.to(partyRoom[0]).emit('updatePresentPlayer', partyRoom[2], partyRoom[1]);
         }
     });
@@ -241,34 +242,25 @@ io.sockets.on('connection', function (socket) {
         io.sockets.in(socket.room).emit('updateCasesTab', cases);
     });
 
-    socket.on('updatePlayerPrst', function(forme){
-        socket.tabPlayer.splice(forme-1, 1);
-        io.sockets.in(socket.room).emit('updatePlayersPrst', forme, socket.tabPlayer);
-        nbActuelJoueur[socket.idActuelRoom] -= 1;
-        io.sockets.in(socket.room).emit('testEndGame', nbActuelJoueur[socket.idActuelRoom]);
-        //party[socket.idActuelRoom][2] -= 1;
-
-        
-
-    });
-
-    socket.on('updateTabPlayer', function(tab){
-        socket.tabPlayer = tab;
-    });
-
-    socket.on('finishGame', function(){
-        if(nbActuelJoueur[socket.idActuelRoom] === 1) {
-            //io.sockets.in(socket.room).emit('endGame', socket.tabPlayer[0]);
+    socket.on('updatePlayerPrst', function(forme, tab){
+        socket.broadcast.to(socket.room).emit('updatePlayersPrst', forme, tab);
+        if(tab === 1){
             io.sockets.in(socket.room).emit('endGame');
-            var id = socket.idActuelRoom;
-            party.splice(socket.idActuelRoom, 1);
-            nbActuelJoueur.splice(socket.idActuelRoom, 1);
-            spectateur.splice(socket.idActuelRoom, 1);
-            rooms.splice(socket.idActuelRoom + 1, 1);
-            io.sockets.emit('updateIdRoom', id);
-            io.sockets.emit('listGame', party);
-            io.sockets.emit('newRoom', rooms);
-            socket.etatJoueur = 'Acceuil';
         }
+    });
+
+
+
+    socket.on('finishGame', function(username){
+        var id = socket.idActuelRoom;
+        socket.etatJoueur = 'Acceuil';
+        party.splice(socket.idActuelRoom, 1);
+        nbActuelJoueur.splice(socket.idActuelRoom, 1);
+        spectateur.splice(socket.idActuelRoom, 1);
+        rooms.splice(socket.idActuelRoom + 1, 1);
+        io.sockets.in(socket.room).emit('afficheWinner', username);
+        io.sockets.emit('updateIdRoom', id);
+        io.sockets.emit('newRoom', rooms);
+        io.sockets.emit('listGame', party);
     });
 });

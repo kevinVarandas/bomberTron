@@ -8,6 +8,8 @@ var bombs = [];
 //VAR tableau de cases
 var cases = [];
 
+
+
 // Fonction qui dessine les bords du plateau de jeu
 function addCaseFixe(){
     var i,j;
@@ -48,6 +50,7 @@ socket.on('updateCasesTab', function(c){
 });
 
 socket.on('updatePlayersPrst', function(forme, tab){
+    player.nbJoueur = tab;
    switch(forme){
        case 1:
            Sonic.prst = false;
@@ -62,7 +65,6 @@ socket.on('updatePlayersPrst', function(forme, tab){
            Pika.prst = false;
            break;
    }
-    socket.emit('updateTabPlayer', tab);
 });
 
 
@@ -393,6 +395,8 @@ function drawGame(){
 function createLevel1(){
     var i, j;
     //Ajout des cases fixes
+
+    createPerso();
     for(i = 0; i < w; i += tailleCaseFixe){
         for(j = 0; j < h ; j += tailleCaseFixe){
             if((i % 80) === 0 && (j % 80) === 0 && i !== 0 && (i+tailleCaseFixe)!==w && j!==0 && (j+tailleCaseFixe)!==h){
@@ -569,30 +573,42 @@ function collisionExplosionHaut(bombe,i){
             if(((bombe.x)< (Sonic.x+(Sonic.w/2)) && (bombe.x+40)>=(Sonic.x+(Sonic.w/2)) && (bombe.y-yExplo)<=(Sonic.y) && (bombe.y+40)>(Sonic.y))){
                 Sonic.prst = false;
                 if(player.idJoueur === 1){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 1, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 1);
             }
             if(((bombe.x)< (Mario.x+(Mario.w/2)) && (bombe.x+40)>=(Mario.x+(Mario.w/2)) && (bombe.y-yExplo)<=(Mario.y) && (bombe.y+40)>(Mario.y))){
                 Mario.prst = false;
                 if(player.idJoueur === 2){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 2, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 2);
             }
             if(((bombe.x)< (Link.x+(Link.w/2)) && (bombe.x+40)>=(Link.x+(Link.w/2)) && (bombe.y-yExplo)<=(Link.y) && (bombe.y+40)>(Link.y))){
                 Link.prst = false;
                 if(player.idJoueur === 3){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 3, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 3);
             }
             if(((bombe.x)< (Pika.x+(Pika.w/2)) && (bombe.x+40)>=(Pika.x+(Pika.w/2)) && (bombe.y-yExplo)<=(Pika.y) && (bombe.y+40)>(Pika.y))){
                 Pika.prst = false;
                 if(player.idJoueur === 4){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 4, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 4);
             }
         }
     }
@@ -617,30 +633,42 @@ function collisionExplosionBas(bombe,i){
             if(((bombe.x)< (Sonic.x+(Sonic.w/2)) && (bombe.x+40)>=(Sonic.x+(Sonic.w/2)) && (bombe.y+yExplo)>=(Sonic.y) && (bombe.y)<=(Sonic.y))){
                 Sonic.prst = false;
                 if(player.idJoueur === 1){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 1, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 1);
             }
             if(((bombe.x)< (Mario.x+(Mario.w/2)) && (bombe.x+40)>=(Mario.x+(Mario.w/2)) && (bombe.y+yExplo)>=(Mario.y) && (bombe.y)<=(Mario.y))){
                 Mario.prst = false;
                 if(player.idJoueur === 2){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 2, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 2);
             }
             if(((bombe.x)< (Link.x+(Link.w/2)) && (bombe.x+40)>=(Link.x+(Link.w/2)) && (bombe.y+yExplo)>=(Link.y) && (bombe.y)<=(Link.y))){
                 Link.prst = false;
                 if(player.idJoueur === 3){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 3, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 3);
             }
             if(((bombe.x)< (Pika.x+(Pika.w/2)) && (bombe.x+40)>=(Pika.x+(Pika.w/2)) && (bombe.y+yExplo)>=(Pika.y) && (bombe.y)<=(Pika.y))){
                 Pika.prst = false;
                 if(player.idJoueur === 4){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 4, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 4);
             }
         }
     }
@@ -665,30 +693,42 @@ function collisionExplosionGauche(bombe,i){
             if(((bombe.x-xExplo)< Sonic.x && (bombe.x+40)>=(Sonic.x) && (bombe.y)<=(Sonic.y+(Sonic.h/2)) && (bombe.y+40)>=(Sonic.y+(Sonic.h/2)))){
                 Sonic.prst = false;
                 if(player.idJoueur === 1){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 1, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 1);
             }
             if(((bombe.x-xExplo)< Mario.x && (bombe.x+40)>=(Mario.x) && (bombe.y)<=(Mario.y+(Mario.h/2)) && (bombe.y+40)>=(Mario.y+(Mario.h/2)))){
                 Mario.prst = false;
                 if(player.idJoueur === 2){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 2, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 2);
             }
             if(((bombe.x-xExplo)< Link.x && (bombe.x+40)>=(Link.x) && (bombe.y)<=(Link.y+(Link.h/2)) && (bombe.y+40)>=(Link.y+(Link.h/2)))){
                 Link.prst = false;
                 if(player.idJoueur === 3){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 3, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 3);
             }
             if(((bombe.x-xExplo)< Pika.x && (bombe.x+40)>=(Pika.x) && (bombe.y)<=(Pika.y+(Pika.h/2)) && (bombe.y+40)>=(Pika.y+(Pika.h/2)))){
                 Pika.prst = false;
                 if(player.idJoueur === 4){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 4, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 4);
             }
         }
     }
@@ -713,30 +753,42 @@ function collisionExplosionDroite(bombe,n){
             if(((bombe.x+xExplo+40)> Sonic.x && (bombe.x)<=(Sonic.x) && (bombe.y)<=(Sonic.y+(Sonic.h/2)) && (bombe.y+40)>=(Sonic.y+(Sonic.h/2)))){
                 Sonic.prst = false;
                 if(player.idJoueur === 1){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 1, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 1);
             }
             if(((bombe.x+xExplo+40)> Mario.x && (bombe.x)<=(Mario.x) && (bombe.y)<=(Mario.y+(Mario.h/2)) && (bombe.y+40)>=(Mario.y+(Mario.h/2)))){
                 Mario.prst = false;
                 if(player.idJoueur === 2){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 2, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 2);
             }
             if(((bombe.x+xExplo+40)> Link.x && (bombe.x)<=(Link.x) && (bombe.y)<=(Link.y+(Link.h/2)) && (bombe.y+40)>=(Link.y+(Link.h/2)))){
                 Link.prst = false;
                 if(player.idJoueur === 3){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 3, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 3);
             }
             if(((bombe.x+xExplo+40)> Pika.x && (bombe.x)<=(Pika.x) && (bombe.y)<=(Pika.y+(Pika.h/2)) && (bombe.y+40)>=(Pika.y+(Pika.h/2)))){
                 Pika.prst = false;
                 if(player.idJoueur === 4){
-                    player.alive = false;
+                    if(player.alive){
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 4, player.nbJoueur);
+                    }
                 }
-                socket.emit("updatePlayerPrst", 4);
             }
         }
     }
