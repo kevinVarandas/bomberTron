@@ -48,31 +48,22 @@ teteExplosion.src = 'http://img11.hostingpics.net/pics/202245teteExplo.png';
 
 // MENU IMAGE
 var menuImage = new Image();
-menuImage.src = 'http://img15.hostingpics.net/pics/550801menu.png';
+menuImage.src = 'http://img11.hostingpics.net/pics/197287circuitselectronicsTronLegacydigitalarttechnical67140.png';
 
 var twoPlayers = new Image();
-twoPlayers.src = 'http://img15.hostingpics.net/thumbs/mini_243052twoPlayers.png';
+twoPlayers.src = 'http://img11.hostingpics.net/pics/729125Sanstitre2.png';
 
-var twoPlayersSelect = new Image();
-twoPlayersSelect.src = 'http://img15.hostingpics.net/thumbs/mini_953181twoPlayersSelect.png';
 
 var threePlayers = new Image();
-threePlayers.src = 'http://img15.hostingpics.net/thumbs/mini_595880ThreePlayers.png';
+threePlayers.src = 'http://img11.hostingpics.net/pics/485804Sanstitre3.png';
 
-var threePlayersSelect = new Image();
-threePlayersSelect.src = 'http://img15.hostingpics.net/thumbs/mini_681746ThreePlayersSelect.png';
 
 var fourPlayers = new Image();
-fourPlayers.src = 'http://img15.hostingpics.net/thumbs/mini_260744FourPlayers.png';
+fourPlayers.src = 'http://img11.hostingpics.net/pics/918351Sanstitre4.png';
 
-var fourPlayersSelect = new Image();
-fourPlayersSelect.src = 'http://img15.hostingpics.net/thumbs/mini_501233FourPlayersSelect.png';
 
 var rejoindre = new Image();
-rejoindre.src = 'http://img15.hostingpics.net/thumbs/mini_798519Rejoindre.png';
-
-var rejoindreSelect = new Image();
-rejoindreSelect.src = 'http://img15.hostingpics.net/thumbs/mini_454045RejoindreSelect.png';
+rejoindre.src = 'http://img11.hostingpics.net/pics/896041Sanstitrejoin.png';
 
 var loadingPlayerBar = new Image();
 loadingPlayerBar.src = 'http://img11.hostingpics.net/pics/394874loading.gif';
@@ -86,5 +77,5 @@ backButtonPushed.src = 'http://img11.hostingpics.net/pics/788836backButtonPush.p
 var bonusUpPower = new Image();
 bonusUpPower.src = 'http://img15.hostingpics.net/thumbs/mini_335223PowerUpsTG16.png';
 
-var optionWidth = 100;
-var optionHeight = 50;
+var optionWidth = 190;
+var optionHeight = 90;

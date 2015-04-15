@@ -2,12 +2,16 @@ var socket = io.connect();
 
 
 var allParty = [];
+var tmp =[];
 
 
 socket.on('listGame', function(tab){
     allParty = tab;
     showJoin();
 });
+socket.on('test', function(tab){
+    tmp=tab;
+})
 
 function showJoin(){
     var i;

@@ -11,24 +11,7 @@ var haut = false;
 var espace = false;
 var toucheEnfoncee = false;
 
-function deselectOther(id){
-    switch (id){
-        case 2:
-            twoPlayerOption.img = twoPlayers;
-            break;
-        case 3:
-            threePlayerOPtion.img = threePlayers;
-            break;
-        case 4:
-            fourPlayerOption.img = fourPlayers;
-            break;
-        case 5:
-            rejoindreOption.img = rejoindre;
-            break;
-        default :
-            break;
-    }
-}
+
 
 //Fonction traitant les clics
 function traiteClick(evt){
@@ -41,8 +24,6 @@ function traiteClick(evt){
 
         if(xPos > twoPlayerOption.x && xPos < (twoPlayerOption.x + optionWidth) &&
             yPos > twoPlayerOption.y && yPos < (twoPlayerOption.y + optionHeight)){
-            twoPlayerOption.img = twoPlayersSelect;
-            deselectOther(idSelected);
             idSelected = 2;
             socket.emit('createRoom', 2);
             menu = false;
@@ -53,8 +34,6 @@ function traiteClick(evt){
         }
         else if(xPos > threePlayerOPtion.x && xPos < (threePlayerOPtion.x + optionWidth) &&
             yPos > threePlayerOPtion.y && yPos < (threePlayerOPtion.y + optionHeight)){
-            threePlayerOPtion.img = threePlayersSelect;
-            deselectOther(idSelected);
             idSelected = 3;
             socket.emit('createRoom', 3);
             menu = false;
@@ -65,8 +44,6 @@ function traiteClick(evt){
         }
         else if(xPos > fourPlayerOption.x && xPos < (fourPlayerOption.x + optionWidth) &&
             yPos > fourPlayerOption.y && yPos < (fourPlayerOption.y + optionHeight)){
-            fourPlayerOption.img = fourPlayersSelect;
-            deselectOther(idSelected);
             idSelected = 4;
             socket.emit('createRoom', 4);
             menu = false;
@@ -77,8 +54,6 @@ function traiteClick(evt){
         }
         else if(xPos > rejoindreOption.x && xPos < (rejoindreOption.x + optionWidth) &&
             yPos > rejoindreOption.y && yPos < (rejoindreOption.y + optionHeight)){
-            rejoindreOption.img = rejoindreSelect;
-            deselectOther(idSelected);
             idSelected = 5;
             socket.emit('recupParty');
             backOption.img = backButton;
@@ -136,7 +111,7 @@ function traiteToucheAppuyee(evt){
     else if(evt.keyCode === 32){
         toucheEnfoncee = true;
         espace = true;
-        if(!menu){
+        if(!menu && !theEnd){
             if(player.nbBomb > 0 && player.alive)
             {
                 addBomb(player.forme,player.idJoueur);
@@ -145,6 +120,9 @@ function traiteToucheAppuyee(evt){
         }
         if(theEnd){
             theEnd = false;
+            sound.stop();
+            menu = true;
+            document.getElementById("winnerDiv").style.visibility = "hidden";
         }
     }
 }

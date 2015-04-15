@@ -6,28 +6,94 @@ var nbJoueur = 0;
 /*socket.on('connect', function(){
     socket.emit('playerStyle');
 });*/
+var Sonic;
+var Mario;
+var Pika;
+var Link;
 
-socket.on('createJoueur', function(n){
+
+function createPerso(){
+    Sonic = {
+        x : 40,
+        y : 40,
+        vx : 4,
+        vy : 4,
+        w : 21,
+        h : 28,
+        picx : 21,
+        picy : 56,
+        cpt : 0,
+        prst : false,
+        droppedBomb : false
+    };
+
+    Mario = {
+        x : 680,
+        y : 40,
+        vx : 4,
+        vy : 4,
+        w : 18.5,
+        h : 31.5,
+        picx : 0,
+        picy : 0,
+        cpt : 0,
+        prst : false,
+        droppedBomb : false
+    };
+
+    Pika = {
+        x : 680,
+        y : 440,
+        vx : 4,
+        vy : 4,
+        w : 24,
+        h : 27.1,
+        picx : 0,
+        picy : 0,
+        cpt : 0,
+        prst : false,
+        droppedBomb : false
+    };
+
+    Link = {
+        x : 40,
+        y : 440,
+        vx : 4,
+        vy : 4,
+        w : 19,
+        h : 34,
+        picx : 0,
+        picy : 0,
+        cpt : 0,
+        prst : false,
+        droppedBomb : false
+    };
+}
+socket.on('createJoueur', function(n, username){
+    bombs=[];
     nbJoueur = n;
+    sound.play();
+    createLevel1();
+
     switch (n)
     {
         case 1 :
-            player =  new Player(1, Sonic, socket.username);
+            player =  new Player(1, Sonic, username, 1);
             Sonic.prst = true;
             break;
         case 2 :
-            player =  new Player(2, Mario, socket.username);
+            player =  new Player(2, Mario, username, 2);
             Sonic.prst = true;
             Mario.prst = true;
             break;
         case 3 :
-            player =  new Player(3, Link, socket.username);
+            player =  new Player(3, Link, username, 3);
             Sonic.prst = true;
             Mario.prst = true;
             Link.prst = true;
             break;
         case 4 :
-            player =  new Player(4, Pika, socket.username);
+            player =  new Player(4, Pika, username, 4);
             Sonic.prst = true;
             Mario.prst = true;
             Link.prst = true;
@@ -44,19 +110,21 @@ socket.on('updateNbJoueur', function(n){
     {
         case 2 :
             Mario.prst = true;
+            player.nbJoueur = 2;
             break;
         case 3 :
+            player.nbJoueur = 3;
             Link.prst = true;
             break;
         case 4 :
+            player.nbJoueur = 4;
             Pika.prst = true;
             break;
     }
 });
 
 
-
-var Sonic = {
+/*var Sonic = {
     x : 40,
     y : 40,
     vx : 4,
@@ -110,7 +178,7 @@ var Link = {
     cpt : 0,
     prst : false,
     droppedBomb : false
-};
+};*/
 
 /*****************************************/
 //A REFACTOR POUR FAIRE UNE FACTORYs
@@ -454,12 +522,13 @@ function drawLink(){
 }
 
 
-function Player(idJoueur, forme, username){
+function Player(idJoueur, forme, username, nbJoueur){
     this.idJoueur = idJoueur;
     this.forme = forme;
     this.username = username;
     this.nbBomb = 1;
     this.alive = true;
+    this.nbJoueur = nbJoueur;
 
     this.setBomb = function(){this.nbBomb++;};
 }

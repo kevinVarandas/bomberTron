@@ -1,4 +1,5 @@
 var socket = io.connect();
+//var tabl=[];
 
 socket.on('updateWaitingGamePlayer', function(){
     document.getElementById("waintingPlayerDiv").style.visibility = "hidden";
@@ -28,5 +29,9 @@ socket.on('updateIdRoom', function(id){
 
 socket.on('updateDecoIdPlayer', function(id){
     socket.emit('updateIdInRoom', id);
+});
+
+socket.on('eventSoundExplosion', function(){
+    soundExplo.play();
 });
 
