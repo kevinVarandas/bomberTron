@@ -9,14 +9,24 @@ var level = 1;
 
 var sound = new Howl({
     urls: ['chiptune_proj_cpp_mp3.mp3'],
-    id: "generalSound",
     loop: true,
+    volume: 0.1
+});
+
+var soundGame = new Howl({
+    urls: ['soundGame.mp3'],
+    loop:true,
     volume: 0.1
 });
 
 var soundExplo = new Howl({
     urls: ['charged-laser1.wav'],
-    volume: 1
+    volume: 0.6
+});
+
+var soundSelection = new Howl({
+    urls: ['laser-selection1.wav'],
+    volume: 0.1
 });
 
 
@@ -37,7 +47,11 @@ window.onload = function(){
     drawBackground();
 
     addCaseFixe();
+<<<<<<< HEAD
 
+=======
+    sound.play();
+>>>>>>> c5649a967a92d0eec2faee5a3becb9782141f27a
     //On prepare le niveau
     //TODO LE METTRE DANS LE ANIME ENSUITE
     generateLevel(level);

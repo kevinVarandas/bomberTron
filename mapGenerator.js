@@ -512,12 +512,12 @@ function collisonDroite(x, y, v){
 
 function collisionBombHaut(x, y, v){
     var i;
-    var pos = y - v;
+    var pos = y - v - 10;
     if(bombs.length !==0) {
         for(i = 0; i < bombs.length; i++){
-            if (pos < bombs[i].getY() && pos > (bombs[i].getY() + bombs[i].getTailleBomb()) &&
-                ((x - 5 > bombs[i].getX() && x - 5 < bombs[i].getX() + bombs[i].getTailleBomb()) ||
-                (x + 5 > bombs[i].getX() && x + 5 < bombs[i].getX() + bombs[i].getTailleBomb()))){
+            if (pos > bombs[i].y && pos < bombs[i].y + bombs[i].taille &&
+                ((x - 5 > bombs[i].x && x - 5 < bombs[i].x + bombs[i].taille) ||
+                (x + 5 > bombs[i].x && x + 5 < bombs[i].x + bombs[i].taille))){
                 return true;
             }
         }
@@ -559,8 +559,14 @@ function collisionBombDroite(x, y, v){
     var pos = x + v + 15;
     if(bombs.length !==0) {
         for(i = 0; i < bombs.length; i++){
+<<<<<<< HEAD
             if(pos > bombs[i].x && pos < bombs[i].x + bombs[i].taille &&
                 ((y >= bombs[i].y && y < bombs[i].y + bombs[i].taille))){
+=======
+            if(pos > bombs[i].getY() && pos < bombs[i].getY() + bombs[i].taille &&
+                ((x-10 > bombs[i].getX() && x-10 < bombs[i].getX() + bombs[i].taille) ||
+                (x+10 > bombs[i].getX() && x+10 < bombs[i].getX() + bombs[i].taille))){
+>>>>>>> c5649a967a92d0eec2faee5a3becb9782141f27a
                 return true;
             }
         }

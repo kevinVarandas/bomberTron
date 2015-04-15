@@ -19,6 +19,24 @@ function traiteClick(evt){
     xPos = evt.clientX;
     yPos = evt.clientY;
 
+    if(xPos > muteOption.x && xPos < (muteOption.x + muteOption.w) &&
+    yPos > muteOption.y && yPos < (muteOption.y + muteOption.h)){
+        if(muteOption.mute){
+            soundGame.volume(0);
+            sound.volume(0);
+            soundExplo.volume(0);
+            soundSelection.volume(0);
+            muteOption.mute = false;
+            muteOption.img = unmuteButton;
+        }else{
+            soundGame.volume(0.1);
+            sound.volume(0.1);
+            soundExplo.volume(0.6);
+            soundSelection.volume(0.1);
+            muteOption.mute = true;
+            muteOption.img = muteButton;
+        }
+    }
     if(menu)
     {
 
@@ -27,6 +45,7 @@ function traiteClick(evt){
             idSelected = 2;
             socket.emit('createRoom', 2);
             menu = false;
+            soundSelection.play();
             $('#nbPresentPlayer').text('(1/2)');
             waitPlayer = true;
             document.getElementById("waintingPlayerDiv").style.visibility = "visible";
@@ -35,6 +54,7 @@ function traiteClick(evt){
         else if(xPos > threePlayerOPtion.x && xPos < (threePlayerOPtion.x + optionWidth) &&
             yPos > threePlayerOPtion.y && yPos < (threePlayerOPtion.y + optionHeight)){
             idSelected = 3;
+            soundSelection.play();
             socket.emit('createRoom', 3);
             menu = false;
             $('#nbPresentPlayer').text('(1/3)');
@@ -45,6 +65,7 @@ function traiteClick(evt){
         else if(xPos > fourPlayerOption.x && xPos < (fourPlayerOption.x + optionWidth) &&
             yPos > fourPlayerOption.y && yPos < (fourPlayerOption.y + optionHeight)){
             idSelected = 4;
+            soundSelection.play();
             socket.emit('createRoom', 4);
             menu = false;
             $('#nbPresentPlayer').text('(1/4)');
@@ -55,6 +76,7 @@ function traiteClick(evt){
         else if(xPos > rejoindreOption.x && xPos < (rejoindreOption.x + optionWidth) &&
             yPos > rejoindreOption.y && yPos < (rejoindreOption.y + optionHeight)){
             idSelected = 5;
+            soundSelection.play();
             socket.emit('recupParty');
             backOption.img = backButton;
             boolJoin = true;
@@ -65,6 +87,7 @@ function traiteClick(evt){
     if(boolJoin){
         if(xPos > backOption.x && xPos < (backOption.x + backOption.w) && yPos > backOption.y && yPos < (backOption.y + backOption.h)){
             backOption.img = backButtonPushed;
+            soundSelection.play();
             menu = true;
             boolJoin = false;
         }
@@ -120,7 +143,8 @@ function traiteToucheAppuyee(evt){
         }
         if(theEnd){
             theEnd = false;
-            sound.stop();
+            soundGame.stop();
+            sound.play();
             menu = true;
             document.getElementById("winnerDiv").style.visibility = "hidden";
         }
@@ -261,5 +285,6 @@ function anime(time){
             drawLink();
         }
     }
+    showMuteButton();
     requestAnimationFrame(anime);
 }
