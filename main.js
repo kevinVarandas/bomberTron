@@ -47,11 +47,7 @@ window.onload = function(){
     drawBackground();
 
     addCaseFixe();
-<<<<<<< HEAD
-
-=======
     sound.play();
->>>>>>> c5649a967a92d0eec2faee5a3becb9782141f27a
     //On prepare le niveau
     //TODO LE METTRE DANS LE ANIME ENSUITE
     generateLevel(level);
