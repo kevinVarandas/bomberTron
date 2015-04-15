@@ -16,7 +16,12 @@ var sound = new Howl({
 
 var soundExplo = new Howl({
     urls: ['charged-laser1.wav'],
-    volume: 1
+    volume: 0.6
+});
+
+var soundSelection = new Howl({
+    urls: ['laser-selection1.wav'],
+    volume: 0.1
 });
 
 
