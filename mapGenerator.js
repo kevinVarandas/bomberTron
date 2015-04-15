@@ -22,6 +22,26 @@ function addCaseFixe(){
         }
     }
 }
+
+function addBonus(){
+    var i;
+    var rand;
+
+    for(i = 0; i < cases.length; i++){
+        rand = Math.floor(Math.random() * 15);
+        if(!cases[i].isFixe() && rand === 0){
+            bonus.push(new Bonus(cases[i].x,cases[i].y, cases[i].tailleCase));
+        }
+    }
+}
+
+socket.on('getBonus',function(bon){
+    var i;
+    for(i = 0; i<bon.length; i++){
+        bonus.push(new Bonus(bon[i].x,bon[i].y,bon[i].taille));
+    }
+});
+
 //fonction qui ajoute des bombes qd on appuis sur espace
 function addBomb(Player,id){
     //soundExplo.play();
@@ -44,15 +64,11 @@ socket.on('updateBombsTab', function(bombes){
     }
 });
 
-socket.on('updateCasesTab', function(c,b){
+socket.on('updateCasesTab', function(c){
     cases = [];
     var i;
     for(i=0;i<c.length;i++){
         cases.push(new Case(c[i].x, c[i].y, c[i].type, c[i].tailleCase));
-    }
-
-    for(i=0; i< b.length; i++){
-        bonus.push(new Bonus(c[i].x, c[i].y, c[i].taille));
     }
 });
 
@@ -78,7 +94,7 @@ function drawBonus(){
     var i;
 
     for(i = 0; i < bonus.length; i++){
-        ctx.drawImage(bonusUpPower,bonus[i].x,bonus[i].y,bonus[i].taille,bonus[i].taille)
+        ctx.drawImage(bonusUpPower,bonus[i].x,bonus[i].y,bonus[i].taille-10,bonus[i].taille-10)
     }
 }
 
@@ -592,10 +608,9 @@ function collisionExplosionHaut(bombe,i){
                 bombe.x >= cases[i].x && bombe.x < (cases[i].x+cases[i].tailleCase)){
                 var r = Math.floor(Math.random() * 15);
                 if(r === 0){
-                    bonus.push(new Bonus(cases[i].x, cases[i].y,cases[i].tailleCase));
                 }
                 cases.splice(i, 1);
-                socket.emit("updateCases", cases, bonus);
+                socket.emit("updateCases", cases);
             }
         }
         if(((bombe.x)< (Sonic.x+(Sonic.w/2)) && (bombe.x+40)>=(Sonic.x+(Sonic.w/2)) && (bombe.y-yExplo)<=(Sonic.y) && (bombe.y+40)>(Sonic.y))){
@@ -656,10 +671,9 @@ function collisionExplosionBas(bombe,i){
                 bombe.x >= cases[i].x && bombe.x < (cases[i].x+cases[i].tailleCase)){
                 var r = Math.floor(Math.random() * 15);
                 if(r === 0){
-                    bonus.push(new Bonus(cases[i].x, cases[i].y,cases[i].tailleCase));
                 }
                 cases.splice(i, 1);
-                socket.emit("updateCases", cases, bonus);
+                socket.emit("updateCases", cases);
             }
         }
         if(((bombe.x)< (Sonic.x+(Sonic.w/2)) && (bombe.x+40)>=(Sonic.x+(Sonic.w/2)) && (bombe.y+yExplo)>=(Sonic.y) && (bombe.y)<=(Sonic.y))){
@@ -720,10 +734,9 @@ function collisionExplosionGauche(bombe,i){
                 bombe.y >= cases[i].y && bombe.y < (cases[i].y+cases[i].tailleCase)){
                 var r = Math.floor(Math.random() * 15);
                 if(r === 0){
-                    bonus.push(new Bonus(cases[i].x, cases[i].y,cases[i].tailleCase));
                 }
                 cases.splice(i, 1);
-                socket.emit("updateCases", cases, bonus);
+                socket.emit("updateCases", cases);
             }
         }
         if(((bombe.x-xExplo)< Sonic.x && (bombe.x+40)>=(Sonic.x) && (bombe.y)<=(Sonic.y+(Sonic.h/2)) && (bombe.y+40)>=(Sonic.y+(Sonic.h/2)))){
@@ -784,10 +797,9 @@ function collisionExplosionDroite(bombe,n){
                 bombe.y >= cases[i].y && bombe.y < (cases[i].y+cases[i].tailleCase)){
                 var r = Math.floor(Math.random() * 15);
                 if(r === 0){
-                    bonus.push(new Bonus(cases[i].x, cases[i].y,cases[i].tailleCase));
                 }
                 cases.splice(i, 1);
-                socket.emit("updateCases", cases, bonus);
+                socket.emit("updateCases", cases);
             }
         }
         if(((bombe.x+xExplo+40)> Sonic.x && (bombe.x)<=(Sonic.x) && (bombe.y)<=(Sonic.y+(Sonic.h/2)) && (bombe.y+40)>=(Sonic.y+(Sonic.h/2)))){

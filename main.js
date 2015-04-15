@@ -35,7 +35,9 @@ window.onload = function(){
     w = canvas.width;
     h = canvas.height;
     drawBackground();
+
     addCaseFixe();
+
     //On prepare le niveau
     //TODO LE METTRE DANS LE ANIME ENSUITE
     generateLevel(level);

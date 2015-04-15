@@ -238,8 +238,8 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.to(socket.room).emit('updateNbJoueur', n);
     });
 
-    socket.on('updateCases', function(cases,bonus){
-        io.sockets.in(socket.room).emit('updateCasesTab', cases,bonus);
+    socket.on('updateCases', function(cases){
+        io.sockets.in(socket.room).emit('updateCasesTab', cases);
     });
 
     socket.on('updatePlayerPrst', function(forme, tab){
@@ -267,4 +267,8 @@ io.sockets.on('connection', function (socket) {
     socket.on('eventSoundExplo', function(){
         io.sockets.in(socket.room).emit('eventSoundExplosion');
     });
+
+    socket.on('shareBonus', function(bonus){
+        socket.broadcast.to(socket.room).emit('getBonus',bonus);
+    })
 });

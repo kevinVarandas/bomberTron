@@ -80,6 +80,9 @@ socket.on('createJoueur', function(n, username){
         case 1 :
             player =  new Player(1, Sonic, username, 1);
             Sonic.prst = true;
+            addBonus();
+            socket.emit('shareBonus',bonus);
+
             break;
         case 2 :
             player =  new Player(2, Mario, username, 2);

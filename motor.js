@@ -245,9 +245,9 @@ function anime(time){
         drawEnd();
     }
     else {
+        drawBonus();
         drawGame();
         drawBombs();
-        drawBonus();
         if(Sonic.prst){
             drawSonic();
         }
