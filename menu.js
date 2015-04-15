@@ -32,6 +32,17 @@ var backOption = {
     img : backButton
 };
 
+var muteOption = {
+    x : 5,
+    y : 5,
+    w : 40,
+    h : 40,
+    img : muteButton,
+    mute : false
+}
+function showMuteButton(){
+    ctx.drawImage(muteOption.img, muteOption.x, muteOption.y, muteOption.w, muteOption.h);
+}
 function showMenu(){
     ctx.save();
     document.getElementById("waintingPlayerDiv").style.visibility = "hidden";

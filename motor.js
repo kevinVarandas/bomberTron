@@ -19,6 +19,24 @@ function traiteClick(evt){
     xPos = evt.clientX;
     yPos = evt.clientY;
 
+    if(xPos > muteOption.x && xPos < (muteOption.x + muteOption.w) &&
+    yPos > muteOption.y && yPos < (muteOption.y + muteOption.h)){
+        if(muteOption.mute){
+            soundGame.volume(0);
+            sound.volume(0);
+            soundExplo.volume(0);
+            soundSelection.volume(0);
+            muteOption.mute = false;
+            muteOption.img = unmuteButton;
+        }else{
+            soundGame.volume(0.1);
+            sound.volume(0.1);
+            soundExplo.volume(0.6);
+            soundSelection.volume(0.1);
+            muteOption.mute = true;
+            muteOption.img = muteButton;
+        }
+    }
     if(menu)
     {
 
@@ -125,7 +143,8 @@ function traiteToucheAppuyee(evt){
         }
         if(theEnd){
             theEnd = false;
-            sound.stop();
+            soundGame.stop();
+            sound.play();
             menu = true;
             document.getElementById("winnerDiv").style.visibility = "hidden";
         }
@@ -265,5 +284,6 @@ function anime(time){
             drawLink();
         }
     }
+    showMuteButton();
     requestAnimationFrame(anime);
 }

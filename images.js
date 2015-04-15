@@ -74,5 +74,11 @@ backButton.src = 'http://img11.hostingpics.net/pics/209486backButton.png';
 var backButtonPushed = new Image();
 backButtonPushed.src = 'http://img11.hostingpics.net/pics/788836backButtonPush.png';
 
+var muteButton = new Image();
+muteButton.src = 'mute.png';
+
+var unmuteButton = new Image();
+unmuteButton.src = "unmute.png";
+
 var optionWidth = 190;
 var optionHeight = 90;

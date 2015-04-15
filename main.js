@@ -9,8 +9,13 @@ var level = 1;
 
 var sound = new Howl({
     urls: ['chiptune_proj_cpp_mp3.mp3'],
-    id: "generalSound",
     loop: true,
+    volume: 0.1
+});
+
+var soundGame = new Howl({
+    urls: ['soundGame.mp3'],
+    loop:true,
     volume: 0.1
 });
 
@@ -41,6 +46,7 @@ window.onload = function(){
     h = canvas.height;
     drawBackground();
     addCaseFixe();
+    sound.play();
     //On prepare le niveau
     //TODO LE METTRE DANS LE ANIME ENSUITE
     generateLevel(level);
