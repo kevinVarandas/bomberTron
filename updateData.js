@@ -31,3 +31,7 @@ socket.on('updateDecoIdPlayer', function(id){
     socket.emit('updateIdInRoom', id);
 });
 
+socket.on('eventSoundExplosion', function(){
+    soundExplo.play();
+});
+

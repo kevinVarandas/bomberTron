@@ -1,13 +1,13 @@
 
 
 var twoPlayerOption = {
-    x : 75,
+    x : 25,
     y : 300,
     img : twoPlayers
 };
 
 var threePlayerOPtion = {
-    x : 225,
+    x : 200,
     y : 300,
     img : threePlayers
 };
@@ -19,7 +19,7 @@ var fourPlayerOption = {
 };
 
 var rejoindreOption = {
-    x : 525,
+    x : 550,
     y : 300,
     img : rejoindre
 };

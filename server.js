@@ -263,4 +263,8 @@ io.sockets.on('connection', function (socket) {
         io.sockets.emit('newRoom', rooms);
         io.sockets.emit('listGame', party);
     });
+
+    socket.on('eventSoundExplo', function(){
+        io.sockets.in(socket.room).emit('eventSoundExplosion');
+    });
 });

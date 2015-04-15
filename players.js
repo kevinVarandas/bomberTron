@@ -72,6 +72,7 @@ function createPerso(){
 socket.on('createJoueur', function(n, username){
     bombs=[];
     nbJoueur = n;
+    sound.play();
     createLevel1();
 
     switch (n)

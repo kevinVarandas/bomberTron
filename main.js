@@ -1,6 +1,3 @@
-/**
- * Created by kevin on 22/02/2015.
- */
 var menu = true;
 var boolJoin = false;
 var waitPlayer = false;
@@ -9,6 +6,18 @@ var backgroundCanvas, ctxBckg, wBckg, hBckg;
 var canvas, ctx, w, h;
 // VAR pour le niveau
 var level = 1;
+
+var sound = new Howl({
+    urls: ['chiptune_proj_cpp_mp3.mp3'],
+    id: "generalSound",
+    loop: true,
+    volume: 0.1
+});
+
+var soundExplo = new Howl({
+    urls: ['charged-laser1.wav'],
+    volume: 1
+});
 
 
 window.onload = function(){
@@ -25,7 +34,6 @@ window.onload = function(){
     ctx = canvas.getContext('2d');
     w = canvas.width;
     h = canvas.height;
-
     drawBackground();
     addCaseFixe();
     //On prepare le niveau
