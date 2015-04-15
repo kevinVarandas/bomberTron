@@ -22,8 +22,9 @@ socket.on('afficheWinner', function(username){
 
 function drawEnd(){
     //console.log(winnerUsername);
-    $('#winnerName').text(winnerUsername + " a gagné !");
+    $('#winnerName').text(winnerUsername + " a gagné !\n");
     document.getElementById("winnerDiv").style.visibility = "visible";
 
 }
+
 

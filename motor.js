@@ -266,6 +266,7 @@ function anime(time){
         //drawWait();
     }
     else if(theEnd){
+        ctx.drawImage(endGameImg, 0, 0, 760, 520);
         drawEnd();
     }
     else {

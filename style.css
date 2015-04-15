@@ -19,6 +19,8 @@ body{
     background-color: #666666;
 }
 
-/*#waitingPlayer{
-    left : 280px;
-}*/
+
+
+#winnerName{
+    font-size: 200%;
+}

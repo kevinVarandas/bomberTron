@@ -78,7 +78,10 @@ var muteButton = new Image();
 muteButton.src = 'mute.png';
 
 var unmuteButton = new Image();
-unmuteButton.src = "unmute.png";
+unmuteButton.src = 'unmute.png';
+
+var endGameImg = new Image();
+endGameImg.src = 'endGame.png';
 
 var optionWidth = 190;
 var optionHeight = 90;
