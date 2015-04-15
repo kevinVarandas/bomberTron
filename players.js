@@ -81,6 +81,9 @@ socket.on('createJoueur', function(n, username){
         case 1 :
             player =  new Player(1, Sonic, username, 1);
             Sonic.prst = true;
+            addBonus();
+            socket.emit('shareBonus',bonus);
+
             break;
         case 2 :
             player =  new Player(2, Mario, username, 2);
@@ -527,7 +530,7 @@ function Player(idJoueur, forme, username, nbJoueur){
     this.idJoueur = idJoueur;
     this.forme = forme;
     this.username = username;
-    this.nbBomb = 2;
+    this.nbBomb = 1;
     this.alive = true;
     this.nbJoueur = nbJoueur;
 

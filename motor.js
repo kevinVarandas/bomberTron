@@ -270,6 +270,7 @@ function anime(time){
         drawEnd();
     }
     else {
+        drawBonus();
         drawGame();
         drawBombs();
         if(Sonic.prst){

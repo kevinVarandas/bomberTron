@@ -8,7 +8,8 @@ var bombs = [];
 //VAR tableau de cases
 var cases = [];
 
-
+//VAR bonus
+var bonus = [];
 
 // Fonction qui dessine les bords du plateau de jeu
 function addCaseFixe(){
@@ -21,6 +22,26 @@ function addCaseFixe(){
         }
     }
 }
+
+function addBonus(){
+    var i;
+    var rand;
+
+    for(i = 0; i < cases.length; i++){
+        rand = Math.floor(Math.random() * 15);
+        if(!cases[i].isFixe() && rand === 0){
+            bonus.push(new Bonus(cases[i].x,cases[i].y, cases[i].tailleCase));
+        }
+    }
+}
+
+socket.on('getBonus',function(bon){
+    var i;
+    for(i = 0; i<bon.length; i++){
+        bonus.push(new Bonus(bon[i].x,bon[i].y,bon[i].taille));
+    }
+});
+
 //fonction qui ajoute des bombes qd on appuis sur espace
 function addBomb(Player,id){
     //soundExplo.play();
@@ -69,7 +90,13 @@ socket.on('updatePlayersPrst', function(forme, tab){
    }
 });
 
+function drawBonus(){
+    var i;
 
+    for(i = 0; i < bonus.length; i++){
+        ctx.drawImage(bonusUpPower,bonus[i].x,bonus[i].y,bonus[i].taille-10,bonus[i].taille-10)
+    }
+}
 
 // fonction qui dessine les bombes
 function drawBombs(){
@@ -365,6 +392,13 @@ function Bomb(x, y, type, puissance, duree, taille){
     this.getY = function(){return this.y;};
     this.getTailleBomb = function(){return this.taille};
 }
+
+function Bonus(x,y,taille){
+    this.x = x;
+    this.y = y;
+    this.taille = taille;
+}
+
 // fonction ajout d'une case cassable
 function addCaseCassable(x, y){
     cases.push(new Case(x,y,false,tailleCaseFixe))
@@ -491,6 +525,21 @@ function collisionBombHaut(x, y, v){
     }
 }
 
+function collisionBombBas(x, y, v){
+    var i;
+    var pos = y + v + 10;
+    if(bombs.length !==0) {
+        for(i = 0; i < bombs.length; i++){
+            if(pos > bombs[i].getY() && pos < bombs[i].getY() + bombs[i].getTailleBomb() &&
+                ((x-10 > bombs[i].getX() && x-10 < bombs[i].getX() + bombs[i].getTailleBomb()) ||
+                (x+10 > bombs[i].getX() && x+10 < bombs[i].getX() + bombs[i].getTailleBomb()))){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
 function collisionBombGauche(x, y, v){
     var i;
     var pos = x - v - 5;
@@ -505,298 +554,302 @@ function collisionBombGauche(x, y, v){
     }
 }
 
-function collisionBombDroite(x, y, v){
+function collisionBombDroite(x, y, v) {
     var i;
     var pos = x + v + 15;
-    if(bombs.length !==0) {
-        for(i = 0; i < bombs.length; i++){
-            if(pos > bombs[i].x && pos < bombs[i].x + bombs[i].taille &&
-                ((y >= bombs[i].y && y < bombs[i].y + bombs[i].taille))){
-                return true;
-            }
-        }
-        return false;
-    }
-}
-
-function collisionBombBas(x, y, v){
-    var i;
-    var pos = y + v + 10;
-    if(bombs.length !==0) {
-        for(i = 0; i < bombs.length; i++){
-            if(pos > bombs[i].getY() && pos < bombs[i].getY() + bombs[i].taille &&
-                ((x-10 > bombs[i].getX() && x-10 < bombs[i].getX() + bombs[i].taille) ||
-                (x+10 > bombs[i].getX() && x+10 < bombs[i].getX() + bombs[i].taille))){
-                return true;
-            }
-        }
-        return false;
-    }
-}
-
-function isOnBomb(forme){
-    var i;
-    var posX = forme.x + (forme.w / 2);
-    var posY = forme.y + forme.h;
-    if(forme.droppedBomb) {
+    if (bombs.length !== 0) {
         for (i = 0; i < bombs.length; i++) {
-            if( posY <= (bombs[i].y + bombs[i].taille) &&
-                posY >= (bombs[i].y)
-                && posX <= (bombs[i].x + bombs[i].taille)
-                && posX >= bombs[i].x && bombs[i].isUnlock
-                && bombs[i].type === player.idJoueur
-            ) {
-
-                return true;
+            if (pos > bombs[i].x && pos < bombs[i].x + bombs[i].taille &&
+                ((y >= bombs[i].y && y < bombs[i].y + bombs[i].taille))) {
+                if (pos > bombs[i].getY() && pos < bombs[i].getY() + bombs[i].taille &&
+                    ((x - 10 > bombs[i].getX() && x - 10 < bombs[i].getX() + bombs[i].taille) ||
+                    (x + 10 > bombs[i].getX() && x + 10 < bombs[i].getX() + bombs[i].taille))) {
+                    return true;
+                }
             }
-            else{
-                bombs[i].isUnlock = false;
-                socket.emit('updateTabBomb', bombs);
-            }
+            return false;
         }
-        forme.droppedBomb = false;
     }
-    return false;
 }
 
-function collisionExplosionHaut(bombe,i){
-    var yExplo = i * 40;
-    var i;
-    for(i=0;i<cases.length;i++){
-        if(cases[i].isFixe()){
-            if((bombe.y-yExplo) >= cases[i].y && (bombe.y-yExplo)< (cases[i].y + cases[i].tailleCase) &&
-                bombe.x >= cases[i].x && bombe.x < (cases[i].x+cases[i].tailleCase)){
-                return true;
-            }
-        }
-        else{
-            if((bombe.y-yExplo) >= cases[i].y && (bombe.y-yExplo)< (cases[i].y + cases[i].tailleCase) &&
-                bombe.x >= cases[i].x && bombe.x < (cases[i].x+cases[i].tailleCase)){
-                cases.splice(i, 1);
-                socket.emit("updateCases", cases);
-            }
-        }
-        if(((bombe.x)< (Sonic.x+(Sonic.w/2)) && (bombe.x+40)>=(Sonic.x+(Sonic.w/2)) && (bombe.y-yExplo)<=(Sonic.y) && (bombe.y+40)>(Sonic.y))){
-            Sonic.prst = false;
-            if(player.idJoueur === 1){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 1, player.nbJoueur);
+    function isOnBomb(forme) {
+        var i;
+        var posX = forme.x + (forme.w / 2);
+        var posY = forme.y + forme.h;
+        if (forme.droppedBomb) {
+            for (i = 0; i < bombs.length; i++) {
+                if (posY <= (bombs[i].y + bombs[i].taille) &&
+                    posY >= (bombs[i].y)
+                    && posX <= (bombs[i].x + bombs[i].taille)
+                    && posX >= bombs[i].x && bombs[i].isUnlock
+                    && bombs[i].type === player.idJoueur
+                ) {
+
+                    return true;
+                }
+                else {
+                    bombs[i].isUnlock = false;
+                    socket.emit('updateTabBomb', bombs);
                 }
             }
+            forme.droppedBomb = false;
         }
-        if(((bombe.x)< (Mario.x+(Mario.w/2)) && (bombe.x+40)>=(Mario.x+(Mario.w/2)) && (bombe.y-yExplo)<=(Mario.y) && (bombe.y+40)>(Mario.y))){
-            Mario.prst = false;
-            if(player.idJoueur === 2){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 2, player.nbJoueur);
-                }
-            }
-        }
-        if(((bombe.x)< (Link.x+(Link.w/2)) && (bombe.x+40)>=(Link.x+(Link.w/2)) && (bombe.y-yExplo)<=(Link.y) && (bombe.y+40)>(Link.y))){
-            Link.prst = false;
-            if(player.idJoueur === 3){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 3, player.nbJoueur);
-                }
-            }
-        }
-        if(((bombe.x)< (Pika.x+(Pika.w/2)) && (bombe.x+40)>=(Pika.x+(Pika.w/2)) && (bombe.y-yExplo)<=(Pika.y) && (bombe.y+40)>(Pika.y))){
-            Pika.prst = false;
-            if(player.idJoueur === 4){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 4, player.nbJoueur);
-                }
-            }
-        }
+        return false;
     }
-    return false;
-}
-function collisionExplosionBas(bombe,i){
-    var yExplo = i * 40;
-    var i;
-    for(i=0;i<cases.length;i++){
-        if(cases[i].isFixe()){
-            if((bombe.y+yExplo) >= cases[i].y && (bombe.y+yExplo)< (cases[i].y + cases[i].tailleCase) &&
-                bombe.x >= cases[i].x && bombe.x < (cases[i].x+cases[i].tailleCase)){
-                return true;
+
+    function collisionExplosionHaut(bombe, i) {
+        var yExplo = i * 40;
+        var i;
+        for (i = 0; i < cases.length; i++) {
+            if (cases[i].isFixe()) {
+                if ((bombe.y - yExplo) >= cases[i].y && (bombe.y - yExplo) < (cases[i].y + cases[i].tailleCase) &&
+                    bombe.x >= cases[i].x && bombe.x < (cases[i].x + cases[i].tailleCase)) {
+                    return true;
+                }
             }
-        }
-        else{
-            if((bombe.y+yExplo) >= cases[i].y && (bombe.y+yExplo)< (cases[i].y + cases[i].tailleCase) &&
-                bombe.x >= cases[i].x && bombe.x < (cases[i].x+cases[i].tailleCase)){
-                cases.splice(i, 1);
-                socket.emit("updateCases", cases);
+            else {
+                if ((bombe.y - yExplo) >= cases[i].y && (bombe.y - yExplo) < (cases[i].y + cases[i].tailleCase) &&
+                    bombe.x >= cases[i].x && bombe.x < (cases[i].x + cases[i].tailleCase)) {
+                    var r = Math.floor(Math.random() * 15);
+                    if (r === 0) {
+                    }
+                    cases.splice(i, 1);
+                    socket.emit("updateCases", cases);
+                }
             }
-        }
-        if(((bombe.x)< (Sonic.x+(Sonic.w/2)) && (bombe.x+40)>=(Sonic.x+(Sonic.w/2)) && (bombe.y+yExplo)>=(Sonic.y) && (bombe.y)<=(Sonic.y))){
-            Sonic.prst = false;
-            if(player.idJoueur === 1){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 1, player.nbJoueur);
+            if (((bombe.x) < (Sonic.x + (Sonic.w / 2)) && (bombe.x + 40) >= (Sonic.x + (Sonic.w / 2)) && (bombe.y - yExplo) <= (Sonic.y) && (bombe.y + 40) > (Sonic.y))) {
+                Sonic.prst = false;
+                if (player.idJoueur === 1) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 1, player.nbJoueur);
+                    }
+                }
+            }
+            if (((bombe.x) < (Mario.x + (Mario.w / 2)) && (bombe.x + 40) >= (Mario.x + (Mario.w / 2)) && (bombe.y - yExplo) <= (Mario.y) && (bombe.y + 40) > (Mario.y))) {
+                Mario.prst = false;
+                if (player.idJoueur === 2) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 2, player.nbJoueur);
+                    }
+                }
+            }
+            if (((bombe.x) < (Link.x + (Link.w / 2)) && (bombe.x + 40) >= (Link.x + (Link.w / 2)) && (bombe.y - yExplo) <= (Link.y) && (bombe.y + 40) > (Link.y))) {
+                Link.prst = false;
+                if (player.idJoueur === 3) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 3, player.nbJoueur);
+                    }
+                }
+            }
+            if (((bombe.x) < (Pika.x + (Pika.w / 2)) && (bombe.x + 40) >= (Pika.x + (Pika.w / 2)) && (bombe.y - yExplo) <= (Pika.y) && (bombe.y + 40) > (Pika.y))) {
+                Pika.prst = false;
+                if (player.idJoueur === 4) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 4, player.nbJoueur);
+                    }
                 }
             }
         }
-        if(((bombe.x)< (Mario.x+(Mario.w/2)) && (bombe.x+40)>=(Mario.x+(Mario.w/2)) && (bombe.y+yExplo)>=(Mario.y) && (bombe.y)<=(Mario.y))){
-            Mario.prst = false;
-            if(player.idJoueur === 2){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 2, player.nbJoueur);
-                }
-            }
-        }
-        if(((bombe.x)< (Link.x+(Link.w/2)) && (bombe.x+40)>=(Link.x+(Link.w/2)) && (bombe.y+yExplo)>=(Link.y) && (bombe.y)<=(Link.y))){
-            Link.prst = false;
-            if(player.idJoueur === 3){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 3, player.nbJoueur);
-                }
-            }
-        }
-        if(((bombe.x)< (Pika.x+(Pika.w/2)) && (bombe.x+40)>=(Pika.x+(Pika.w/2)) && (bombe.y+yExplo)>=(Pika.y) && (bombe.y)<=(Pika.y))){
-            Pika.prst = false;
-            if(player.idJoueur === 4){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 4, player.nbJoueur);
-                }
-            }
-        }
+        return false;
     }
-    return false;
-}
-function collisionExplosionGauche(bombe,i){
-    var xExplo = i * 40;
-    var i;
-    for(i=0;i<cases.length;i++){
-        if(cases[i].isFixe()){
-            if((bombe.x-xExplo) >= cases[i].x && (bombe.x-xExplo)< (cases[i].x + cases[i].tailleCase) &&
-                bombe.y >= cases[i].y && bombe.y < (cases[i].y+cases[i].tailleCase)){
-                return true;
+
+    function collisionExplosionBas(bombe, i) {
+        var yExplo = i * 40;
+        var i;
+        for (i = 0; i < cases.length; i++) {
+            if (cases[i].isFixe()) {
+                if ((bombe.y + yExplo) >= cases[i].y && (bombe.y + yExplo) < (cases[i].y + cases[i].tailleCase) &&
+                    bombe.x >= cases[i].x && bombe.x < (cases[i].x + cases[i].tailleCase)) {
+                    return true;
+                }
             }
-        }
-        else{
-            if((bombe.x-xExplo) >= cases[i].x && (bombe.x-xExplo)< (cases[i].x + cases[i].tailleCase) &&
-                bombe.y >= cases[i].y && bombe.y < (cases[i].y+cases[i].tailleCase)){
-                cases.splice(i, 1);
-                socket.emit("updateCases", cases);
+            else {
+                if ((bombe.y + yExplo) >= cases[i].y && (bombe.y + yExplo) < (cases[i].y + cases[i].tailleCase) &&
+                    bombe.x >= cases[i].x && bombe.x < (cases[i].x + cases[i].tailleCase)) {
+                    var r = Math.floor(Math.random() * 15);
+                    if (r === 0) {
+                    }
+                    cases.splice(i, 1);
+                    socket.emit("updateCases", cases);
+                }
             }
-        }
-        if(((bombe.x-xExplo)< Sonic.x && (bombe.x+40)>=(Sonic.x) && (bombe.y)<=(Sonic.y+(Sonic.h/2)) && (bombe.y+40)>=(Sonic.y+(Sonic.h/2)))){
-            Sonic.prst = false;
-            if(player.idJoueur === 1){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 1, player.nbJoueur);
+            if (((bombe.x) < (Sonic.x + (Sonic.w / 2)) && (bombe.x + 40) >= (Sonic.x + (Sonic.w / 2)) && (bombe.y + yExplo) >= (Sonic.y) && (bombe.y) <= (Sonic.y))) {
+                Sonic.prst = false;
+                if (player.idJoueur === 1) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 1, player.nbJoueur);
+                    }
+                }
+            }
+            if (((bombe.x) < (Mario.x + (Mario.w / 2)) && (bombe.x + 40) >= (Mario.x + (Mario.w / 2)) && (bombe.y + yExplo) >= (Mario.y) && (bombe.y) <= (Mario.y))) {
+                Mario.prst = false;
+                if (player.idJoueur === 2) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 2, player.nbJoueur);
+                    }
+                }
+            }
+            if (((bombe.x) < (Link.x + (Link.w / 2)) && (bombe.x + 40) >= (Link.x + (Link.w / 2)) && (bombe.y + yExplo) >= (Link.y) && (bombe.y) <= (Link.y))) {
+                Link.prst = false;
+                if (player.idJoueur === 3) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 3, player.nbJoueur);
+                    }
+                }
+            }
+            if (((bombe.x) < (Pika.x + (Pika.w / 2)) && (bombe.x + 40) >= (Pika.x + (Pika.w / 2)) && (bombe.y + yExplo) >= (Pika.y) && (bombe.y) <= (Pika.y))) {
+                Pika.prst = false;
+                if (player.idJoueur === 4) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 4, player.nbJoueur);
+                    }
                 }
             }
         }
-        if(((bombe.x-xExplo)< Mario.x && (bombe.x+40)>=(Mario.x) && (bombe.y)<=(Mario.y+(Mario.h/2)) && (bombe.y+40)>=(Mario.y+(Mario.h/2)))){
-            Mario.prst = false;
-            if(player.idJoueur === 2){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 2, player.nbJoueur);
-                }
-            }
-        }
-        if(((bombe.x-xExplo)< Link.x && (bombe.x+40)>=(Link.x) && (bombe.y)<=(Link.y+(Link.h/2)) && (bombe.y+40)>=(Link.y+(Link.h/2)))){
-            Link.prst = false;
-            if(player.idJoueur === 3){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 3, player.nbJoueur);
-                }
-            }
-        }
-        if(((bombe.x-xExplo)< Pika.x && (bombe.x+40)>=(Pika.x) && (bombe.y)<=(Pika.y+(Pika.h/2)) && (bombe.y+40)>=(Pika.y+(Pika.h/2)))){
-            Pika.prst = false;
-            if(player.idJoueur === 4){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 4, player.nbJoueur);
-                }
-            }
-        }
+        return false;
     }
-    return false;
-}
-function collisionExplosionDroite(bombe,n){
-    var xExplo = n * 40;
-    var i;
-    for(i=0;i<cases.length;i++){
-        if(cases[i].isFixe()){
-            if((bombe.x+xExplo) >= cases[i].x && (bombe.x+xExplo)< (cases[i].x + cases[i].tailleCase) &&
-                bombe.y >= cases[i].y && bombe.y < (cases[i].y+cases[i].tailleCase)){
-                return true;
+
+    function collisionExplosionGauche(bombe, i) {
+        var xExplo = i * 40;
+        var i;
+        for (i = 0; i < cases.length; i++) {
+            if (cases[i].isFixe()) {
+                if ((bombe.x - xExplo) >= cases[i].x && (bombe.x - xExplo) < (cases[i].x + cases[i].tailleCase) &&
+                    bombe.y >= cases[i].y && bombe.y < (cases[i].y + cases[i].tailleCase)) {
+                    return true;
+                }
             }
-        }
-        else{
-            if((bombe.x+xExplo) >= cases[i].x && (bombe.x+xExplo)< (cases[i].x + cases[i].tailleCase) &&
-                bombe.y >= cases[i].y && bombe.y < (cases[i].y+cases[i].tailleCase)){
-                cases.splice(i, 1);
-                socket.emit("updateCases", cases);
+            else {
+                if ((bombe.x - xExplo) >= cases[i].x && (bombe.x - xExplo) < (cases[i].x + cases[i].tailleCase) &&
+                    bombe.y >= cases[i].y && bombe.y < (cases[i].y + cases[i].tailleCase)) {
+                    var r = Math.floor(Math.random() * 15);
+                    if (r === 0) {
+                    }
+                    cases.splice(i, 1);
+                    socket.emit("updateCases", cases);
+                }
             }
-        }
-        if(((bombe.x+xExplo+40)> Sonic.x && (bombe.x)<=(Sonic.x) && (bombe.y)<=(Sonic.y+(Sonic.h/2)) && (bombe.y+40)>=(Sonic.y+(Sonic.h/2)))){
-            Sonic.prst = false;
-            if(player.idJoueur === 1){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 1, player.nbJoueur);
+            if (((bombe.x - xExplo) < Sonic.x && (bombe.x + 40) >= (Sonic.x) && (bombe.y) <= (Sonic.y + (Sonic.h / 2)) && (bombe.y + 40) >= (Sonic.y + (Sonic.h / 2)))) {
+                Sonic.prst = false;
+                if (player.idJoueur === 1) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 1, player.nbJoueur);
+                    }
+                }
+            }
+            if (((bombe.x - xExplo) < Mario.x && (bombe.x + 40) >= (Mario.x) && (bombe.y) <= (Mario.y + (Mario.h / 2)) && (bombe.y + 40) >= (Mario.y + (Mario.h / 2)))) {
+                Mario.prst = false;
+                if (player.idJoueur === 2) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 2, player.nbJoueur);
+                    }
+                }
+            }
+            if (((bombe.x - xExplo) < Link.x && (bombe.x + 40) >= (Link.x) && (bombe.y) <= (Link.y + (Link.h / 2)) && (bombe.y + 40) >= (Link.y + (Link.h / 2)))) {
+                Link.prst = false;
+                if (player.idJoueur === 3) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 3, player.nbJoueur);
+                    }
+                }
+            }
+            if (((bombe.x - xExplo) < Pika.x && (bombe.x + 40) >= (Pika.x) && (bombe.y) <= (Pika.y + (Pika.h / 2)) && (bombe.y + 40) >= (Pika.y + (Pika.h / 2)))) {
+                Pika.prst = false;
+                if (player.idJoueur === 4) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 4, player.nbJoueur);
+                    }
                 }
             }
         }
-        if(((bombe.x+xExplo+40)> Mario.x && (bombe.x)<=(Mario.x) && (bombe.y)<=(Mario.y+(Mario.h/2)) && (bombe.y+40)>=(Mario.y+(Mario.h/2)))){
-            Mario.prst = false;
-            if(player.idJoueur === 2){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 2, player.nbJoueur);
-                }
-            }
-        }
-        if(((bombe.x+xExplo+40)> Link.x && (bombe.x)<=(Link.x) && (bombe.y)<=(Link.y+(Link.h/2)) && (bombe.y+40)>=(Link.y+(Link.h/2)))){
-            Link.prst = false;
-            if(player.idJoueur === 3){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 3, player.nbJoueur);
-                }
-            }
-        }
-        if(((bombe.x+xExplo+40)> Pika.x && (bombe.x)<=(Pika.x) && (bombe.y)<=(Pika.y+(Pika.h/2)) && (bombe.y+40)>=(Pika.y+(Pika.h/2)))){
-            Pika.prst = false;
-            if(player.idJoueur === 4){
-                if(player.alive){
-                    player.alive = false;
-                    player.nbJoueur--;
-                    socket.emit("updatePlayerPrst", 4, player.nbJoueur);
-                }
-            }
-        }
+        return false;
     }
-    return false;
-}
+
+    function collisionExplosionDroite(bombe, n) {
+        var xExplo = n * 40;
+        var i;
+        for (i = 0; i < cases.length; i++) {
+            if (cases[i].isFixe()) {
+                if ((bombe.x + xExplo) >= cases[i].x && (bombe.x + xExplo) < (cases[i].x + cases[i].tailleCase) &&
+                    bombe.y >= cases[i].y && bombe.y < (cases[i].y + cases[i].tailleCase)) {
+                    return true;
+                }
+            }
+            else {
+                if ((bombe.x + xExplo) >= cases[i].x && (bombe.x + xExplo) < (cases[i].x + cases[i].tailleCase) &&
+                    bombe.y >= cases[i].y && bombe.y < (cases[i].y + cases[i].tailleCase)) {
+                    var r = Math.floor(Math.random() * 15);
+                    if (r === 0) {
+                    }
+                    cases.splice(i, 1);
+                    socket.emit("updateCases", cases);
+                }
+            }
+            if (((bombe.x + xExplo + 40) > Sonic.x && (bombe.x) <= (Sonic.x) && (bombe.y) <= (Sonic.y + (Sonic.h / 2)) && (bombe.y + 40) >= (Sonic.y + (Sonic.h / 2)))) {
+                Sonic.prst = false;
+                if (player.idJoueur === 1) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 1, player.nbJoueur);
+                    }
+                }
+            }
+            if (((bombe.x + xExplo + 40) > Mario.x && (bombe.x) <= (Mario.x) && (bombe.y) <= (Mario.y + (Mario.h / 2)) && (bombe.y + 40) >= (Mario.y + (Mario.h / 2)))) {
+                Mario.prst = false;
+                if (player.idJoueur === 2) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 2, player.nbJoueur);
+                    }
+                }
+            }
+            if (((bombe.x + xExplo + 40) > Link.x && (bombe.x) <= (Link.x) && (bombe.y) <= (Link.y + (Link.h / 2)) && (bombe.y + 40) >= (Link.y + (Link.h / 2)))) {
+                Link.prst = false;
+                if (player.idJoueur === 3) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 3, player.nbJoueur);
+                    }
+                }
+            }
+            if (((bombe.x + xExplo + 40) > Pika.x && (bombe.x) <= (Pika.x) && (bombe.y) <= (Pika.y + (Pika.h / 2)) && (bombe.y + 40) >= (Pika.y + (Pika.h / 2)))) {
+                Pika.prst = false;
+                if (player.idJoueur === 4) {
+                    if (player.alive) {
+                        player.alive = false;
+                        player.nbJoueur--;
+                        socket.emit("updatePlayerPrst", 4, player.nbJoueur);
+                    }
+                }
+            }
+        }
+        return false;
+    }
 //==========================================================

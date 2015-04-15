@@ -45,6 +45,7 @@ window.onload = function(){
     w = canvas.width;
     h = canvas.height;
     drawBackground();
+
     addCaseFixe();
     sound.play();
     //On prepare le niveau

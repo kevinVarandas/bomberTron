@@ -74,6 +74,9 @@ backButton.src = 'http://img11.hostingpics.net/pics/209486backButton.png';
 var backButtonPushed = new Image();
 backButtonPushed.src = 'http://img11.hostingpics.net/pics/788836backButtonPush.png';
 
+var bonusUpPower = new Image();
+bonusUpPower.src = 'http://img15.hostingpics.net/thumbs/mini_3258331111754310205275899149819875546745n.png';
+
 var muteButton = new Image();
 muteButton.src = 'mute.png';
 

@@ -1,5 +1,4 @@
 
-
 var twoPlayerOption = {
     x : 25,
     y : 300,
