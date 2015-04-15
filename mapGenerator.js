@@ -8,6 +8,9 @@ var bombs = [];
 //VAR tableau de cases
 var cases = [];
 
+//VAR bonus
+var bonus = [];
+
 // Fonction qui dessine les bords du plateau de jeu
 function addCaseFixe(){
     var i,j;
@@ -39,11 +42,15 @@ socket.on('updateBombsTab', function(bombes){
     }
 });
 
-socket.on('updateCasesTab', function(c){
+socket.on('updateCasesTab', function(c,b){
     cases = [];
     var i;
     for(i=0;i<c.length;i++){
         cases.push(new Case(c[i].x, c[i].y, c[i].type, c[i].tailleCase));
+    }
+
+    for(i=0; i< b.length; i++){
+        bonus.push(new Bonus(c[i].x, c[i].y, c[i].taille));
     }
 });
 
@@ -65,7 +72,13 @@ socket.on('updatePlayersPrst', function(forme, tab){
     socket.emit('updateTabPlayer', tab);
 });
 
+function drawBonus(){
+    var i;
 
+    for(i = 0; i < bonus.length; i++){
+        ctx.drawImage(bonusUpPower,bonus[i].x,bonus[i].y,bonus[i].taille,bonus[i].taille)
+    }
+}
 
 // fonction qui dessine les bombes
 function drawBombs(){
@@ -360,6 +373,13 @@ function Bomb(x, y, type, puissance, duree, taille){
     this.getY = function(){return this.y;};
     this.getTailleBomb = function(){return this.taille};
 }
+
+function Bonus(x,y,taille){
+    this.x = x;
+    this.y = y;
+    this.taille = taille;
+}
+
 // fonction ajout d'une case cassable
 function addCaseCassable(x, y){
     cases.push(new Case(x,y,false,tailleCaseFixe))
@@ -474,9 +494,24 @@ function collisionBombHaut(x, y, v){
     var pos = y - v;
     if(bombs.length !==0) {
         for(i = 0; i < bombs.length; i++){
-            if (pos > bombs[i].y && pos < bombs[i].y + bombs[i].taille &&
-                ((x - 5 > bombs[i].x && x - 5 < bombs[i].x + bombs[i].taille) ||
-                (x + 5 > bombs[i].x && x + 5 < bombs[i].x + bombs[i].taille))&& bombs[i].isLock){
+            if (pos < bombs[i].getY() && pos > (bombs[i].getY() + bombs[i].getTailleBomb()) &&
+                ((x - 5 > bombs[i].getX() && x - 5 < bombs[i].getX() + bombs[i].getTailleBomb()) ||
+                (x + 5 > bombs[i].getX() && x + 5 < bombs[i].getX() + bombs[i].getTailleBomb()))){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+function collisionBombBas(x, y, v){
+    var i;
+    var pos = y + v + 10;
+    if(bombs.length !==0) {
+        for(i = 0; i < bombs.length; i++){
+            if(pos > bombs[i].getY() && pos < bombs[i].getY() + bombs[i].getTailleBomb() &&
+                ((x-10 > bombs[i].getX() && x-10 < bombs[i].getX() + bombs[i].getTailleBomb()) ||
+                (x+10 > bombs[i].getX() && x+10 < bombs[i].getX() + bombs[i].getTailleBomb()))){
                 return true;
             }
         }
@@ -512,20 +547,6 @@ function collisionBombDroite(x, y, v){
     }
 }
 
-function collisionBombBas(x, y, v){
-    var i;
-    var pos = y + v + 10;
-    if(bombs.length !==0) {
-        for(i = 0; i < bombs.length; i++){
-            if(pos > bombs[i].getY() && pos < bombs[i].getY() + bombs[i].getTailleBomb() &&
-                ((x-10 > bombs[i].getX() && x-10 < bombs[i].getX() + bombs[i].getTailleBomb()) ||
-                (x+10 > bombs[i].getX() && x+10 < bombs[i].getX() + bombs[i].getTailleBomb()))){
-                return true;
-            }
-        }
-        return false;
-    }
-}
 
 function isOnBomb(player){
     var i;
@@ -563,8 +584,12 @@ function collisionExplosionHaut(bombe,i){
         else{
             if((bombe.y-yExplo) >= cases[i].y && (bombe.y-yExplo)< (cases[i].y + cases[i].tailleCase) &&
                 bombe.x >= cases[i].x && bombe.x < (cases[i].x+cases[i].tailleCase)){
+                var r = Math.floor(Math.random() * 15);
+                if(r === 0){
+                    bonus.push(new Bonus(cases[i].x, cases[i].y,cases[i].tailleCase));
+                }
                 cases.splice(i, 1);
-                socket.emit("updateCases", cases);
+                socket.emit("updateCases", cases, bonus);
             }
             if(((bombe.x)< (Sonic.x+(Sonic.w/2)) && (bombe.x+40)>=(Sonic.x+(Sonic.w/2)) && (bombe.y-yExplo)<=(Sonic.y) && (bombe.y+40)>(Sonic.y))){
                 Sonic.prst = false;
@@ -611,8 +636,12 @@ function collisionExplosionBas(bombe,i){
         else{
             if((bombe.y+yExplo) >= cases[i].y && (bombe.y+yExplo)< (cases[i].y + cases[i].tailleCase) &&
                 bombe.x >= cases[i].x && bombe.x < (cases[i].x+cases[i].tailleCase)){
+                var r = Math.floor(Math.random() * 15);
+                if(r === 0){
+                    bonus.push(new Bonus(cases[i].x, cases[i].y,cases[i].tailleCase));
+                }
                 cases.splice(i, 1);
-                socket.emit("updateCases", cases);
+                socket.emit("updateCases", cases, bonus);
             }
             if(((bombe.x)< (Sonic.x+(Sonic.w/2)) && (bombe.x+40)>=(Sonic.x+(Sonic.w/2)) && (bombe.y+yExplo)>=(Sonic.y) && (bombe.y)<=(Sonic.y))){
                 Sonic.prst = false;
@@ -659,8 +688,12 @@ function collisionExplosionGauche(bombe,i){
         else{
             if((bombe.x-xExplo) >= cases[i].x && (bombe.x-xExplo)< (cases[i].x + cases[i].tailleCase) &&
                 bombe.y >= cases[i].y && bombe.y < (cases[i].y+cases[i].tailleCase)){
+                var r = Math.floor(Math.random() * 15);
+                if(r === 0){
+                    bonus.push(new Bonus(cases[i].x, cases[i].y,cases[i].tailleCase));
+                }
                 cases.splice(i, 1);
-                socket.emit("updateCases", cases);
+                socket.emit("updateCases", cases, bonus);
             }
             if(((bombe.x-xExplo)< Sonic.x && (bombe.x+40)>=(Sonic.x) && (bombe.y)<=(Sonic.y+(Sonic.h/2)) && (bombe.y+40)>=(Sonic.y+(Sonic.h/2)))){
                 Sonic.prst = false;
@@ -707,8 +740,12 @@ function collisionExplosionDroite(bombe,n){
         else{
             if((bombe.x+xExplo) >= cases[i].x && (bombe.x+xExplo)< (cases[i].x + cases[i].tailleCase) &&
                 bombe.y >= cases[i].y && bombe.y < (cases[i].y+cases[i].tailleCase)){
+                var r = Math.floor(Math.random() * 15);
+                if(r === 0){
+                    bonus.push(new Bonus(cases[i].x, cases[i].y,cases[i].tailleCase));
+                }
                 cases.splice(i, 1);
-                socket.emit("updateCases", cases);
+                socket.emit("updateCases", cases, bonus);
             }
             if(((bombe.x+xExplo+40)> Sonic.x && (bombe.x)<=(Sonic.x) && (bombe.y)<=(Sonic.y+(Sonic.h/2)) && (bombe.y+40)>=(Sonic.y+(Sonic.h/2)))){
                 Sonic.prst = false;

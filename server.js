@@ -237,8 +237,8 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.to(socket.room).emit('updateNbJoueur', n);
     });
 
-    socket.on('updateCases', function(cases){
-        io.sockets.in(socket.room).emit('updateCasesTab', cases);
+    socket.on('updateCases', function(cases,bonus){
+        io.sockets.in(socket.room).emit('updateCasesTab', cases,bonus);
     });
 
     socket.on('updatePlayerPrst', function(forme){

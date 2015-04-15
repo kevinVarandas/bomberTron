@@ -458,7 +458,7 @@ function Player(idJoueur, forme, username){
     this.idJoueur = idJoueur;
     this.forme = forme;
     this.username = username;
-    this.nbBomb = 2;
+    this.nbBomb = 1;
     this.alive = true;
 
     this.setBomb = function(){this.nbBomb++;};

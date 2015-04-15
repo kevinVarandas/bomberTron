@@ -83,5 +83,8 @@ backButton.src = 'http://img11.hostingpics.net/pics/209486backButton.png';
 var backButtonPushed = new Image();
 backButtonPushed.src = 'http://img11.hostingpics.net/pics/788836backButtonPush.png';
 
+var bonusUpPower = new Image();
+bonusUpPower.src = 'http://img15.hostingpics.net/thumbs/mini_335223PowerUpsTG16.png';
+
 var optionWidth = 100;
 var optionHeight = 50;
