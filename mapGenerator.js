@@ -570,6 +570,7 @@ function collisionBombDroite(x, y, v) {
             return false;
         }
     }
+}
 
     function isOnBomb(forme) {
         var i;
@@ -851,5 +852,4 @@ function collisionBombDroite(x, y, v) {
         }
         return false;
     }
-}
 //==========================================================
