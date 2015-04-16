@@ -172,22 +172,22 @@ function drawExplosion(bombe, opacity){
                     break;
                 }
             }
-            if(!collisionExplosionHaut(bombe, tailleHaut) && tailleHaut>1){
+            if(!collisionExplosionHaut(bombe, tailleHaut)){
                 ctx.drawImage(teteExplosion, 0, 160, 40, 40, bombe.x, bombe.y - (tailleHaut*40), 40, 40);
             }else if(tailleHaut>1){
                 ctx.drawImage(teteExplosion, 0, 160, 40, 40, bombe.x, bombe.y - ((tailleHaut-1)*40), 40, 40);
             }
-            if(!collisionExplosionBas(bombe, tailleBas) && tailleBas>1){
+            if(!collisionExplosionBas(bombe, tailleBas)){
                 ctx.drawImage(teteExplosion, 0, 320, 40, 40, bombe.x, bombe.y + (tailleBas*40), 40, 40);
             }else if(tailleBas>1){
                 ctx.drawImage(teteExplosion, 0, 320, 40, 40, bombe.x, bombe.y + ((tailleBas-1)*40), 40, 40);
             }
-            if(!collisionExplosionGauche(bombe, tailleGauche) && tailleGauche>1){
+            if(!collisionExplosionGauche(bombe, tailleGauche)){
                 ctx.drawImage(teteExplosion, 0, 0, 40, 40, bombe.x - (tailleGauche*40), bombe.y, 40, 40);
             }else if(tailleGauche>1){
                 ctx.drawImage(teteExplosion, 0, 0, 40, 40, bombe.x - ((tailleGauche-1)*40), bombe.y, 40, 40);
             }
-            if(!collisionExplosionDroite(bombe, tailleDroite) && tailleDroite>1){
+            if(!collisionExplosionDroite(bombe, tailleDroite)){
                 ctx.drawImage(teteExplosion, 0, 480, 40, 40, bombe.x + (tailleDroite*40), bombe.y, 40, 40);
             }else if(tailleDroite>1){
                 ctx.drawImage(teteExplosion, 0, 480, 40, 40, bombe.x + ((tailleDroite-1)*40), bombe.y, 40, 40);
@@ -228,22 +228,22 @@ function drawExplosion(bombe, opacity){
                 }
             }
 
-            if(!collisionExplosionHaut(bombe, tailleHaut) && tailleHaut>1){
+            if(!collisionExplosionHaut(bombe, tailleHaut)){
                 ctx.drawImage(teteExplosion, 80, 160, 40, 40, bombe.x, bombe.y - (tailleHaut*40), 40, 40);
             }else if(tailleHaut>1){
                 ctx.drawImage(teteExplosion, 80, 160, 40, 40, bombe.x, bombe.y - ((tailleHaut-1)*40), 40, 40);
             }
-            if(!collisionExplosionBas(bombe, tailleBas) && tailleBas>1){
+            if(!collisionExplosionBas(bombe, tailleBas)){
                 ctx.drawImage(teteExplosion, 80, 320, 40, 40, bombe.x, bombe.y + (tailleBas*40), 40, 40);
             }else if(tailleBas>1){
                 ctx.drawImage(teteExplosion, 80, 320, 40, 40, bombe.x, bombe.y + ((tailleBas-1)*40), 40, 40);
             }
-            if(!collisionExplosionGauche(bombe, tailleGauche) && tailleGauche>1){
+            if(!collisionExplosionGauche(bombe, tailleGauche)){
                 ctx.drawImage(teteExplosion, 80, 0, 40, 40, bombe.x - (tailleGauche*40), bombe.y, 40, 40);
             }else if(tailleGauche>1){
                 ctx.drawImage(teteExplosion, 80, 0, 40, 40, bombe.x - ((tailleGauche-1)*40), bombe.y, 40, 40);
             }
-            if(!collisionExplosionDroite(bombe, tailleDroite) && tailleDroite>1){
+            if(!collisionExplosionDroite(bombe, tailleDroite)){
                 ctx.drawImage(teteExplosion, 80, 480, 40, 40, bombe.x + (tailleDroite*40), bombe.y, 40, 40);
             }else if(tailleDroite>1){
                 ctx.drawImage(teteExplosion, 80, 480, 40, 40, bombe.x + ((tailleDroite-1)*40), bombe.y, 40, 40);
@@ -282,22 +282,22 @@ function drawExplosion(bombe, opacity){
                 }
             }
 
-            if(!collisionExplosionHaut(bombe, tailleHaut) && tailleHaut>1){
+            if(!collisionExplosionHaut(bombe, tailleHaut)){
                 ctx.drawImage(teteExplosion, 40, 240, 40, 40, bombe.x, bombe.y - (tailleHaut*40), 40, 40);
             }else if(tailleHaut>1){
                 ctx.drawImage(teteExplosion, 40, 240, 40, 40, bombe.x, bombe.y - ((tailleHaut-1)*40), 40, 40);
             }
-            if(!collisionExplosionBas(bombe, tailleBas) && tailleBas>1){
+            if(!collisionExplosionBas(bombe, tailleBas)){
                 ctx.drawImage(teteExplosion, 40, 400, 40, 40, bombe.x, bombe.y + (tailleBas*40), 40, 40);
             }else if(tailleBas>1){
                 ctx.drawImage(teteExplosion, 40, 400, 40, 40, bombe.x, bombe.y + ((tailleBas-1)*40), 40, 40);
             }
-            if(!collisionExplosionGauche(bombe, tailleGauche) && tailleGauche>1){
+            if(!collisionExplosionGauche(bombe, tailleGauche)){
                 ctx.drawImage(teteExplosion, 40, 80, 40, 40, bombe.x - (tailleGauche*40), bombe.y, 40, 40);
             }else if(tailleGauche>1){
                 ctx.drawImage(teteExplosion, 40, 80, 40, 40, bombe.x - ((tailleGauche-1)*40), bombe.y, 40, 40);
             }
-            if(!collisionExplosionDroite(bombe, tailleDroite) && tailleDroite>1){
+            if(!collisionExplosionDroite(bombe, tailleDroite)){
                 ctx.drawImage(teteExplosion, 40, 560, 40, 40, bombe.x + (tailleDroite*40), bombe.y, 40, 40);
             }else if(tailleDroite>1){
                 ctx.drawImage(teteExplosion, 40, 560, 40, 40, bombe.x + ((tailleDroite-1)*40), bombe.y, 40, 40);
@@ -336,22 +336,22 @@ function drawExplosion(bombe, opacity){
                 }
             }
 
-            if(!collisionExplosionHaut(bombe, tailleHaut) && tailleHaut>1){
+            if(!collisionExplosionHaut(bombe, tailleHaut)){
                 ctx.drawImage(teteExplosion, 120, 240, 40, 40, bombe.x, bombe.y - (tailleHaut*40), 40, 40);
             }else if(tailleHaut>1){
                 ctx.drawImage(teteExplosion, 120, 240, 40, 40, bombe.x, bombe.y - ((tailleHaut-1)*40), 40, 40);
             }
-            if(!collisionExplosionBas(bombe, tailleBas) && tailleBas>1){
+            if(!collisionExplosionBas(bombe, tailleBas)){
                 ctx.drawImage(teteExplosion, 120, 400, 40, 40, bombe.x, bombe.y + (tailleBas*40), 40, 40);
             }else if(tailleBas>1){
                 ctx.drawImage(teteExplosion, 120, 400, 40, 40, bombe.x, bombe.y + ((tailleBas-1)*40), 40, 40);
             }
-            if(!collisionExplosionGauche(bombe, tailleGauche) && tailleGauche>1){
+            if(!collisionExplosionGauche(bombe, tailleGauche)){
                 ctx.drawImage(teteExplosion, 120, 80, 40, 40, bombe.x - (tailleGauche*40), bombe.y, 40, 40);
             }else if(tailleGauche>1){
                 ctx.drawImage(teteExplosion, 120, 80, 40, 40, bombe.x - ((tailleGauche-1)*40), bombe.y, 40, 40);
             }
-            if(!collisionExplosionDroite(bombe, tailleDroite) && tailleDroite>1){
+            if(!collisionExplosionDroite(bombe, tailleDroite)){
                 ctx.drawImage(teteExplosion, 120, 560, 40, 40, bombe.x + (tailleDroite*40), bombe.y, 40, 40);
             }else if(tailleDroite>1){
                 ctx.drawImage(teteExplosion, 120, 560, 40, 40, bombe.x + ((tailleDroite-1)*40), bombe.y, 40, 40);
