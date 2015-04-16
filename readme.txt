@@ -1,4 +1,4 @@
-########################
+﻿########################
     CLONE DU PROJET
 ########################
 
@@ -23,3 +23,5 @@ Server.js correspondant au serveur de notre projet.
 
 Pour se rendre sur l'application web, il suffit de se rendre dans votre navigateur
 préféré et d'aller sur l'adresse : localhost:8080
+Si vous souhaitez vous connecter depuis un ordinateur qui n'est pas l'ordinateur serveur, il vous foudra
+remplacer localhost par l'adresse ip de ce dernier.
