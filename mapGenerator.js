@@ -43,7 +43,7 @@ socket.on('getBonus',function(bon){
 });
 
 //fonction qui ajoute des bombes qd on appuis sur espace
-function addBomb(Player,id){
+function addBomb(Player,id,bombPower){
     //soundExplo.play();
     socket.emit('eventSoundExplo');
     var xBomb = (Player.x + (Player.w/2));
@@ -51,7 +51,7 @@ function addBomb(Player,id){
     var subX =  (Player.x + (Player.w/2)) % tailleCaseFixe;
     var subY = (Player.y + Player.h) % tailleCaseFixe;
     Player.droppedBomb = true;
-    bombs.push(new Bomb(xBomb - subX, yBomb - subY, id, 2, 120, tailleCaseFixe));
+    bombs.push(new Bomb(xBomb - subX, yBomb - subY, id, bombPower, 120, tailleCaseFixe));
     socket.emit('updateTabBomb', bombs);
 }
 
@@ -610,9 +610,6 @@ function collisionBombDroite(x, y, v) {
             else {
                 if ((bombe.y - yExplo) >= cases[i].y && (bombe.y - yExplo) < (cases[i].y + cases[i].tailleCase) &&
                     bombe.x >= cases[i].x && bombe.x < (cases[i].x + cases[i].tailleCase)) {
-                    var r = Math.floor(Math.random() * 15);
-                    if (r === 0) {
-                    }
                     cases.splice(i, 1);
                     socket.emit("updateCases", cases);
                 }
@@ -674,9 +671,6 @@ function collisionBombDroite(x, y, v) {
             else {
                 if ((bombe.y + yExplo) >= cases[i].y && (bombe.y + yExplo) < (cases[i].y + cases[i].tailleCase) &&
                     bombe.x >= cases[i].x && bombe.x < (cases[i].x + cases[i].tailleCase)) {
-                    var r = Math.floor(Math.random() * 15);
-                    if (r === 0) {
-                    }
                     cases.splice(i, 1);
                     socket.emit("updateCases", cases);
                 }
@@ -738,9 +732,6 @@ function collisionBombDroite(x, y, v) {
             else {
                 if ((bombe.x - xExplo) >= cases[i].x && (bombe.x - xExplo) < (cases[i].x + cases[i].tailleCase) &&
                     bombe.y >= cases[i].y && bombe.y < (cases[i].y + cases[i].tailleCase)) {
-                    var r = Math.floor(Math.random() * 15);
-                    if (r === 0) {
-                    }
                     cases.splice(i, 1);
                     socket.emit("updateCases", cases);
                 }
@@ -802,9 +793,6 @@ function collisionBombDroite(x, y, v) {
             else {
                 if ((bombe.x + xExplo) >= cases[i].x && (bombe.x + xExplo) < (cases[i].x + cases[i].tailleCase) &&
                     bombe.y >= cases[i].y && bombe.y < (cases[i].y + cases[i].tailleCase)) {
-                    var r = Math.floor(Math.random() * 15);
-                    if (r === 0) {
-                    }
                     cases.splice(i, 1);
                     socket.emit("updateCases", cases);
                 }
@@ -852,4 +840,29 @@ function collisionBombDroite(x, y, v) {
         }
         return false;
     }
+
+    function hasFetchBonus(forme){
+        var posX = forme.x + (forme.w / 2);
+        var posY = forme.y + forme.h;
+        var i;
+
+        for(i = 0; i<bonus.length; i++){
+            if(posX > bonus[i].x && posX < (bonus[i].x + bonus[i].taille)
+                && posY > bonus[i].y && posY < (bonus[i].y + bonus[i].taille)){
+                bonus.splice(i,1);
+                socket.emit('updateBonusTab',bonus);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    socket.on('updateBonus',function(b){
+        bonus = [];
+        var i ;
+
+        for(i = 0; i < b.length; i++){
+            bonus.push(new Bonus(b[i].x, b[i].y, b[i].taille));
+        }
+    })
 //==========================================================

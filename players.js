@@ -250,6 +250,9 @@ function drawSonic(){
             Sonic.y += Sonic.vy;
             socket.emit('SonicMove', 0, Sonic.vy);
         }
+        if(hasFetchBonus(Sonic)){
+            player.incBombPower();
+        }
     }else if(haut && player.idJoueur === 1){
         Sonic.cpt += 1;
         if(Sonic.cpt % 20 < 10){
@@ -267,6 +270,9 @@ function drawSonic(){
         {
             Sonic.y -= Sonic.vy;
             socket.emit('SonicMove', 0, -Sonic.vy);
+        }
+        if(hasFetchBonus(Sonic)){
+            player.incBombPower();
         }
     }else if(gauche && player.idJoueur === 1){
         Sonic.cpt += 1;
@@ -286,6 +292,9 @@ function drawSonic(){
             Sonic.x -= Sonic.vx;
             socket.emit('SonicMove', 1, -Sonic.vx);
         }
+        if(hasFetchBonus(Sonic)){
+            player.incBombPower();
+        }
     }else if(droite && player.idJoueur === 1){
         Sonic.cpt += 1;
         if(Sonic.cpt % 20 < 10){
@@ -303,6 +312,9 @@ function drawSonic(){
         {
             Sonic.x += Sonic.vx;
             socket.emit('SonicMove', 1, Sonic.vx);
+        }
+        if(hasFetchBonus(Sonic)){
+            player.incBombPower();
         }
     }
     ctx.drawImage(sonic, Sonic.picx, Sonic.picy, Sonic.w, Sonic.h, Sonic.x, Sonic.y, 30, 40);
@@ -325,6 +337,9 @@ function drawMario(){
             Mario.y += Mario.vy;
             socket.emit('MarioMove', 0, Mario.vy);
         }
+        if(hasFetchBonus(Mario)){
+            player.incBombPower();
+        }
     }else if(haut && player.idJoueur === 2){
         Mario.cpt += 1;
         if(Mario.cpt % 20 < 10){
@@ -341,6 +356,9 @@ function drawMario(){
             || isOnBomb(Mario))) {
             Mario.y -= Mario.vy;
             socket.emit('MarioMove', 0, -Mario.vy);
+        }
+        if(hasFetchBonus(Mario)){
+            player.incBombPower();
         }
     }else if(gauche && player.idJoueur === 2){
         Mario.cpt += 1;
@@ -359,6 +377,9 @@ function drawMario(){
             Mario.x -= Mario.vx;
             socket.emit('MarioMove', 1, -Mario.vx);
         }
+        if(hasFetchBonus(Mario)){
+            player.incBombPower();
+        }
     }else if(droite && player.idJoueur === 2){
         Mario.cpt += 1;
         if(Mario.cpt % 20 < 10){
@@ -375,6 +396,9 @@ function drawMario(){
             || isOnBomb(Mario))) {
             Mario.x += Mario.vx;
             socket.emit('MarioMove', 1, Mario.vx);
+        }
+        if(hasFetchBonus(Mario)){
+            player.incBombPower();
         }
     }
     ctx.drawImage(mario, Mario.picx, Mario.picy, Mario.w, Mario.h, Mario.x, Mario.y, 30, 40);
@@ -397,6 +421,9 @@ function drawPika(){
             Pika.y += Pika.vy;
             socket.emit('PikaMove', 0, Pika.vy);
         }
+        if(hasFetchBonus(Pika)){
+            player.incBombPower();
+        }
     }else if(haut && player.idJoueur === 4){
         Pika.cpt += 1;
         if(Pika.cpt % 20 < 10){
@@ -413,6 +440,9 @@ function drawPika(){
             || isOnBomb(Pika))) {
             Pika.y -= Pika.vy;
             socket.emit('PikaMove', 0, -Pika.vy);
+        }
+        if(hasFetchBonus(Pika)){
+            player.incBombPower();
         }
     }else if(gauche && player.idJoueur === 4){
         Pika.cpt += 1;
@@ -431,6 +461,9 @@ function drawPika(){
             Pika.x -= Pika.vx;
             socket.emit('PikaMove', 1, -Pika.vx);
         }
+        if(hasFetchBonus(Pika)){
+            player.incBombPower();
+        }
     }else if(droite && player.idJoueur === 4){
         Pika.cpt += 1;
         if(Pika.cpt % 20 < 10){
@@ -447,6 +480,9 @@ function drawPika(){
             || isOnBomb(Pika))) {
             Pika.x += Pika.vx;
             socket.emit('PikaMove', 1, Pika.vx);
+        }
+        if(hasFetchBonus(Pika)){
+            player.incBombPower();
         }
     }
 
@@ -470,6 +506,9 @@ function drawLink(){
             Link.y += Link.vy;
             socket.emit('LinkMove', 0, Link.vy);
         }
+        if(hasFetchBonus(Link)){
+            player.incBombPower();
+        }
     }else if(haut && player.idJoueur === 3){
         Link.cpt += 1;
         if(Link.cpt % 20 < 10){
@@ -486,6 +525,9 @@ function drawLink(){
             || isOnBomb(Link))) {
             Link.y -= Link.vy;
             socket.emit('LinkMove', 0, -Link.vy);
+        }
+        if(hasFetchBonus(Link)){
+            player.incBombPower();
         }
     }else if(gauche && player.idJoueur === 3){
         Link.cpt += 1;
@@ -504,6 +546,9 @@ function drawLink(){
             Link.x -= Link.vx;
             socket.emit('LinkMove', 1, -Link.vx);
         }
+        if(hasFetchBonus(Link)){
+            player.incBombPower();
+        }
     }else if(droite && player.idJoueur === 3){
         Link.cpt += 1;
         if(Link.cpt % 20 < 10){
@@ -521,6 +566,9 @@ function drawLink(){
             Link.x += Link.vx;
             socket.emit('LinkMove', 1, Link.vx);
         }
+        if(hasFetchBonus(Link)){
+            player.incBombPower();
+        }
     }
     ctx.drawImage(link, Link.picx, Link.picy, Link.w, Link.h, Link.x, Link.y, 27, 45);
 }
@@ -533,7 +581,9 @@ function Player(idJoueur, forme, username, nbJoueur){
     this.nbBomb = 1;
     this.alive = true;
     this.nbJoueur = nbJoueur;
+    this.bombPower = 2;
 
     this.setBomb = function(){this.nbBomb++;};
+    this.incBombPower = function(){this.bombPower = this.bombPower+1;}
 }
 /*****************************************/

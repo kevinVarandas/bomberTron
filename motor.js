@@ -137,7 +137,7 @@ function traiteToucheAppuyee(evt){
         if(!menu && !theEnd){
             if(player.nbBomb > 0 && player.alive)
             {
-                addBomb(player.forme,player.idJoueur);
+                addBomb(player.forme,player.idJoueur,player.bombPower);
                 player.nbBomb--;
             }
         }

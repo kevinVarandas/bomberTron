@@ -270,5 +270,9 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('shareBonus', function(bonus){
         socket.broadcast.to(socket.room).emit('getBonus',bonus);
-    })
+    });
+
+    socket.on('updateBonusTab',function(bonus){
+       socket.broadcast.to(socket.room).emit('updateBonus',bonus);
+    });
 });
