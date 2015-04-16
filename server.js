@@ -78,6 +78,7 @@ io.sockets.on('connection', function (socket) {
 
 	// when the user disconnects.. perform this
 	socket.on('disconnect', function(){
+
         if((socket.etatJoueur === 'Waiting') && party[socket.idActuelRoom][2] === 1){
             var id = socket.idActuelRoom;
             party.splice(socket.idActuelRoom,1);
@@ -88,6 +89,7 @@ io.sockets.on('connection', function (socket) {
             io.sockets.emit('listGame', party);
             io.sockets.emit('newRoom', rooms);
         }
+
         if(socket.etatJoueur === 'Waiting' && party[socket.idActuelRoom][2] > 1){
             party[socket.idActuelRoom][2] -= 1;
             io.sockets.emit('listGame', party);

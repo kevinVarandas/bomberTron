@@ -78,13 +78,13 @@ var bonusUpPower = new Image();
 bonusUpPower.src = 'http://img15.hostingpics.net/thumbs/mini_3258331111754310205275899149819875546745n.png';
 
 var muteButton = new Image();
-muteButton.src = 'mute.png';
+muteButton.src = 'http://img15.hostingpics.net/pics/149958mute.png';
 
 var unmuteButton = new Image();
-unmuteButton.src = 'unmute.png';
+unmuteButton.src = 'http://img15.hostingpics.net/pics/311042unmute.png';
 
 var endGameImg = new Image();
-endGameImg.src = 'endGame.png';
+endGameImg.src = 'http://img15.hostingpics.net/pics/790585endGame.png';
 
 var optionWidth = 190;
 var optionHeight = 90;
