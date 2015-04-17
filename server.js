@@ -247,7 +247,7 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('updateCases', function(cases){
-        io.sockets.in(socket.room).emit('updateCasesTab', cases);
+        socket.broadcast.to(socket.room).emit('updateCasesTab', cases);
     });
 
     socket.on('updatePlayerPrst', function(forme, tab){

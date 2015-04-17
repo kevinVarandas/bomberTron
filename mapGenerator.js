@@ -793,8 +793,10 @@ function collisionBombDroite(x, y, v) {
             else {
                 if ((bombe.x + xExplo) >= cases[i].x && (bombe.x + xExplo) < (cases[i].x + cases[i].tailleCase) &&
                     bombe.y >= cases[i].y && bombe.y < (cases[i].y + cases[i].tailleCase)) {
-                    cases.splice(i, 1);
-                    socket.emit("updateCases", cases);
+                    if(player.idJoueur === bombe.type) {
+                        cases.splice(i, 1);
+                        socket.emit("updateCases", cases);
+                    }
                 }
             }
             if (((bombe.x + xExplo + 40) > Sonic.x && (bombe.x) <= (Sonic.x) && (bombe.y) <= (Sonic.y + (Sonic.h / 2)) && (bombe.y + 40) >= (Sonic.y + (Sonic.h / 2)))) {
