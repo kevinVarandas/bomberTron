@@ -116,7 +116,7 @@ function drawBombs(){
             ctx.drawImage(bombeLink, bombs[i].x, bombs[i].y, 40, 40);
             bombs[i].duree -= 1;
         }else if(bombs[i].duree > 0){
-            if(bombs[i].type === player.idJoueur && bombs[i].duree === 30){
+            if(bombs[i].type === player.idJoueur && bombs[i].duree === 40){
                 player.nbBomb++;
             }
             drawExplosion(bombs[i], bombs[i].timeOpacity);

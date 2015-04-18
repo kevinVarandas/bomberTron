@@ -93,7 +93,7 @@ io.sockets.on('connection', function (socket) {
             socket.broadcast.to(party[socket.idActuelRoom][0]).emit('updateDecoIdPlayer', socket.idInRoom);
             nbActuelJoueur[socket.idActuelRoom] -= 1;
         }
-        if((socket.etatJoueur === 'Ingame') && party[socket.idActuelRoom][2] === 1){
+        /*if((socket.etatJoueur === 'Ingame') && party[socket.idActuelRoom][2] === 1){
             var id = socket.idActuelRoom;
             party.splice(socket.idActuelRoom,1);
             nbActuelJoueur.splice(socket.idActuelRoom, 1);
@@ -104,7 +104,7 @@ io.sockets.on('connection', function (socket) {
             io.sockets.emit('newRoom', rooms);
         }else if(socket.etatJoueur === 'Ingame'){
             party[socket.idActuelRoom][2] -= 1;
-        }
+        }*/
         // remove the username from global usernames list
         delete usernames[socket.completename];
         // update list of users in chat, client-side
